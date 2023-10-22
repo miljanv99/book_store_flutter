@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:book_store_flutter/models/book.model.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
 class BookService {
- static const String domain = 'http://localhost:8000';
+ static const String domain = 'http://192.168.52.209:8000';
  static const String getSingleBookEndpoint = domain + '/book/details/';
  static const String createBookEndpoint = domain + '/book/add';
  static const String editBookEndpoint = domain + '/book/edit/';
@@ -46,5 +47,25 @@ class BookService {
     final response = await http.get(Uri.parse(searchBookEndpoint + query));
     
     
+ }
+
+  Future<List<Book>> fetchDataFromServer(String query)async{
+  final Dio dio =  Dio();
+  
+    var response = await dio.get('$searchBookEndpoint$query');
+
+    if (response.statusCode == 200) {
+    print(response.statusCode);
+    print(response.data['data'].length);
+    List<dynamic> responseData = response.data['data'] ;
+
+      List<Book> updatedList = responseData.map((e) => Book.fromJson(e)).toList();      
+
+
+     return updatedList;
+    }
+
+    throw Exception('Failed to load data');
+ 
  }
 }

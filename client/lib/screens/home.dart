@@ -1,9 +1,7 @@
-import 'dart:convert';
+import 'package:book_store_flutter/widgets/bookList.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/book.model.dart';
 import '../services/book.service.dart';
-import 'package:http/http.dart' as http;
-import 'package:dio/dio.dart';
 
 class Home extends StatefulWidget {
   const Home({ Key? key }) : super(key: key);
@@ -17,49 +15,43 @@ class _HomeState extends State<Home> {
 
 
 
-    List<Book> newestBooks = [];
-    List<dynamic> bestRatedBooks = [];
-    List<dynamic> mostPurchasedBooks = [];
+    late Future<List<Book>> newestBooks;
+    late Future<List<Book>> bestRatedBooks;
+    late Future<List<Book>> mostPurchasedBooks;
 
     BookService bookService = BookService();
-    List<Book> books = [];
 
-  String newestBooksQuery = '?sort={"creationDate":-1}&limit=5';
- String bestRatedBooksQuery = '?sort={"currentRating":-1}&limit=5';
- String mostPurchasedBooksQuery = '?sort={"purchasesCount":-1}&limit=5';
+  String newestBooksQuery = '?sort={"creationDate":-1}&limit=10';
+  String bestRatedBooksQuery = '?sort={"currentRating":-1}&limit=10';
+  String mostPurchasedBooksQuery = '?sort={"purchasesCount":-1}&limit=10';
 
   static const String domain = 'http://192.168.52.209:8000';
   static const String searchBookEndpoint = domain + '/book/search';
  
 
- void fetchDataFromServer()async{
-  final Dio dio =  Dio();
+ //void fetchDataAndSetState() async {
+  //await bookService.fetchDataFromServer(newestBooksQuery, newestBooks);
+  //await bookService.fetchDataFromServer(bestRatedBooksQuery, bestRatedBooks);
+  //await bookService.fetchDataFromServer(mostPurchasedBooksQuery, mostPurchasedBooks);
+  //setState(() {
+   // newestBooks;
+   // bestRatedBooks;
+  //  mostPurchasedBooks;
+ // });
+//}
 
-  try {
-    var response = await dio.get("$searchBookEndpoint");
-    print(response.statusCode);
-    print(response.data['data'].length);
-    List<dynamic> responseData = response.data['data'] ;
+//void fetchDataAndSetState() async {
+  //newestBooks = bookService.fetchDataFromServer(newestBooksQuery);
+  //setState(() {
+   // newestBooks;
+   // print('init ${newestBooks}');
+  //});
+//}
 
-    //final List<Map<String, dynamic>> responseData = json.decode(response.data);
-
-    setState(() {
-      books = responseData.map((e) => Book.fromJson(e)).toList();      
-    });
-  } on DioError catch (e) {
-    print(e);
+@override
+void initState() {
+    super.initState();
   }
- }
-
- @override
- void initState(){
-  super.initState();
-  fetchDataFromServer();
- }
-
-
-
- 
 
  //Future<List<Book>> getPosts() async {
  // var url = Uri.parse("http://localhost:8000/book/search");
@@ -82,34 +74,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
  //Future<List<Book>> postsFuture = getPosts();
     return Container(
-      child: ListView(
-        children: <Widget>[
-          ...books.map(
-            (book) => GestureDetector(
-              child: Container(
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.yellow.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    )
-                  ]
-                ),
-                child: ListTile(
-                tileColor: Colors.greenAccent,
-                title: Text("${book.title}"),
-                leading: Image.network("${book.cover}") 
-                ),
-              ),
-              onTap: (){
-                print('${book.title} - ${book.id}');
-              },
-            )
-          )
-        ],
+      padding: EdgeInsets.all(5),
+      child: SingleChildScrollView(
+        child: Column(
+        children: [
+          BookList(books: bookService.fetchDataFromServer(newestBooksQuery), header: 'Newest Books'),
+          BookList(books: bookService.fetchDataFromServer(bestRatedBooksQuery), header: 'Best Rated Books',),
+          BookList(books: bookService.fetchDataFromServer(mostPurchasedBooksQuery), header: 'Most Purchased Books')
+          ],
+        ),
       )
     );
   }

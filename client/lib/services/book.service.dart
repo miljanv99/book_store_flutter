@@ -50,22 +50,33 @@ class BookService {
  }
 
   Future<List<Book>> fetchDataFromServer(String query)async{
-  final Dio dio =  Dio();
+  //final Dio dio =  Dio();
   
-    var response = await dio.get('$searchBookEndpoint$query');
+    //var response = await dio.get('$searchBookEndpoint$query');
 
-    if (response.statusCode == 200) {
-    print(response.statusCode);
-    print(response.data['data'].length);
-    List<dynamic> responseData = response.data['data'] ;
+   // if (response.statusCode == 200) {
+    //print(response.statusCode);
+    //print(response.data['data'].length);
+   // List<dynamic> responseData = response.data['data'] ;
 
-      List<Book> updatedList = responseData.map((e) => Book.fromJson(e)).toList();      
+    // List<Book> updatedList = responseData.map((e) => Book.fromJson(e)).toList();      
 
 
-     return updatedList;
+    // return updatedList;
+   // }
+
+   // throw Exception('Failed to load data');
+
+    var url = Uri.parse('$searchBookEndpoint$query');
+
+    var apiResponse = await http.get(url);
+
+    if (apiResponse.statusCode == 200) {
+      List<dynamic> responseData = json.decode(apiResponse.body)['data'];
+      List<Book> updatedList = responseData.map((e) => Book.fromJson(e)).toList();
+      return updatedList;
+    } else {
+      throw Exception('Failed to load data');
     }
-
-    throw Exception('Failed to load data');
- 
+  }
  }
-}

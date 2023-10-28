@@ -2,7 +2,7 @@ const VALIDATOR = require('validator');
 const BOOK = require('mongoose').model('Book');
 const USER = require('mongoose').model('User');
 
-const PAGE_LIMIT = 15;
+//const PAGE_LIMIT = 16;
 
 function validateBookForm(payload) {
     let errors = {};
@@ -281,7 +281,6 @@ module.exports = {
             query: {},
             sort: { creationDate: -1 },
             skip: null,
-            limit: PAGE_LIMIT,
         };
 
         if (params.query || typeof params.query === 'string') {

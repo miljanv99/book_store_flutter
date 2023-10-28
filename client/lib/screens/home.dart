@@ -25,10 +25,6 @@ class _HomeState extends State<Home> {
   String bestRatedBooksQuery = '?sort={"currentRating":-1}&limit=10';
   String mostPurchasedBooksQuery = '?sort={"purchasesCount":-1}&limit=10';
 
-  static const String domain = 'http://192.168.52.209:8000';
-  static const String searchBookEndpoint = domain + '/book/search';
- 
-
  //void fetchDataAndSetState() async {
   //await bookService.fetchDataFromServer(newestBooksQuery, newestBooks);
   //await bookService.fetchDataFromServer(bestRatedBooksQuery, bestRatedBooks);
@@ -78,9 +74,9 @@ void initState() {
       child: SingleChildScrollView(
         child: Column(
         children: [
-          BookList(books: bookService.fetchDataFromServer(newestBooksQuery), header: 'Newest Books'),
-          BookList(books: bookService.fetchDataFromServer(bestRatedBooksQuery), header: 'Best Rated Books',),
-          BookList(books: bookService.fetchDataFromServer(mostPurchasedBooksQuery), header: 'Most Purchased Books')
+          BookList(books: bookService.fetchBooksFromServer(query: newestBooksQuery), header: 'Newest Books'),
+          BookList(books: bookService.fetchBooksFromServer(query: bestRatedBooksQuery), header: 'Best Rated Books',),
+          BookList(books: bookService.fetchBooksFromServer(query: mostPurchasedBooksQuery), header: 'Most Purchased Books')
           ],
         ),
       )

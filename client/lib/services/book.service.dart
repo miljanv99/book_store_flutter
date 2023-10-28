@@ -49,7 +49,7 @@ class BookService {
     
  }
 
-  Future<List<Book>> fetchDataFromServer(String query)async{
+  Future<List<Book>> fetchBooksFromServer({ String? query})async{
   //final Dio dio =  Dio();
   
     //var response = await dio.get('$searchBookEndpoint$query');
@@ -66,8 +66,13 @@ class BookService {
    // }
 
    // throw Exception('Failed to load data');
+  Uri url;
+   if (query != null) {
+     url = Uri.parse('$searchBookEndpoint$query');
+   }else {
+     url = Uri.parse(searchBookEndpoint);
+   }
 
-    var url = Uri.parse('$searchBookEndpoint$query');
 
     var apiResponse = await http.get(url);
 

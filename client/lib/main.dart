@@ -1,4 +1,5 @@
 import 'package:book_store_flutter/providers/screen.provider.dart';
+import 'package:book_store_flutter/screens/cart.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/store.dart';
 import 'package:book_store_flutter/widgets/drawer.widget.dart';
@@ -49,6 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text(widget.title),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: (){
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) => const Cart(),
+                  )
+                );
+              }, 
+              icon: const Icon(Icons.shopping_cart_rounded),
+              iconSize: 28,
+            )
+          ],
         ),
         drawer: const DrawerWidget(),
         body: screens[screenProvider.selectedScreen],

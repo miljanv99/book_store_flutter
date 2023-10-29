@@ -3,8 +3,10 @@ import 'package:book_store_flutter/models/book.model.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
+//for emulator: 10.0.2.2
+
 class BookService {
- static const String domain = 'http://192.168.52.209:8000';
+ static const String domain = 'http://192.168.0.14:8000';
  static const String getSingleBookEndpoint = domain + '/book/details/';
  static const String createBookEndpoint = domain + '/book/add';
  static const String editBookEndpoint = domain + '/book/edit/';

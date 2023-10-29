@@ -1,5 +1,7 @@
+import 'package:book_store_flutter/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);
@@ -9,12 +11,25 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+  final Future<SharedPreferences> sharedPreferences =
+      SharedPreferences.getInstance();
+
+  late Future<String> token;
+
+  @override
+  void initState() {
+    super.initState();
+    token = sharedPreferences.then((SharedPreferences sp) {
+      return sp.getString('token')!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: <Widget>[
+        children: [
           const UserAccountsDrawerHeader(
             accountName: Text("John Doe"),
             accountEmail: Text("john.doe@example.com"),
@@ -63,16 +78,52 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               Navigator.pop(context);
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.exit_to_app),
-            title: const Text('Logout'),
-            onTap: () {
-              // Handle logout action
-              Navigator.pop(context);
+          FutureBuilder(
+            future: token,
+            builder:
+                (BuildContext context, AsyncSnapshot<String> snapshotToken) {
+              if (!snapshotToken.hasData) {
+                return ListTile(
+                  leading: const Icon(Icons.login_rounded),
+                  title: const Text('Login'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Login(),
+                        ));
+                  },
+                );
+              } else {
+                return ListTile(
+                  leading: const Icon(Icons.exit_to_app),
+                  title: const Text('Logout'),
+                  onTap: () {
+                    deleteToken();
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:  Text("You've successfully logged out.")
+                      )
+                    );
+                  },
+                );
+              }
             },
           ),
         ],
       ),
     );
+  }
+
+    void deleteToken() {
+    sharedPreferences.then((SharedPreferences sp) =>
+        sp.remove('token').then((bool isOK) {
+          if (isOK) {
+            print('Token is successfuly removed');
+          } else {
+            print('Token is not successfuly removed');
+          }
+        }));
   }
 }

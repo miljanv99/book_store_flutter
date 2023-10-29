@@ -13,7 +13,7 @@ class BookService {
  static const String addToFavoritesEndpoint = domain + '/book/addToFavorites/';
  static const String searchBookEndpoint = domain + '/book/search';
 
- Future<dynamic> getSingleBook(String id) async {
+ Future<dynamic> getSingleBook2(String id) async {
     final response = await http.get((getSingleBookEndpoint + id) as Uri);
     return jsonDecode(response.body);
  }
@@ -84,4 +84,22 @@ class BookService {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<Book> getSingleBook(String id) async {
+
+    Uri url = Uri.parse('$getSingleBookEndpoint$id');
+
+    var apiResponse = await http.get(url);
+
+    if (apiResponse.statusCode == 200) {
+      var responseData = Book.fromJson(json.decode(apiResponse.body)['data']);
+      print(responseData);
+      return responseData;
+    } else {
+      throw Exception('Failed to load data');
+    }
+
+    //final response = await http.get((getSingleBookEndpoint + id) as Uri);
+    //return jsonDecode(response.body);
+ }
  }

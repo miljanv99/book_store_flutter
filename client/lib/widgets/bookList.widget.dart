@@ -35,10 +35,7 @@ class BookList extends StatelessWidget {
                     } else if (snapshot.data != null) {
                       return Row(
                         children: snapshot.data!.map((book) {
-                          return BookCard(
-                              title: book.title!,
-                              author: book.author!,
-                              imageUrl: book.cover!);
+                          return BookCard(book: book);
                         }).toList(),
                       );
                     } else {

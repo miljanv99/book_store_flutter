@@ -1,8 +1,9 @@
 import 'package:book_store_flutter/models/book.model.dart';
+import 'package:book_store_flutter/screens/bookDetails.dart';
 import 'package:flutter/material.dart';
 
 class BookGridView extends StatelessWidget {
- final List<Book> books;
+  final List<Book> books;
 
   const BookGridView({super.key, required this.books});
 
@@ -18,42 +19,51 @@ class BookGridView extends StatelessWidget {
               mainAxisSpacing: 10),
           itemCount: books.length,
           itemBuilder: (BuildContext context, index) {
-            return Container(
-              alignment: Alignment.center,
-              child: GridTile(
-                header: GridTileBar(
-                  backgroundColor: Colors.blueAccent,
-                  title: Text(books[index].author ?? ''),
-                ),
-                footer: GridTileBar(
-                  backgroundColor: Colors.blueAccent,
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('\$${books[index].price.toString()}'),
-                      Text(books[index].genre ?? ''),
-                    ],
+            Book book = books[index];
+            return GestureDetector(
+              child: Container(
+                alignment: Alignment.center,
+                child: GridTile(
+                  header: GridTileBar(
+                    backgroundColor: Colors.blueAccent,
+                    title: Text(book.author ?? ''),
                   ),
-                  trailing: Container(
-                    height: 30,
-                    width: 30,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Add to cart logic here
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(0), // Remove padding
-                      ),
-                      child: const Center(
-                        child: Icon(Icons.add,
-                            size: 20), // Adjust the size of the icon
+                  footer: GridTileBar(
+                    backgroundColor: Colors.blueAccent,
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('\$${book.price.toString()}'),
+                        Text(book.genre ?? ''),
+                      ],
+                    ),
+                    trailing: Container(
+                      height: 30,
+                      width: 30,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Add to cart logic here
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0), // Remove padding
+                        ),
+                        child: const Center(
+                          child: Icon(Icons.add,
+                              size: 20), // Adjust the size of the icon
+                        ),
                       ),
                     ),
                   ),
+                  child: Image.network(book.cover.toString()),
                 ),
-                child: Image.network(books[index].cover.toString()),
               ),
+              onTap: (){
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => BookDetails(bookID: book.id.toString()),)
+                );
+              },
             );
           }),
     );

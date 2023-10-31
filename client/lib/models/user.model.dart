@@ -1,23 +1,39 @@
-class User {
- String id;
- String name;
- String email;
 
- User({required this.id, required this.name, required this.email});
+
+import 'book.model.dart';
+
+class User {
+ String? id;
+ String? username;
+ String? avatar;
+ bool? isAdmin;
+ int? commentCount;
+ //cart Cart;
+ List<Book> favoriteBooks;
+ //receipts Receipt[]
+
+
+ User({required this.id, required this.username, required this.avatar, required this.isAdmin, required this.commentCount, required this.favoriteBooks});
 
  factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['_id'],
-      name: json['name'],
-      email: json['email'],
+      username: json['username'],
+      avatar: json['avatar'],
+      isAdmin: json['isAdmin'],
+      commentCount: json['commentCount'],
+      favoriteBooks: json['favoriteBooks']
     );
  }
 
  Map<String, dynamic> toJson() {
     return {
       '_id': id,
-      'name': name,
-      'email': email,
+      'username': username,
+      'avatar': avatar,
+      'isAdmin': isAdmin,
+      'commentCount': commentCount,
+      'favoriteBooks': favoriteBooks
     };
  }
 }

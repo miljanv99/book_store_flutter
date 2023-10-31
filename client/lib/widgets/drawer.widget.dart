@@ -1,6 +1,11 @@
+import 'dart:async';
 import 'package:book_store_flutter/screens/login.dart';
+import 'package:book_store_flutter/screens/profile.dart';
+import 'package:book_store_flutter/services/helper.service.dart';
+import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -15,27 +20,41 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       SharedPreferences.getInstance();
 
   late Future<String> token;
-
+  
   @override
   void initState() {
-    super.initState();
+super.initState();
     token = sharedPreferences.then((SharedPreferences sp) {
-      return sp.getString('token')!;
+            return sp.getString('token')!;
     });
-  }
+      }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+        child: Container(
+      padding: EdgeInsets.only(top: 20),
       child: ListView(
-        padding: EdgeInsets.zero,
         children: [
-          const UserAccountsDrawerHeader(
-            accountName: Text("John Doe"),
-            accountEmail: Text("john.doe@example.com"),
-            currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png')),
+          FutureBuilder(
+            future: token,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return GestureDetector(
+                    child: ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text('Profile'),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Profile()));
+                  },
+                ));
+              } else {
+                return SizedBox.shrink();
+              }
+            },
           ),
           ListTile(
             leading: const Icon(Icons.home),
@@ -101,11 +120,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   onTap: () {
                     deleteToken();
                     Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content:  Text("You've successfully logged out.")
-                      )
-                    );
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("You've successfully logged out.")));
                   },
                 );
               }
@@ -113,17 +129,18 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
         ],
       ),
-    );
+    ));
   }
 
-    void deleteToken() {
-    sharedPreferences.then((SharedPreferences sp) =>
-        sp.remove('token').then((bool isOK) {
-          if (isOK) {
-            print('Token is successfuly removed');
-          } else {
-            print('Token is not successfuly removed');
-          }
-        }));
+  void deleteToken() {
+    sharedPreferences
+        .then((SharedPreferences sp) => sp.remove('token').then((bool isOK) {
+              if (isOK) {
+                print('Token is successfuly removed');
+                print(token);
+              } else {
+                print('Token is not successfuly removed');
+              }
+            }));
   }
 }

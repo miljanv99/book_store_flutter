@@ -12,6 +12,13 @@ class Book {
  String? isbn;
  int? pagesCount;
  double? price;
+ int? qty;
+ DateTime? creationDate;
+ double? currentRating;
+ int? ratingPoints;
+ int? ratedCount;
+ int? purchaseCount;
+ //comments? Comment[];
 
  Book({
      this.id,
@@ -24,10 +31,16 @@ class Book {
      this.isbn,
      this.pagesCount,
      this.price,
+     this.qty,
+     this.creationDate,
+     this.currentRating,
+     this.ratingPoints,
+     this.ratedCount,
+     this.purchaseCount,
+     //this.comments
  });
 
  Book.fromJson(Map<String, dynamic> json) {
-    
       id = json['_id'];
       title = json['title'];
       author = json['author'];
@@ -38,7 +51,13 @@ class Book {
       isbn = json['isbn'];
       pagesCount = json['pagesCount'];
       price = json['price'].toDouble();
-
+      qty = json['qty'];
+      creationDate = DateTime.parse(json['creationDate']);
+      currentRating = json['currentRating'].toDouble();
+      ratingPoints = json['ratingPoints'];
+      ratedCount = json['ratedCount'];
+      purchaseCount = json['purchaseCount'];
+      //comments = json['comments'];
  }
 
  Map<String, dynamic> toJson() {
@@ -53,6 +72,13 @@ class Book {
       'isbn': isbn,
       'pagesCount': pagesCount,
       'price': price,
+      'qty': qty,
+      'creationDate': creationDate,
+      'currentRating': currentRating,
+      'ratingPoints': ratingPoints,
+      'ratedCount': ratedCount,
+      'purchaseCount': purchaseCount,
+      //'comments': comments
     };
  }
 }

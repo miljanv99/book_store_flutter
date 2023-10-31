@@ -85,11 +85,13 @@ class _LoginState extends State<Login> {
                     };
 
                     var response = await userService.login(credentials);
-                    String poruka = '';
+                    String poruka = "You've entered wrong username or password, please try again.";
                     if (response.message == 'Login successful!') {
                       print("LOGIN: ${response.message}");
                       var token = response.data;
+                      var username = usernameCtrl.text;
                       storeToken(token);
+                      storeUserName(username);
                       poruka = 'Login successfully logged in';
 
                       Navigator.pushReplacement(
@@ -97,14 +99,14 @@ class _LoginState extends State<Login> {
                           MaterialPageRoute(
                             builder: (context) => const MyApp(),
                           ));
-                      ScaffoldMessenger.of(context)
+
+                          ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text(poruka)));
-                    } else {
-                      poruka =
-                          "You've entered wrong username or password, please try again.";
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(poruka)));
+                      
                     }
+
+                    ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(poruka)));
                   }
                 },
                 child: Text('Login'),
@@ -123,6 +125,17 @@ class _LoginState extends State<Login> {
             print('Token is successfuly stored');
           } else {
             print('Token is not successfuly stored');
+          }
+        }));
+  }
+  void storeUserName(String username) {
+    sharedPreferences.then((SharedPreferences sp) =>
+        sp.setString('username', username).then((bool isOK) {
+          if (isOK) {
+            print('Username is successfuly stored');
+            print(username);
+          } else {
+            print('Username is not successfuly stored');
           }
         }));
   }

@@ -18,3 +18,4 @@ class ScreenProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+

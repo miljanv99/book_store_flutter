@@ -1,4 +1,5 @@
-import 'package:book_store_flutter/providers/screen.provider.dart';
+import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/providers/provider.dart';
 import 'package:book_store_flutter/screens/cart.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/store.dart';
@@ -25,7 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         home: MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: ((context) => ScreenProvider())),
+            ChangeNotifierProvider(create: (context) => ScreenProvider()),
+            ChangeNotifierProvider(
+                create: ((context) => AuthorizationProvider())),
           ],
           child: const MyHomePage(title: 'Book Store'),
         ));
@@ -45,7 +48,10 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> screens = const [Home(), Store()];
   @override
   Widget build(BuildContext context) {
-    return Consumer<ScreenProvider>(builder: (context, screenProvider, child) {
+    return Consumer2<ScreenProvider, AuthorizationProvider>(
+        builder: (context, screenProvider, authNotifier, child) {
+      print('IN MAIN: ${authNotifier.authenticated}');
+      print('IN TOKEN: ${authNotifier.token}');
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -53,20 +59,19 @@ class _MyHomePageState extends State<MyHomePage> {
           centerTitle: true,
           actions: [
             IconButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.push(
-                  context, 
-                  MaterialPageRoute(
-                    builder: (context) => const Cart(),
-                  )
-                );
-              }, 
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const Cart(),
+                    ));
+              },
               icon: const Icon(Icons.shopping_cart_rounded),
               iconSize: 28,
             )
           ],
         ),
-        drawer: const DrawerWidget(),
+        drawer: DrawerWidget(authNotifier: authNotifier),
         body: screens[screenProvider.selectedScreen],
         bottomNavigationBar: BottomNavigationBar(
           onTap: (value) => screenProvider.displayScreen(value),

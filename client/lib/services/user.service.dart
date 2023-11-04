@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Models
 class ServerResponse {
@@ -17,25 +17,10 @@ class ServerResponse {
   }
 }
 
-class User {
-  final String username;
-  final String email;
-  final String avatar;
-
-  User({required this.username, required this.email, required this.avatar});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      username: json['username'],
-      email: json['email'],
-      avatar: json['avatar'],
-    );
-  }
-}
-
 class UserService {
-  static const String baseUrl = 'http://192.168.0.14:8000/user';
+  static const String baseUrl = 'http://192.168.221.167:8000/user';
   static const String loginEndpoint = baseUrl + '/login';
+  static const profileEndpoint = baseUrl + '/profile/';
 
   Future<ServerResponse> register(Map<String, dynamic> payload) async {
     final response = await http.post(
@@ -51,29 +36,38 @@ class UserService {
     }
   }
 
-  Future<dynamic> login(Map<String, dynamic> payload) async {
+  Future<dynamic> getToken(Map<String, dynamic> payload) async {
     final response = await http.post(
       Uri.parse(loginEndpoint),
       body: jsonEncode(payload),
       headers: {'Content-Type': 'application/json'},
     );
 
-    var responseData = ServerResponse.fromJson(json.decode(response.body));
-    print('BODY ${responseData}');
-    print('TOKEN ${responseData.data}');
+    var responseData = ServerResponse.fromJson(json.decode(response.body)).data;
+    //print('BODY ${responseData}');
+    print('responseData ${responseData}');
     return responseData;
   }
 
   Future<ServerResponse> getProfile(String username) async {
+  final SharedPreferences sharedPreferences = await
+      SharedPreferences.getInstance();
+    
+  String? token = sharedPreferences.getString('token');
+
+
+  
     final response = await http.get(
-      Uri.parse('$baseUrl/profile/$username'),
+      Uri.parse('$profileEndpoint$username'),
+      headers: {'Authorization': 'Bearer $token'}
     );
 
-    if (response.statusCode == 200) {
-      return ServerResponse.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to get profile');
-    }
+    var responseData = ServerResponse.fromJson(json.decode(response.body));
+    print('PROFILE BODY: ${responseData}');
+    print('PROFILE MESSAGE: ${responseData.message}');
+    print('PROFILE DATA: ${responseData.data}');
+    return responseData;
+    
   }
 
   Future<ServerResponse> getPurchaseHistory() async {

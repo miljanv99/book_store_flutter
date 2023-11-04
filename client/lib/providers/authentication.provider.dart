@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+import 'package:book_store_flutter/models/user.model.dart';
+import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,15 +11,20 @@ class AuthorizationProvider extends ChangeNotifier {
   static const String loginEndpoint = baseUrl + '/login';
   static const profileEndpoint = baseUrl + '/profile/';
 
+  UserService userService = UserService();
+
   bool _authenticated = false;
   String _token = '';
+  String _usermane = '';
 
   bool get authenticated => _authenticated;
   String get token => _token;
+  String get username => _usermane;
 
 
-  Future<void> authenticate(String token) async {
+  Future<void> authenticate(String token, String username) async {
     _token = token;
+    _usermane = username;
     _authenticated = true;
     notifyListeners();
   }
@@ -29,23 +37,12 @@ class AuthorizationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateProfile() async {
-    if (_authenticated) {
-      String profileUrl = 'https://example.com/profile'; // Replace with your profile API URL
 
-      Map<String, String> headers = {
-        'Authorization': 'Bearer $_token',
-      };
-
-      final response = await http.get(Uri.parse(profileUrl), headers: headers);
-
-      if (response.statusCode == 200) {
-        // Parse the response and update the user's profile in your app's state
-        // ...
-      } else {
-        // Handle errors
-        // ...
-      }
-    }
+  Future<User> updateProfile(String username) async {
+      ServerResponse response = await userService.getProfile(username, token);
+      Map<String, dynamic> userData  = response.data;
+      User userProfile = User.fromJson(userData);
+      print('UPDATE PROFILE: ${userProfile}');
+      return userProfile;
   }
 }

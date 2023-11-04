@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 // Models
 class ServerResponse {
@@ -49,26 +49,21 @@ class UserService {
     return responseData;
   }
 
-  Future<ServerResponse> getProfile(String username) async {
-  final SharedPreferences sharedPreferences = await
-      SharedPreferences.getInstance();
-    
-  String? token = sharedPreferences.getString('token');
-
-
+     Future<ServerResponse> getProfile(String username, String token) async {
   
     final response = await http.get(
       Uri.parse('$profileEndpoint$username'),
       headers: {'Authorization': 'Bearer $token'}
     );
 
-    var responseData = ServerResponse.fromJson(json.decode(response.body));
-    print('PROFILE BODY: ${responseData}');
-    print('PROFILE MESSAGE: ${responseData.message}');
-    print('PROFILE DATA: ${responseData.data}');
-    return responseData;
+    ServerResponse responseData = ServerResponse.fromJson(json.decode(response.body));
+    print('PROFILE BODY: ${responseData.data}');
+    ServerResponse userProfile = responseData;
+    return userProfile;
     
   }
+
+ 
 
   Future<ServerResponse> getPurchaseHistory() async {
     final response = await http.get(

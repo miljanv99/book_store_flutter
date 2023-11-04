@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:book_store_flutter/models/user.model.dart';
 import 'package:book_store_flutter/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -20,6 +21,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final Future<SharedPreferences> sharedPreferences =
       SharedPreferences.getInstance();
 
+  late final Future<User> userProfile;
   //late Future<String> token;
 
   @override
@@ -32,13 +34,27 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         Consumer<AuthorizationProvider>(
           builder: (context, authNotifier, child) {
             if(authNotifier.authenticated){
-              return UserAccountsDrawerHeader(
-                accountName: Text("John Doe"),
-                accountEmail: Text("john.doe@example.com"),
-                currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage('https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png')
-            ),
-          );
+              String username = authNotifier.username;
+              userProfile = authNotifier.updateProfile(username);
+               return FutureBuilder<User>(
+                future: userProfile,
+                builder: (BuildContext context, AsyncSnapshot<User>snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if(snapshot.hasError){
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    User user = snapshot.data!;
+                    return  UserAccountsDrawerHeader(
+                          accountName: Text('${user.username}'),
+                          accountEmail: Text('${user.email}'),
+                          currentAccountPicture: CircleAvatar(
+                          backgroundImage: NetworkImage('${user.avatar}')
+                      ),
+                    );
+                  }
+                },
+              );
             }else {
               return ListTile(
                 title: Icon(Icons.no_accounts, size: 80)

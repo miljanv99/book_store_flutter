@@ -146,6 +146,7 @@ module.exports = {
                     id: user.id,
                     isAdmin: user.isAdmin,
                     username: user.username,
+                    email: user.email,
                     avatar: user.avatar,
                     commentsCount: user.commentsCount,
                     favoriteBooks: user.favoriteBooks,

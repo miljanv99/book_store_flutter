@@ -114,9 +114,11 @@ class _LoginState extends State<Login> {
       if (serverResponse.message == "Login successful!") {
         print('USAO');
         String loginToken = serverResponse.data;
-        await widget.authNotifier.authenticate(loginToken);
+        String username = payload['username'];
+        await widget.authNotifier.authenticate(loginToken, username);
         print("DURING LOGIN: ${widget.authNotifier.authenticated}");
-        //await authNotifier.updateProfile();
+        //widget.authNotifier.username = username;
+        print("USERNAME: $username");
         return "Login successfully logged in";
       } else {
         print('LOGIN FAILED');

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:book_store_flutter/models/user.model.dart';
 import 'package:book_store_flutter/screens/login.dart';
+import 'package:book_store_flutter/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -51,6 +52,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           currentAccountPicture: CircleAvatar(
                           backgroundImage: NetworkImage('${user.avatar}')
                       ),
+                      onDetailsPressed: (){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(
+                            builder: (context) => Profile(userProfileData: user),
+                          )
+                        );
+                      },
                     );
                   }
                 },

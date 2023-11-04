@@ -9,7 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/authentication.provider.dart';
 
 class DrawerWidget extends StatefulWidget {
-
   final AuthorizationProvider authNotifier;
 
   const DrawerWidget({Key? key, required this.authNotifier}) : super(key: key);
@@ -27,51 +26,47 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
         child: Container(
       padding: EdgeInsets.only(top: 20),
-      child: ListView(children: [      
+      child: ListView(children: [
         Consumer<AuthorizationProvider>(
           builder: (context, authNotifier, child) {
-            if(authNotifier.authenticated){
+            if (authNotifier.authenticated) {
               String username = authNotifier.username;
               userProfile = authNotifier.updateProfile(username);
-               return FutureBuilder<User>(
+              return FutureBuilder<User>(
                 future: userProfile,
-                builder: (BuildContext context, AsyncSnapshot<User>snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
-                  } else if(snapshot.hasError){
+                  } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     User user = snapshot.data!;
-                    return  UserAccountsDrawerHeader(
-                          accountName: Text('${user.username}'),
-                          accountEmail: Text('${user.email}'),
-                          currentAccountPicture: CircleAvatar(
-                          backgroundImage: NetworkImage('${user.avatar}')
-                      ),
-                      onDetailsPressed: (){
+                    print('FAVORITE BOOKS: ${user.favoriteBooks}');
+                    return UserAccountsDrawerHeader(
+                      accountName: Text('${user.username}'),
+                      accountEmail: Text('${user.email}'),
+                      currentAccountPicture: CircleAvatar(
+                          backgroundImage: NetworkImage('${user.avatar}')),
+                      onDetailsPressed: () {
                         Navigator.push(
-                          context, 
-                          MaterialPageRoute(
-                            builder: (context) => Profile(userProfileData: user),
-                          )
-                        );
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  Profile(userProfileData: user),
+                            ));
                       },
                     );
                   }
                 },
               );
-            }else {
-              return ListTile(
-                title: Icon(Icons.no_accounts, size: 80)
-              );
+            } else {
+              return ListTile(title: Icon(Icons.no_accounts, size: 80));
             }
           },
         ),
-        
         ListTile(
           leading: const Icon(Icons.home),
           title: const Text('Home'),

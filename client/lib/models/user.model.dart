@@ -1,18 +1,16 @@
-import 'book.model.dart';
-
 class User {
  String? id;
  String? username;
  String? email;
  String? avatar;
  bool? isAdmin;
- int? commentCount;
+ int? commentsCount;
  //cart Cart;
  List<dynamic> favoriteBooks;
  //receipts Receipt[]
 
 
- User({required this.id, required this.username, required this.email ,required this.avatar, required this.isAdmin, required this.commentCount, required this.favoriteBooks});
+ User({required this.id, required this.username, required this.email ,required this.avatar, required this.isAdmin, required this.commentsCount, required this.favoriteBooks});
 
  factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -21,7 +19,7 @@ class User {
       email: json['email'],
       avatar: json['avatar'],
       isAdmin: json['isAdmin'],
-      commentCount: json['commentCount'],
+      commentsCount: json['commentsCount'],
       favoriteBooks: json['favoriteBooks']
     );
  }
@@ -33,7 +31,7 @@ class User {
       'email': email,
       'avatar': avatar,
       'isAdmin': isAdmin,
-      'commentCount': commentCount,
+      'commentsCount': commentsCount,
       'favoriteBooks': favoriteBooks
     };
  }

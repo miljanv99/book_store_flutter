@@ -83,9 +83,8 @@ class _LoginState extends State<Login> {
                         'password': passwordCtrl.text,
                         "username": usernameCtrl.text
                       };
-                      await login(credentials);
-                      String poruka =
-                          "You've entered wrong username or password, please try again.";
+                      String poruka;
+                      poruka = await login(credentials);
                       if (widget.authNotifier.authenticated == true) {
                         print('AFTER LOGIN: ${widget.authNotifier.authenticated}');
                         //print("LOGIN: ${response.message}");
@@ -93,14 +92,12 @@ class _LoginState extends State<Login> {
                         //var username = usernameCtrl.text;
                         //storeToken(token);
                         //storeUserName(username);;
-                        poruka = 'Login successfully logged in';
-
                         Navigator.pop(context);
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(poruka)));
                       }
 
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(poruka)));
                     }
                   },
                   child: Text('Login'),
@@ -111,16 +108,19 @@ class _LoginState extends State<Login> {
         )),
       );
   }
-   Future<void> login(Map<String, dynamic> payload) async {
+   Future<String> login(Map<String, dynamic> payload) async {
       print('Credentials: $payload');
-      String token = await userService.getToken(payload);
-      if (token.isNotEmpty) {
+      ServerResponse serverResponse = await userService.userLogin(payload);
+      if (serverResponse.message == "Login successful!") {
         print('USAO');
-        await widget.authNotifier.authenticate(token);
+        String loginToken = serverResponse.data;
+        await widget.authNotifier.authenticate(loginToken);
         print("DURING LOGIN: ${widget.authNotifier.authenticated}");
         //await authNotifier.updateProfile();
+        return "Login successfully logged in";
       } else {
         print('LOGIN FAILED');
+        return "You've entered wrong username or password, please try again.";
       }
     }
 }

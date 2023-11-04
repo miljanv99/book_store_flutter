@@ -28,7 +28,25 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return Drawer(
         child: Container(
       padding: EdgeInsets.only(top: 20),
-      child: ListView(children: [
+      child: ListView(children: [      
+        Consumer<AuthorizationProvider>(
+          builder: (context, authNotifier, child) {
+            if(authNotifier.authenticated){
+              return UserAccountsDrawerHeader(
+                accountName: Text("John Doe"),
+                accountEmail: Text("john.doe@example.com"),
+                currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage('https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png')
+            ),
+          );
+            }else {
+              return ListTile(
+                title: Icon(Icons.no_accounts, size: 80)
+              );
+            }
+          },
+        ),
+        
         ListTile(
           leading: const Icon(Icons.home),
           title: const Text('Home'),

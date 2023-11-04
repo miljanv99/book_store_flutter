@@ -36,14 +36,14 @@ class UserService {
     }
   }
 
-  Future<dynamic> getToken(Map<String, dynamic> payload) async {
+  Future<dynamic> userLogin(Map<String, dynamic> payload) async {
     final response = await http.post(
       Uri.parse(loginEndpoint),
       body: jsonEncode(payload),
       headers: {'Content-Type': 'application/json'},
     );
 
-    var responseData = ServerResponse.fromJson(json.decode(response.body)).data;
+    var responseData = ServerResponse.fromJson(json.decode(response.body));
     //print('BODY ${responseData}');
     print('responseData ${responseData}');
     return responseData;

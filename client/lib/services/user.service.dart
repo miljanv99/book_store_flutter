@@ -18,9 +18,10 @@ class ServerResponse {
 }
 
 class UserService {
-  static const String baseUrl = 'http://192.168.221.167:8000/user';
+  static const String baseUrl = 'http://192.168.0.10:8000/user';
   static const String loginEndpoint = baseUrl + '/login';
   static const profileEndpoint = baseUrl + '/profile/';
+  static const getPurchaseHistoryEndpoint = baseUrl + '/purchaseHistory';
 
   Future<ServerResponse> register(Map<String, dynamic> payload) async {
     final response = await http.post(
@@ -56,18 +57,18 @@ class UserService {
       headers: {'Authorization': 'Bearer $token'}
     );
 
-    ServerResponse responseData = ServerResponse.fromJson(json.decode(response.body));
-    print('PROFILE BODY: ${responseData.data}');
-    ServerResponse userProfile = responseData;
+    ServerResponse userProfile = ServerResponse.fromJson(json.decode(response.body));
+    print('PROFILE BODY: ${userProfile.data}');
     return userProfile;
     
   }
 
  
 
-  Future<ServerResponse> getPurchaseHistory() async {
+  Future<ServerResponse> getPurchaseHistory(String token) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/purchaseHistory'),
+      Uri.parse(getPurchaseHistoryEndpoint),
+      headers: {'Authorization': 'Bearer $token'}
     );
 
     if (response.statusCode == 200) {

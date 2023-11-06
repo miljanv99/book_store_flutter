@@ -140,8 +140,8 @@ class _BookDetailsState extends State<BookDetails> {
                       ),
                     ),
                   ],
-                ),
-              ]),
+                              ),
+]),
             );
           } else {
             return Text('No Data');

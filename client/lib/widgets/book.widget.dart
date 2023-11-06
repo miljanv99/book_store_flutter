@@ -25,15 +25,19 @@ class BookCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10.0)),
-                child: Image.network(
-                  book.cover.toString(),
-                  fit: BoxFit.fill,
-                  width: 250,
-                  height: 220,
+             
+                 Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(book.cover ?? ''),
+                      fit: BoxFit.fill
+                    )
+                  ),
                 ),
-              ),
+                
+              
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(

@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/authentication.provider.dart';
+import '../providers/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
   final AuthorizationProvider authNotifier;
@@ -22,11 +23,15 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       SharedPreferences.getInstance();
 
   late final Future<User> userProfile;
+  
   //late Future<String> token;
 
   @override
   Widget build(BuildContext context) {
+    final screenProvider = Provider.of<ScreenProvider>(context, listen: false);
+
     return Drawer(
+      surfaceTintColor: Colors.white,
         child: Container(
       padding: EdgeInsets.only(top: 20),
       child: ListView(children: [
@@ -39,7 +44,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 future: userProfile,
                 builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return LinearProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
@@ -130,6 +135,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 title: const Text('Logout'),
                 onTap: () {
                   authNotifier.signOut();
+                  screenProvider.selectFirstScreen();
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text('You successfully logged out')));

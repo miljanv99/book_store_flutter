@@ -124,13 +124,13 @@ class _ProfileState extends State<Profile> {
                   height: 350,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: widget.userProfileData.favoriteBooks.length,
+                    itemCount: widget.userProfileData.favoriteBooks!.length,
                     itemBuilder: (context, index) {
                       List<dynamic> favoriteBooks =
-                          widget.userProfileData.favoriteBooks;
+                          widget.userProfileData.favoriteBooks!;
                       if (favoriteBooks.isNotEmpty) {
                         Map<String, dynamic> bookData =
-                            widget.userProfileData.favoriteBooks[index];
+                            widget.userProfileData.favoriteBooks![index];
                         Book book = Book(
                           id: bookData['_id'],
                           title: bookData['title'],

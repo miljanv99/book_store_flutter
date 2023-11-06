@@ -52,8 +52,12 @@ class Book {
       pagesCount = json['pagesCount'];
       price = json['price'].toDouble();
       qty = json['qty'];
-      creationDate = DateTime.parse(json['creationDate']);
-      currentRating = json['currentRating'].toDouble();
+      if (json['creationDate'] != null) {
+        creationDate = DateTime.parse(json['creationDate']);
+      }
+      if (json['currentRating'] != null) {
+        currentRating = json['currentRating'].toDouble();
+      }
       ratingPoints = json['ratingPoints'];
       ratedCount = json['ratedCount'];
       purchaseCount = json['purchaseCount'];

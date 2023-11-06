@@ -6,7 +6,7 @@ class User {
  bool? isAdmin;
  int? commentsCount;
  //cart Cart;
- List<dynamic> favoriteBooks;
+ List<dynamic>? favoriteBooks;
  //receipts Receipt[]
 
 

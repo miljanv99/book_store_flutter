@@ -4,6 +4,7 @@ import 'package:book_store_flutter/screens/cart.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/purchaseHistory.dart';
 import 'package:book_store_flutter/screens/store.dart';
+import 'package:book_store_flutter/widgets/cart.widget.dart';
 import 'package:book_store_flutter/widgets/drawer.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,13 +24,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           appBarTheme: AppBarTheme(
-            iconTheme: IconThemeData(
-              color: Colors.white
-            ),
+            iconTheme: IconThemeData(color: Colors.white),
           ),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           useMaterial3: true,
-
         ),
         home: MultiProvider(
           providers: [
@@ -52,11 +50,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> screens = [
-    Home(),
-    Store(),
-    PurchaseHistory()
-  ];
+  List<Widget> screens = [Home(), Store(), PurchaseHistory()];
   @override
   Widget build(BuildContext context) {
     return Consumer2<ScreenProvider, AuthorizationProvider>(
@@ -64,40 +58,29 @@ class _MyHomePageState extends State<MyHomePage> {
       print('IN MAIN: ${authNotifier.authenticated}');
       print('IN TOKEN: ${authNotifier.token}');
       return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blueAccent,
-          title: Text(widget.title, style: TextStyle(color: Colors.white, fontSize: 24)),
-          centerTitle: true,
-          actions: [
-            if (authNotifier.authenticated)
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Cart(),
-                      ));
-                },
-                icon: const Icon(Icons.shopping_cart_rounded),
-                iconSize: 28,
-                color: Colors.white,
-              )
-          ],
-        ),
-        drawer: DrawerWidget(authNotifier: authNotifier),
-        body: screens[screenProvider.selectedScreen],
-        bottomNavigationBar:BottomNavigationBar(
-          onTap: (value) => screenProvider.displayScreen(value) ,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Store'),
-            if(authNotifier.authenticated)
-            BottomNavigationBarItem(
-                  icon: Icon(Icons.store), label: 'Purchase History')
-          ],
-          currentIndex: screenProvider.selectedScreen,
-        )
-      );
+          appBar: AppBar(
+            backgroundColor: Colors.blueAccent,
+            title: Text(widget.title,
+                style: TextStyle(color: Colors.white, fontSize: 24)),
+            centerTitle: true,
+            actions: [
+              if (authNotifier.authenticated)
+                CartWidget(),
+            ],
+          ),
+          drawer: DrawerWidget(authNotifier: authNotifier),
+          body: screens[screenProvider.selectedScreen],
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (value) => screenProvider.displayScreen(value),
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Store'),
+              if (authNotifier.authenticated)
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.store), label: 'Purchase History')
+            ],
+            currentIndex: screenProvider.selectedScreen,
+          ));
     });
   }
 }

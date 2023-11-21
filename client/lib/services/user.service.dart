@@ -1,24 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/serverResponse.model.dart';
 
-
-// Models
-class ServerResponse {
-  final String message;
-  final dynamic data;
-
-  ServerResponse({required this.message, required this.data});
-
-  factory ServerResponse.fromJson(Map<String, dynamic> json) {
-    return ServerResponse(
-      message: json['message'],
-      data: json['data'],
-    );
-  }
-}
 
 class UserService {
-  static const String baseUrl = 'http://192.168.0.10:8000/user';
+  static const String baseUrl = 'http://192.168.221.167:8000/user';
   static const String loginEndpoint = baseUrl + '/login';
   static const profileEndpoint = baseUrl + '/profile/';
   static const getPurchaseHistoryEndpoint = baseUrl + '/purchaseHistory';

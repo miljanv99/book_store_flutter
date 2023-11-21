@@ -1,7 +1,10 @@
+import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/book.model.dart';
+import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';
 
 class Login extends StatefulWidget {
@@ -20,6 +23,7 @@ class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
 
   UserService userService = UserService();
+  CartService cartService = CartService();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -31,6 +35,7 @@ class _LoginState extends State<Login> {
       return Scaffold(
         appBar: AppBar(
           title: Text('Login'),
+          iconTheme: IconThemeData(color: Colors.black),
         ),
         body: Center(
             child: SingleChildScrollView(

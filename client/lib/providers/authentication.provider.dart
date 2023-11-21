@@ -1,15 +1,14 @@
-import 'dart:convert';
-import 'package:book_store_flutter/main.dart';
 import 'package:book_store_flutter/models/user.model.dart';
 import 'package:book_store_flutter/providers/provider.dart';
-import 'package:book_store_flutter/screens/home.dart';
+import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
+
 
 import '../models/book.model.dart';
 import '../models/receipt.model.dart';
+import '../models/serverResponse.model.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
   static const String baseUrl = 'http://192.168.221.167:8000/user';
@@ -18,19 +17,23 @@ class AuthorizationProvider extends ChangeNotifier {
 
   UserService userService = UserService();
   ScreenProvider screenProvider = ScreenProvider();
+  CartService cartService = CartService();
 
   bool _authenticated = false;
   String _token = '';
   String _usermane = '';
+  int _cartSize = 0;
 
   bool get authenticated => _authenticated;
   String get token => _token;
   String get username => _usermane;
+  int get cartSize => _cartSize;
 
   Future<void> authenticate(String token, String username) async {
     _token = token;
     _usermane = username;
     _authenticated = true;
+    _cartSize = await cartService.getCartSize(token);
     notifyListeners();
   }
 
@@ -70,5 +73,7 @@ class AuthorizationProvider extends ChangeNotifier {
   print('RECEIPT DATA: ${receiptList}');
   return receiptList;
 }
+
+
 
 }

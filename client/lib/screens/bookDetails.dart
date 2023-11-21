@@ -17,6 +17,12 @@ class BookDetails extends StatefulWidget {
 class _BookDetailsState extends State<BookDetails> {
   @override
   Widget build(BuildContext context) {
+
+    double screenWidth = MediaQuery.of(context).size.width;
+    double maxPhoneWidth = 600.0;
+
+    double maxWidth = screenWidth < maxPhoneWidth ? screenWidth : maxPhoneWidth;
+
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: const TextStyle(fontSize: 15, color: Colors.white),
@@ -42,18 +48,22 @@ class _BookDetailsState extends State<BookDetails> {
         future: widget.bookService.getSingleBook(widget.bookID),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.data != null) {
             Book book = snapshot.data!;
             return SingleChildScrollView(
+                child: Center(
               child: Column(children: <Widget>[
                 Stack(
                   alignment: Alignment.bottomCenter,
                   children: <Widget>[
                     SizedBox(height: 20),
                     Container(
+                      width: maxWidth,
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -71,7 +81,7 @@ class _BookDetailsState extends State<BookDetails> {
                         children: [
                           Container(
                             height: 500,
-                            width: double.infinity,
+                            width: 500,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: NetworkImage(book.cover ?? ''),
@@ -85,23 +95,27 @@ class _BookDetailsState extends State<BookDetails> {
                             book.title ?? 'Title not available',
                             style: TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 10),
                           Text(
                             'Author: ${book.author ?? 'Author not available'}',
                             style: TextStyle(
-                                fontSize: 18, fontStyle: FontStyle.italic, color: Colors.blueAccent),
+                                fontSize: 18,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.blueAccent),
                           ),
                           SizedBox(height: 10),
                           Text(
                             'Genre: ${book.genre ?? 'Genre not available'}',
-                            style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.blueAccent),
                           ),
                           SizedBox(height: 10),
                           Text(
                             'Year: ${book.year ?? 'Year not available'}',
-                            style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.blueAccent),
                           ),
                           SizedBox(height: 20),
                           Text(
@@ -121,11 +135,13 @@ class _BookDetailsState extends State<BookDetails> {
                             children: [
                               Text(
                                 'Pages: ${book.pagesCount ?? 'N/A'}',
-                                style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.blueAccent),
                               ),
                               Text(
                                 'Price: \$${book.price ?? 'N/A'}',
-                                style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.blueAccent),
                               ),
                             ],
                           ),
@@ -140,9 +156,9 @@ class _BookDetailsState extends State<BookDetails> {
                       ),
                     ),
                   ],
-                              ),
-]),
-            );
+                ),
+              ]),
+            ));
           } else {
             return Text('No Data');
           }

@@ -1,10 +1,11 @@
+import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../models/book.model.dart';
 import '../models/receipt.model.dart';
-import '../providers/authentication.provider.dart';
+
 
 class PurchaseHistory extends StatefulWidget {
   const PurchaseHistory({Key? key}) : super(key: key);
@@ -30,7 +31,6 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
       ),
       body: Consumer<AuthorizationProvider>(
         builder: (context, authNotifier, child) {
-          if (authNotifier.authenticated) {
             String token = authNotifier.token;
             receipts = authNotifier.updatePurchaseHistory(token);
             return FutureBuilder(
@@ -107,19 +107,6 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
                 }
               },
             );
-          } else {
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.receipt_long_outlined, size: 80),
-                SizedBox(height: 5),
-                Text('You do not have any purchase'),
-                SizedBox(height: 5),
-                Text('Go buy something!')
-              ],
-            ));
-          }
         },
       ),
     );

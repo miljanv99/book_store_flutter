@@ -11,7 +11,7 @@ import '../models/receipt.model.dart';
 import '../models/serverResponse.model.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
-  static const String baseUrl = 'http://192.168.221.167:8000/user';
+  static const String baseUrl = 'http://192.168.0.10:8000/user';
   static const String loginEndpoint = baseUrl + '/login';
   static const profileEndpoint = baseUrl + '/profile/';
 
@@ -66,14 +66,11 @@ class AuthorizationProvider extends ChangeNotifier {
     double totalPrice = receiptData['totalPrice'].toDouble();
     DateTime creationDate = DateTime.parse(receiptData['creationDate']);
 
-    Receipt receipt = Receipt(id: id, user: user, productsInfo: productsInfo, totalPrice: totalPrice, creationDate: creationDate);
+    Receipt receipt = Receipt(id: id, user: user, productsInfo: productsInfo, totalPrice: totalPrice.toString(), creationDate: creationDate);
     receiptList.add(receipt);
   }
 
   print('RECEIPT DATA: ${receiptList}');
   return receiptList;
 }
-
-
-
 }

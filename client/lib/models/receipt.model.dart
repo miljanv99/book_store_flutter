@@ -5,10 +5,10 @@ import 'book.model.dart';
 
 class Receipt {
   String id;
-  User? user;
-  List<Book>? productsInfo;
-  double? totalPrice;
-  DateTime? creationDate;
+  User user;
+  List<Book> productsInfo;
+  String totalPrice;
+  DateTime creationDate;
 
   Receipt({required this.id, required this.user, required this.productsInfo, required this.totalPrice, required this.creationDate});
 

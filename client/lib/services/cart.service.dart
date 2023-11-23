@@ -22,14 +22,14 @@ class CartService{
       return cartSize.data;
   }
 
-  Future<ServerResponse> getCartItems(String token) async{
+  Future<ServerResponse> getCart(String token) async{
     final response = await http.get(
       Uri.parse(getCartList),
       headers: {'Authorization': 'Bearer $token'}
       );
 
       ServerResponse cartResponse = ServerResponse.fromJson(json.decode(response.body));
-      print('CART BOOK DATA: ${cartResponse}');
+      print('CART BOOK DATA: ${cartResponse.data}');
       return cartResponse;
   }
 }

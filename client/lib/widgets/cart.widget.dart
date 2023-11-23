@@ -16,59 +16,54 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: 10),
-      child: Stack(
-        children: [
-          Consumer<AuthorizationProvider>(
+        padding: EdgeInsets.only(right: 10),
+        child: Container(
+          child: Consumer<AuthorizationProvider>(
             builder: (context, authProvider, child) {
+              print('TOKEN ON CART ICON; ${authProvider.token}');
               String cartSizeValue = authProvider.cartSize > 9
                   ? '9+'
                   : authProvider.cartSize.toString();
-              if (authProvider.cartSize != 0) {
-                return Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    constraints: BoxConstraints(
-                      minWidth: 16,
-                      minHeight: 16,
-                    ),
-                    child: Text(
-                      '${cartSizeValue}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                return Stack(
+                  children: [
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 16,
+                          minHeight: 16,
+                        ),
+                        child: Text(
+                          '${cartSizeValue}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => CartScreen(token: authProvider.token)));
+                      },
+                      icon: const Icon(Icons.shopping_cart_rounded),
+                      iconSize: 28,
+                      color: Colors.white,
+                    ),
+                  ],
                 );
-              } else {
-                return const Text('');
-              }
+              
             },
           ),
-            IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Cart(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.shopping_cart_rounded),
-            iconSize: 28,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }

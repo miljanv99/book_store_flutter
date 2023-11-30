@@ -4,6 +4,7 @@ import 'package:book_store_flutter/screens/cart.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/purchaseHistory.dart';
 import 'package:book_store_flutter/screens/store.dart';
+import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/widgets/cart.widget.dart';
 import 'package:book_store_flutter/widgets/drawer.widget.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> { 
   List<Widget> screens = [Home(), Store(), PurchaseHistory()];
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 CartWidget(),
             ],
           ),
-          drawer: DrawerWidget(authNotifier: authNotifier),
+          drawer: DrawerWidget(),
           body: screens[screenProvider.selectedScreen],
           bottomNavigationBar: BottomNavigationBar(
             onTap: (value) => screenProvider.displayScreen(value),

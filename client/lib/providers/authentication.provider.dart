@@ -29,6 +29,11 @@ class AuthorizationProvider extends ChangeNotifier {
   String get username => _usermane;
   int get cartSize => _cartSize;
 
+   set cartSize(int value) {
+    _cartSize = value;
+    notifyListeners();
+  }
+
   Future<void> authenticate(String token, String username) async {
     _token = token;
     _usermane = username;

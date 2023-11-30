@@ -1,14 +1,17 @@
+import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/widgets/book.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../models/book.model.dart';
 import '../models/user.model.dart';
 
 class Profile extends StatefulWidget {
   final User userProfileData;
+  final AuthorizationProvider authNotifier;
 
-  const Profile({Key? key, required this.userProfileData}) : super(key: key);
+  const Profile({Key? key, required this.userProfileData, required this.authNotifier}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -24,7 +27,7 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           title: const Text('Profile'),
           backgroundColor: Colors.blueAccent,
-          titleTextStyle: TextStyle(color: Colors.white,fontSize: 26),
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 26),
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -120,41 +123,44 @@ class _ProfileState extends State<Profile> {
                   'Favorite Books',
                   style: TextStyle(fontSize: 28),
                 ),
-                Container(
-                  height: 350,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: widget.userProfileData.favoriteBooks!.length,
-                    itemBuilder: (context, index) {
-                      List<dynamic> favoriteBooks =
-                          widget.userProfileData.favoriteBooks!;
-                      if (favoriteBooks.isNotEmpty) {
-                        Map<String, dynamic> bookData =
-                            widget.userProfileData.favoriteBooks![index];
-                        Book book = Book(
-                          id: bookData['_id'],
-                          title: bookData['title'],
-                          author: bookData['author'],
-                          genre: bookData['genre'],
-                          year: bookData['year'],
-                          description: bookData['description'],
-                          cover: bookData['cover'],
-                          isbn: bookData['isbn'],
-                          pagesCount: bookData['pagesCount'],
-                          price: bookData['price'],
-                          creationDate:
-                              DateTime.parse(bookData['creationDate']),
-                        );
-                        return BookCard(book: book);
-                      } else {
-                        return Icon(Icons.not_interested_sharp);
-                      }
-                    },
-                  ),
-                )
+                 //  Container(
+                     // height: 350,
+                    //  child: ListView.builder(
+                      //  scrollDirection: Axis.horizontal,
+                      //  itemCount: widget.userProfileData.favoriteBooks!.length,
+                       // itemBuilder: (context, index) {
+                        //  List<dynamic> favoriteBooks =
+                         //     widget.userProfileData.favoriteBooks!;
+                        //  if (favoriteBooks.isNotEmpty) {
+                           // Map<String, dynamic> bookData =
+                            //    widget.userProfileData.favoriteBooks![index];
+                          //  Book book = Book(
+                            //  id: bookData['_id'],
+                            //  title: bookData['title'],
+                            //  author: bookData['author'],
+                           //   genre: bookData['genre'],
+                           //   year: bookData['year'],
+                           //   description: bookData['description'],
+                           //   cover: bookData['cover'],
+                            //  isbn: bookData['isbn'],
+                            //  pagesCount: bookData['pagesCount'],
+                            //  price: bookData['price'],
+                            //  creationDate:
+                            //      DateTime.parse(bookData['creationDate']),
+                           // );
+                           //     return BookCard(book: book);
+                              
+                         // } else {
+                         //   return Icon(Icons.not_interested_sharp);
+                        //  }
+                       // },
+                      //),
+                    //),
+
               ],
             ),
           )),
-        ));
+        )
+      );
   }
 }

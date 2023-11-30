@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:book_store_flutter/models/serverResponse.model.dart';
+import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:http/http.dart' as http;
 
 class CartService{
   static const String baseUrl = 'http://192.168.0.10:8000';
   static const String getCartSizeEndpoint = baseUrl + '/cart/getSize';
   static const String getCartList = baseUrl + '/user/cart';
-
+  static const String addToCart = baseUrl + '/user/cart/add/';
   
-
 
   Future<int> getCartSize(String token) async{
     final response = await http.get(
@@ -19,6 +19,7 @@ class CartService{
 
       ServerResponse cartSize = ServerResponse.fromJson(json.decode(response.body));
       print('CART SIZE: ${cartSize.data}');
+
       return cartSize.data;
   }
 
@@ -31,5 +32,17 @@ class CartService{
       ServerResponse cartResponse = ServerResponse.fromJson(json.decode(response.body));
       print('CART BOOK DATA: ${cartResponse.data}');
       return cartResponse;
+  }
+
+   Future<ServerResponse> addBookToCart(String token ,String bookId) async {
+    final response = await http.post(
+      Uri.parse('$addToCart$bookId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    var responseData = ServerResponse.fromJson(json.decode(response.body));
+    //print('BODY ${responseData}');
+    print('Add to cart response ${responseData.message}');
+    return responseData;
   }
 }

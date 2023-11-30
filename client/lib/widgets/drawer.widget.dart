@@ -10,9 +10,9 @@ import '../providers/authentication.provider.dart';
 import '../providers/provider.dart';
 
 class DrawerWidget extends StatefulWidget {
-  final AuthorizationProvider authNotifier;
 
-  const DrawerWidget({Key? key, required this.authNotifier}) : super(key: key);
+
+  const DrawerWidget({Key? key}) : super(key: key);
 
   @override
   _DrawerWidgetState createState() => _DrawerWidgetState();
@@ -42,7 +42,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               userProfile = authNotifier.updateProfile(username);
               return FutureBuilder<User>(
                 future: userProfile,
-                builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
+                builder: (context, AsyncSnapshot<User> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return LinearProgressIndicator();
                   } else if (snapshot.hasError) {
@@ -60,7 +60,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  Profile(userProfileData: user),
+                                  Profile(userProfileData: user, authNotifier: authNotifier,),
                             ));
                       },
                     );

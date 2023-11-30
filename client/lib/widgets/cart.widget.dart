@@ -26,6 +26,15 @@ class _CartWidgetState extends State<CartWidget> {
                   : authProvider.cartSize.toString();
                 return Stack(
                   children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => CartScreen(token: authProvider.token)));
+                      },
+                      icon: const Icon(Icons.shopping_cart_rounded),
+                      iconSize: 28,
+                      color: Colors.white,
+                    ),
                     Positioned(
                       right: 0,
                       top: 0,
@@ -43,21 +52,12 @@ class _CartWidgetState extends State<CartWidget> {
                           '${cartSizeValue}',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => CartScreen(token: authProvider.token)));
-                      },
-                      icon: const Icon(Icons.shopping_cart_rounded),
-                      iconSize: 28,
-                      color: Colors.white,
                     ),
                   ],
                 );

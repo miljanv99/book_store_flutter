@@ -7,7 +7,7 @@ class Receipt {
   String id;
   User user;
   List<Book> productsInfo;
-  String totalPrice;
+  num totalPrice;
   DateTime creationDate;
 
   Receipt({required this.id, required this.user, required this.productsInfo, required this.totalPrice, required this.creationDate});

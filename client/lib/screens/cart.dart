@@ -20,6 +20,10 @@ class CartScreen extends StatefulWidget {
 class _CartState extends State<CartScreen> {
   late final Future<dynamic> cartData;
   CartService cartService = CartService();
+  late String bookID;
+  late List<Book> bookList;
+  Map<String, int> bookInfo = {};
+                              
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,9 @@ class _CartState extends State<CartScreen> {
                     child: ListView.builder(
                   itemCount: snapshot.data!.books!.length,
                   itemBuilder: (context, index) {
+                    bookList = snapshot.data!.books!;
                     Book book = snapshot.data!.books![index];
+                    bookID = book.id!;
                     return Card(
                       elevation: 4,
                       margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -120,7 +126,24 @@ class _CartState extends State<CartScreen> {
                           ],
                         ),
                         ElevatedButton(
-                            onPressed: () => {},
+                            onPressed: () async{
+                               
+                               for (Book book in bookList) {
+                                 bookInfo[book.id!] = 1;
+                               }
+
+                              String message;                             
+                              message = await cartService.checkout(widget.token, bookInfo);
+                              
+                              print('THIS IS BOOK: ${bookID}'); 
+                              print('MESSAGE: ${message}');
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('${message}'))
+                              );
+
+                              Navigator.pop(context);
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

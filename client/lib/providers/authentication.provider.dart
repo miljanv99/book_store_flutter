@@ -71,7 +71,7 @@ class AuthorizationProvider extends ChangeNotifier {
     double totalPrice = receiptData['totalPrice'].toDouble();
     DateTime creationDate = DateTime.parse(receiptData['creationDate']);
 
-    Receipt receipt = Receipt(id: id, user: user, productsInfo: productsInfo, totalPrice: totalPrice.toString(), creationDate: creationDate);
+    Receipt receipt = Receipt(id: id, user: user, productsInfo: productsInfo, totalPrice: totalPrice, creationDate: creationDate);
     receiptList.add(receipt);
   }
 

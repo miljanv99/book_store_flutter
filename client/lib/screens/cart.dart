@@ -10,8 +10,8 @@ import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
 
 class CartScreen extends StatefulWidget {
-  final String token;
-  const CartScreen({Key? key, required this.token}) : super(key: key);
+  final AuthorizationProvider authorizationProvider;
+  const CartScreen({Key? key, required this.authorizationProvider}) : super(key: key);
 
   @override
   _CartState createState() => _CartState();
@@ -27,7 +27,7 @@ class _CartState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<Cart> cart = getCartData(widget.token);
+    Future<Cart> cart = getCartData(widget.authorizationProvider.token);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -133,7 +133,7 @@ class _CartState extends State<CartScreen> {
                                }
 
                               String message;                             
-                              message = await cartService.checkout(widget.token, bookInfo);
+                              message = await cartService.checkout(widget.authorizationProvider.token, bookInfo);
                               
                               print('THIS IS BOOK: ${bookID}'); 
                               print('MESSAGE: ${message}');
@@ -141,6 +141,8 @@ class _CartState extends State<CartScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('${message}'))
                               );
+
+                              widget.authorizationProvider.cartSize = 0;
 
                               Navigator.pop(context);
                             },

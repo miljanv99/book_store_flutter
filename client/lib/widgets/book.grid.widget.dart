@@ -1,14 +1,26 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/screens/bookDetails.dart';
+import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BookGridView extends StatelessWidget {
+import '../models/serverResponse.model.dart';
+
+class BookGridWidget extends StatefulWidget {
   final List<Book> books;
+  final AuthorizationProvider authorizationProvider;
+  BookGridWidget(
+      {Key? key, required this.books, required this.authorizationProvider})
+      : super(key: key);
 
-  const BookGridView({super.key, required this.books});
+  CartService cartService = CartService();
 
+  @override
+  _BookGridWidgetState createState() => _BookGridWidgetState();
+}
+
+class _BookGridWidgetState extends State<BookGridWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthorizationProvider>(
@@ -21,9 +33,9 @@ class BookGridView extends StatelessWidget {
                   childAspectRatio: 1 / 2,
                   crossAxisSpacing: 20,
                   mainAxisSpacing: 10),
-              itemCount: books.length,
+              itemCount: widget.books.length,
               itemBuilder: (BuildContext context, index) {
-                Book book = books[index];
+                Book book = widget.books[index];
                 return GestureDetector(
                   child: Container(
                     alignment: Alignment.center,
@@ -47,14 +59,23 @@ class BookGridView extends StatelessWidget {
                           width: 30,
                           child: ElevatedButton(
                             onPressed: () {
-                              // Add to cart logic here
+                              if (authNotifier.token == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text('You have to login')));
+                              } else {
+                                checkAndAddBookToCart(
+                                    authNotifier.token, book.id!);
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.all(0), // Remove padding
                             ),
                             child: const Center(
-                              child: Icon(Icons.add,
-                                  size: 20), // Adjust the size of the icon
+                              child: Icon(
+                                Icons.add,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ),
@@ -76,5 +97,32 @@ class BookGridView extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> checkAndAddBookToCart(String token, String bookId) async {
+    AuthorizationProvider provider = Provider.of(context, listen: false);
+    // Get the current cart
+    ServerResponse cartResponse = await widget.cartService.getCart(token);
+
+    // Check if the book is already in the cart
+    bool isBookInCart = false;
+    if (cartResponse.data != null && cartResponse.data['books'] is List) {
+      List<dynamic> cartItems = cartResponse.data['books'];
+      isBookInCart = cartItems.any((item) => item['_id'] == bookId);
+    }
+
+    // Add the book to the cart if it's not already present
+    if (!isBookInCart) {
+      ServerResponse addToCartResponse =
+          await widget.cartService.addBookToCart(token, bookId);
+      print('Add to cart response ${addToCartResponse.message}');
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('You added book to cart')));
+      provider.cartSize++;
+    } else {
+      print('The book is already in the cart.');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('The book is already in the cart')));
+    }
   }
 }

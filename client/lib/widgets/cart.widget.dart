@@ -29,7 +29,7 @@ class _CartWidgetState extends State<CartWidget> {
                     IconButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => CartScreen(token: authProvider.token)));
+                            MaterialPageRoute(builder: (context) => CartScreen(authorizationProvider: authProvider)));
                       },
                       icon: const Icon(Icons.shopping_cart_rounded),
                       iconSize: 28,

@@ -15,7 +15,7 @@ class PurchaseHistory extends StatefulWidget {
 }
 
 class _PurchaseHistoryState extends State<PurchaseHistory> {
-  late final Future<List<Receipt>> receipts;
+  Future<List<Receipt>>? receipts;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

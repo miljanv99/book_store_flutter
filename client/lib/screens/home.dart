@@ -66,8 +66,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     //Future<List<Book>> postsFuture = getPosts();
-    return Consumer<AuthorizationProvider>(
-      builder: (context, value, child) {
         return Container(
         padding: EdgeInsets.all(5),
         child: SingleChildScrollView(
@@ -89,7 +87,6 @@ class _HomeState extends State<Home> {
           ],
         ))
       );
-      },
-    );
+
   }
 }

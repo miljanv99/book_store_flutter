@@ -22,7 +22,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final Future<SharedPreferences> sharedPreferences =
       SharedPreferences.getInstance();
 
-  late final Future<User> userProfile;
+   Future<User>? userProfile;
   
   //late Future<String> token;
 

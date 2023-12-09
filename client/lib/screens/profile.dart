@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
+import '../widgets/snackBar.widget.dart';
 import 'bookDetails.dart';
 
 class Profile extends StatefulWidget {
@@ -156,13 +157,11 @@ class _ProfileState extends State<Profile> {
       ServerResponse addToCartResponse =
           await cartService.addBookToCart(authorizationProvider.token, bookId);
       print('Add to cart response ${addToCartResponse.message}');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('You added book to cart')));
+      SnackBarNotification.show(context, 'You added book to cart', Colors.green);
       authorizationProvider.cartSize++;
     } else {
       print('The book is already in the cart.');
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('The book is already in the cart')));
+      SnackBarNotification.show(context, 'The book is already in the cart', Colors.red);
     }
   }
 }

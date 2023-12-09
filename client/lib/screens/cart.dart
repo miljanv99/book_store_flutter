@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
+import '../widgets/snackBar.widget.dart';
 
 class CartScreen extends StatefulWidget {
   final AuthorizationProvider authorizationProvider;
@@ -176,8 +177,7 @@ class _CartState extends State<CartScreen> {
                               print('THIS IS BOOK: ${bookID}');
                               print('MESSAGE: ${message}');
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('${message}')));
+                              SnackBarNotification.show(context, '$message', Colors.green);
 
                               widget.authorizationProvider.cartSize = 0;
 

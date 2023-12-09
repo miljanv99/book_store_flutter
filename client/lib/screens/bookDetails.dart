@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../models/cart.model.dart';
 import '../models/serverResponse.model.dart';
+import '../widgets/snackBar.widget.dart';
 
 class BookDetails extends StatefulWidget {
   final String bookID;
@@ -37,17 +38,15 @@ class _BookDetailsState extends State<BookDetails> {
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
         actions: [
-          if(widget.authNotifier.authenticated)
-          IconButton(
-            onPressed: (){
-              
-            },
-             icon: Icon(
-              Icons.star_border_outlined, 
-              size: 35,
-            ),
-             color: Colors.yellowAccent,
-          )
+          if (widget.authNotifier.authenticated)
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.star_border_outlined,
+                size: 35,
+              ),
+              color: Colors.yellowAccent,
+            )
         ],
         title: FutureBuilder(
           future: widget.bookService.getSingleBook(widget.bookID),
@@ -170,9 +169,10 @@ class _BookDetailsState extends State<BookDetails> {
                           ElevatedButton(
                             onPressed: () {
                               if (widget.authNotifier.token == '') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('You have to login!')));
+                                SnackBarNotification.show(
+                                    context,
+                                    'You have to login!',
+                                    Colors.red);
                               } else {
                                 checkAndAddBookToCart(
                                     widget.authNotifier.token, book.id!);
@@ -196,30 +196,26 @@ class _BookDetailsState extends State<BookDetails> {
   }
 
   Future<void> checkAndAddBookToCart(String token, String bookId) async {
-  // Get the current cart
-  ServerResponse cartResponse = await widget.cartService.getCart(token);
+    // Get the current cart
+    ServerResponse cartResponse = await widget.cartService.getCart(token);
 
-  // Check if the book is already in the cart
-  bool isBookInCart = false;
-  if (cartResponse.data != null && cartResponse.data['books'] is List) {
-    List<dynamic> cartItems = cartResponse.data['books'];
-    isBookInCart = cartItems.any((item) => item['_id'] == bookId);
+    // Check if the book is already in the cart
+    bool isBookInCart = false;
+    if (cartResponse.data != null && cartResponse.data['books'] is List) {
+      List<dynamic> cartItems = cartResponse.data['books'];
+      isBookInCart = cartItems.any((item) => item['_id'] == bookId);
+    }
+
+    // Add the book to the cart if it's not already present
+    if (!isBookInCart) {
+      ServerResponse addToCartResponse =
+          await widget.cartService.addBookToCart(token, bookId);
+      print('Add to cart response ${addToCartResponse.message}');
+      SnackBarNotification.show(context, 'You added book to cart', Colors.green);
+      widget.authNotifier.cartSize++;
+    } else {
+      print('The book is already in the cart.');
+      SnackBarNotification.show(context, 'The book is already in the cart', Colors.red);
+    }
   }
-
-  // Add the book to the cart if it's not already present
-  if (!isBookInCart) {
-    ServerResponse addToCartResponse = await widget.cartService.addBookToCart(token, bookId);
-    print('Add to cart response ${addToCartResponse.message}');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('You added book to cart'))
-    );
-    widget.authNotifier.cartSize++;
-  } else {
-    print('The book is already in the cart.');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('The book is already in the cart'))
-    );
-  }
-}
-
 }

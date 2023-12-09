@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:book_store_flutter/models/user.model.dart';
 import 'package:book_store_flutter/screens/login.dart';
 import 'package:book_store_flutter/screens/profile.dart';
+import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -137,8 +138,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   authNotifier.signOut();
                   screenProvider.selectFirstScreen();
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('You successfully logged out')));
+                  SnackBarNotification.show(
+          context, 'You successfully logged out', Colors.green);
                 },
               );
             }

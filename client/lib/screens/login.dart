@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';
+import '../widgets/snackBar.widget.dart';
 
 class Login extends StatefulWidget {
 
@@ -88,10 +89,12 @@ class _LoginState extends State<Login> {
                         'password': passwordCtrl.text,
                         "username": usernameCtrl.text
                       };
-                      String poruka;
-                      poruka = await login(credentials);
+                      String message;
+                      Color backgroundColor = Colors.red;
+                      message = await login(credentials);
                       if (widget.authNotifier.authenticated == true) {
                         print('AFTER LOGIN: ${widget.authNotifier.authenticated}');
+                        backgroundColor = Colors.green;
                         //print("LOGIN: ${response.message}");
                         //var token = response.data;
                         //var username = usernameCtrl.text;
@@ -101,8 +104,8 @@ class _LoginState extends State<Login> {
                         Navigator.pop(context);
                       }
 
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(poruka)));
+                      SnackBarNotification.show(context, message, backgroundColor);
+
                     }
                   },
                   child: Text('Login'),

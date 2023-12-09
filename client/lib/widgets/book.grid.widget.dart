@@ -2,6 +2,7 @@ import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/screens/bookDetails.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
+import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,9 +61,10 @@ class _BookGridWidgetState extends State<BookGridWidget> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (authNotifier.token == '') {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text('You have to login')));
+                                SnackBarNotification.show(
+                                    context,
+                                    'You have to login!',
+                                    Colors.red);
                               } else {
                                 checkAndAddBookToCart(
                                     authNotifier.token, book.id!);
@@ -116,13 +118,11 @@ class _BookGridWidgetState extends State<BookGridWidget> {
       ServerResponse addToCartResponse =
           await widget.cartService.addBookToCart(token, bookId);
       print('Add to cart response ${addToCartResponse.message}');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('You added book to cart')));
+      SnackBarNotification.show(context, 'You added book to cart', Colors.green);
       provider.cartSize++;
     } else {
       print('The book is already in the cart.');
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('The book is already in the cart')));
+      SnackBarNotification.show(context, 'The book is already in the cart', Colors.red);
     }
   }
 }

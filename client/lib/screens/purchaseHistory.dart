@@ -64,7 +64,7 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
                                 ),
                                 subtitle: Center(
                                   child: Text(
-                                    'Total Price: \$${receipt.totalPrice}',
+                                    'Total Price: \$${receipt.totalPrice.toStringAsFixed(2)}',
                                     style: const TextStyle(
                                         color: Colors.blueAccent),
                                   ),

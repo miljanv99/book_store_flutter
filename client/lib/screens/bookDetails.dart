@@ -36,6 +36,19 @@ class _BookDetailsState extends State<BookDetails> {
         titleTextStyle: const TextStyle(fontSize: 15, color: Colors.white),
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
+        actions: [
+          if(widget.authNotifier.authenticated)
+          IconButton(
+            onPressed: (){
+              
+            },
+             icon: Icon(
+              Icons.star_border_outlined, 
+              size: 35,
+            ),
+             color: Colors.yellowAccent,
+          )
+        ],
         title: FutureBuilder(
           future: widget.bookService.getSingleBook(widget.bookID),
           builder: (context, snapshot) {

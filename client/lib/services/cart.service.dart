@@ -11,6 +11,7 @@ class CartService {
   static const String getCartList = baseUrl + '/user/cart';
   static const String addToCart = baseUrl + '/user/cart/add/';
   static const String cartCheckout = baseUrl + '/user/cart/checkout';
+  static const String removeBook = baseUrl + '/user/cart/delete/';
 
   Future<int> getCartSize(String token) async {
     final response = await http.get(Uri.parse(getCartSizeEndpoint),
@@ -71,5 +72,16 @@ class CartService {
       print('Exception: $e');
       return 'Error during checkout';
     }
+  }
+
+  Future<ServerResponse> removeBookFromCart(String token, String bookId) async{
+    final response = await http.delete(
+      Uri.parse('$removeBook$bookId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    var responseData = ServerResponse.fromJson(json.decode(response.body));
+    //print('BODY ${responseData}');
+    return responseData;
   }
 }

@@ -241,7 +241,7 @@ module.exports = {
         });
     },
 
-    addToFavorites: (req, res) => {
+    addOrRemoveFavoriteBook: (req, res) => {
         let bookId = req.params.bookId;
 
         BOOK.findById(bookId).then((book) => {
@@ -255,17 +255,20 @@ module.exports = {
 
                 let booksIds = user.favoriteBooks.map((b) => b.toString());
                 if (booksIds.indexOf(bookId) !== -1) {
-                    return res.status(400).json({
-                        message: 'You already have this book in your favorites list'
+                    user.favoriteBooks.remove(book._id);
+                    user.save();
+
+                    return res.status(200).json({
+                        message: 'Successfully removed the book to your favorites list.'
                     });
+                }else {
+                    user.favoriteBooks.push(book._id);
+                    user.save();
+    
+                    return res.status(200).json({
+                        message: 'Successfully added the book to your favorites list.'
+                    }); 
                 }
-
-                user.favoriteBooks.push(book._id);
-                user.save();
-
-                return res.status(200).json({
-                    message: 'Successfully added the book to your favorites list.'
-                });
             });
         }).catch((err) => {
             console.log(err);

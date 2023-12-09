@@ -128,6 +128,7 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
                       builder: (context) => BookDetails(
                         bookID: book.id.toString(),
                         authNotifier: widget.authNotifier,
+                        isFavorite: true,
                       ),
                     ),
                   );

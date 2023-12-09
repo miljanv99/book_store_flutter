@@ -1,5 +1,5 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
-import 'package:book_store_flutter/widgets/bookList.widget.dart';
+import 'package:book_store_flutter/widgets/bookHorizontalList.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/book.model.dart';

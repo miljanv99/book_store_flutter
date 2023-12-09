@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'book.widget.dart';
+import 'bookCard.widget.dart';
 
 class BookList extends StatelessWidget {
   final Future<List<Book>> books;

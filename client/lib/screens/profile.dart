@@ -1,6 +1,6 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
-import 'package:book_store_flutter/widgets/book.widget.dart';
+import 'package:book_store_flutter/widgets/bookCard.widget.dart';
 import 'package:book_store_flutter/widgets/favoriteBooks.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

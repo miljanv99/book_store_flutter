@@ -14,7 +14,8 @@ class BookDetails extends StatefulWidget {
   final String bookID;
   //final String token;
   final AuthorizationProvider authNotifier;
-  BookDetails({Key? key, required this.bookID, required this.authNotifier})
+  final isFavorite;
+  BookDetails({Key? key, required this.bookID, required this.authNotifier, required this.isFavorite})
       : super(key: key);
 
   BookService bookService = BookService();
@@ -42,10 +43,10 @@ class _BookDetailsState extends State<BookDetails> {
             IconButton(
               onPressed: () {},
               icon: Icon(
-                Icons.star_border_outlined,
+                widget.isFavorite == true ? Icons.favorite_rounded : Icons.favorite_border_rounded,
                 size: 35,
               ),
-              color: Colors.yellowAccent,
+              color: Colors.redAccent,
             )
         ],
         title: FutureBuilder(

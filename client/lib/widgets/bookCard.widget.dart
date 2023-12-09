@@ -2,11 +2,13 @@ import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/screens/bookDetails.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
+import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
+import '../models/user.model.dart';
 
 class BookCard extends StatefulWidget {
   final Book book;
@@ -21,6 +23,8 @@ class BookCard extends StatefulWidget {
 class _BookCardState extends State<BookCard> {
   BookService bookService = BookService();
   CartService cartService = CartService();
+  UserService userService = UserService();
+  bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthorizationProvider>(
@@ -89,14 +93,19 @@ class _BookCardState extends State<BookCard> {
               ),
             ),
           ),
-          onTap: () {
+          onTap: () async {
             print(widget.book.id);
+            if (authNotifier.authenticated) {
+              await checkIfBookIsFavorite(authNotifier);
+            }
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => BookDetails(
                           bookID: widget.book.id.toString(),
                           authNotifier: authNotifier,
+                          isFavorite: isFavorite,
                         )));
           },
         );
@@ -104,7 +113,7 @@ class _BookCardState extends State<BookCard> {
     );
   }
 
-  Future<void> checkAndAddBookToCart(String token, String bookId) async {
+  void checkAndAddBookToCart(String token, String bookId) async {
     AuthorizationProvider provider = Provider.of(context, listen: false);
     // Get the current cart
     ServerResponse cartResponse = await widget.cartService.getCart(token);
@@ -128,6 +137,25 @@ class _BookCardState extends State<BookCard> {
       print('The book is already in the cart.');
       SnackBarNotification.show(
           context, 'The book is already in the cart', Colors.red);
+    }
+  }
+
+  Future<void> checkIfBookIsFavorite(AuthorizationProvider authNotifier) async {
+    ServerResponse responseData;
+    responseData =
+        await userService.getProfile(authNotifier.username, authNotifier.token);
+
+    // Assuming 'favoriteBooks' is a list of dynamic
+    List<dynamic>? favoriteBooksData = responseData.data['favoriteBooks'];
+
+    if (favoriteBooksData != null) {
+      for (var i = 0; i < favoriteBooksData.length; i++) {
+        Book book = Book.fromJson(favoriteBooksData[i]);
+        if (book.id == widget.book.id) {
+          isFavorite = true;
+          break; // No need to continue checking if book is already found
+        }
+      }
     }
   }
 }

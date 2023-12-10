@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:book_store_flutter/models/book.model.dart';
+import 'package:book_store_flutter/models/serverResponse.model.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,9 +41,12 @@ class BookService {
     return jsonDecode(response.body);
  }
 
- Future<dynamic> addToFavourites(String id) async {
-    final response = await http.post((addToFavoritesEndpoint + id) as Uri, body: {});
-    return jsonDecode(response.body);
+ Future<void> addOrRemoveFavouriteBook(String token ,String bookId) async {
+    await http.post(
+      Uri.parse('$addToFavoritesEndpoint$bookId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
  }
 
  Future<void> search(String query) async {

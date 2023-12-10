@@ -39,7 +39,7 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
                 cover: bookData['cover'],
                 isbn: bookData['isbn'],
                 pagesCount: bookData['pagesCount'],
-                price: bookData['price'],
+                price: bookData['price'].toDouble(),
                 creationDate: DateTime.parse(bookData['creationDate']),
               );
 

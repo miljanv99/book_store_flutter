@@ -1,6 +1,8 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/screens/profile.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
+import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +16,12 @@ class BookDetails extends StatefulWidget {
   final String bookID;
   //final String token;
   final AuthorizationProvider authNotifier;
-  final isFavorite;
-  BookDetails({Key? key, required this.bookID, required this.authNotifier, required this.isFavorite})
+  var isFavorite;
+  BookDetails(
+      {Key? key,
+      required this.bookID,
+      required this.authNotifier,
+      required this.isFavorite})
       : super(key: key);
 
   BookService bookService = BookService();
@@ -26,12 +32,16 @@ class BookDetails extends StatefulWidget {
 }
 
 class _BookDetailsState extends State<BookDetails> {
+  BookService bookService = BookService();
+  UserService userService = UserService();
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double maxPhoneWidth = 600.0;
 
     double maxWidth = screenWidth < maxPhoneWidth ? screenWidth : maxPhoneWidth;
+
+    print('BEFORE: ${widget.isFavorite}');
 
     return Scaffold(
       appBar: AppBar(
@@ -41,13 +51,28 @@ class _BookDetailsState extends State<BookDetails> {
         actions: [
           if (widget.authNotifier.authenticated)
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                bookService.addOrRemoveFavouriteBook(
+                    widget.authNotifier.token, widget.bookID);
+                setState(() {
+                  widget.isFavorite = !widget.isFavorite;
+                });
+                if (widget.isFavorite) {
+                  SnackBarNotification.show(
+                      context, 'The book is added to favorites', Colors.green);
+                } else {
+                  SnackBarNotification.show(context,
+                      'The book is removed from favorites', Colors.green);
+                }
+              },
               icon: Icon(
-                widget.isFavorite == true ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                widget.isFavorite == true
+                    ? Icons.favorite_rounded
+                    : Icons.favorite_border_rounded,
                 size: 35,
               ),
               color: Colors.redAccent,
-            )
+            ),
         ],
         title: FutureBuilder(
           future: widget.bookService.getSingleBook(widget.bookID),
@@ -171,9 +196,7 @@ class _BookDetailsState extends State<BookDetails> {
                             onPressed: () {
                               if (widget.authNotifier.token == '') {
                                 SnackBarNotification.show(
-                                    context,
-                                    'You have to login!',
-                                    Colors.red);
+                                    context, 'You have to login!', Colors.red);
                               } else {
                                 checkAndAddBookToCart(
                                     widget.authNotifier.token, book.id!);
@@ -212,11 +235,13 @@ class _BookDetailsState extends State<BookDetails> {
       ServerResponse addToCartResponse =
           await widget.cartService.addBookToCart(token, bookId);
       print('Add to cart response ${addToCartResponse.message}');
-      SnackBarNotification.show(context, 'You added book to cart', Colors.green);
+      SnackBarNotification.show(
+          context, 'You added book to cart', Colors.green);
       widget.authNotifier.cartSize++;
     } else {
       print('The book is already in the cart.');
-      SnackBarNotification.show(context, 'The book is already in the cart', Colors.red);
+      SnackBarNotification.show(
+          context, 'The book is already in the cart', Colors.red);
     }
   }
 }

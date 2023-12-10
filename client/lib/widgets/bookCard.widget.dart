@@ -146,16 +146,20 @@ class _BookCardState extends State<BookCard> {
         await userService.getProfile(authNotifier.username, authNotifier.token);
 
     // Assuming 'favoriteBooks' is a list of dynamic
-    List<dynamic>? favoriteBooksData = responseData.data['favoriteBooks'];
+    List<dynamic> favoriteBooksData = responseData.data['favoriteBooks'];
 
-    if (favoriteBooksData != null) {
+    if (favoriteBooksData.isNotEmpty) {
       for (var i = 0; i < favoriteBooksData.length; i++) {
         Book book = Book.fromJson(favoriteBooksData[i]);
         if (book.id == widget.book.id) {
           isFavorite = true;
           break; // No need to continue checking if book is already found
+        } else {
+          isFavorite = false;
         }
       }
+    } else {
+      isFavorite = false;
     }
   }
 }

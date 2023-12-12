@@ -120,9 +120,9 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
                     ),
                   ),
                 ),
-                onTap: () {
+                onTap: () async {
                   print(book.id);
-                  Navigator.push(
+                 final bool isRemoved = await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BookDetails(
@@ -132,6 +132,9 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
                       ),
                     ),
                   );
+                  if (isRemoved) {
+                    Navigator.pop(context, true);
+                  }
                 },
               );
             }

@@ -4,7 +4,7 @@ import '../models/serverResponse.model.dart';
 
 
 class UserService {
-  static const String baseUrl = 'http://192.168.156.144:8000/user';
+  static const String baseUrl = 'http://192.168.0.10:8000/user';
   static const String loginEndpoint = baseUrl + '/login';
   static const profileEndpoint = baseUrl + '/profile/';
   static const getPurchaseHistoryEndpoint = baseUrl + '/purchaseHistory';

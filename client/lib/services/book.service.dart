@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 //for emulator: 10.0.2.2
 
 class BookService {
- static const String domain = 'http://192.168.156.144:8000';
+ static const String domain = 'http://192.168.0.10:8000';
  static const String getSingleBookEndpoint = domain + '/book/details/';
  static const String createBookEndpoint = domain + '/book/add';
  static const String editBookEndpoint = domain + '/book/edit/';

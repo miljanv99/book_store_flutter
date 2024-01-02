@@ -4,7 +4,6 @@ import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
 import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
@@ -25,6 +24,9 @@ class _CartState extends State<CartScreen> {
   late String bookID;
   late List<Book> bookList;
   Map<String, int> bookInfo = {};
+  Map<String, TextEditingController> quantityController = {};
+  Map<String, int> bookQuantities = {};
+  num totalPrice = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,10 @@ class _CartState extends State<CartScreen> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.data!.books!.isNotEmpty) {
             print('SNAPSHOT: ${snapshot.data!.user}');
-            num? totalPrice = snapshot.data!.totalPrice;
+            if (totalPrice == 0) {
+              totalPrice = snapshot.data!.totalPrice!;
+            }
+            print('SNAPSHOT TOTAL PRICE: ${totalPrice}');
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -67,7 +72,7 @@ class _CartState extends State<CartScreen> {
                                 widget.authorizationProvider.token, book.id!);
                             await widget.authorizationProvider.cartSize--;
                             setState(() {
-                              totalPrice = totalPrice! - book.price!;
+                              totalPrice = totalPrice - book.price!;
                             });
                           }
                         },
@@ -114,7 +119,8 @@ class _CartState extends State<CartScreen> {
                                     Text('Genre: ${book.genre}'),
                                     SizedBox(height: 8),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
                                           '\$${book.price!.toStringAsFixed(2)}',
@@ -126,11 +132,49 @@ class _CartState extends State<CartScreen> {
                                         ),
                                         Row(
                                           children: [
-                                            Icon(Icons.keyboard_double_arrow_left_rounded),
-                                            Icon(
+                                            const Text('Qty:'),
+                                            const SizedBox(width: 5),
+                                            Container(
+                                                margin: EdgeInsets.only(right: 15),
+                                                child: DropdownButton<int>(
+                                              value:
+                                                  bookQuantities[book.id!] ?? 1,
+                                              items: List.generate(
+                                                      9, (index) => index + 1)
+                                                  .map((int value) {
+                                                return DropdownMenuItem<int>(
+                                                  alignment: Alignment.center,
+                                                  value: value,
+                                                  child: Text(value.toString()),
+                                                );
+                                              }).toList(),
+                                              onChanged: (selectedQuantity) {
+                                                print(
+                                                    "quantity book: ${bookQuantities[book.id!]}");
+                                                totalPrice = 0;
+
+                                                setState(() {
+                                                  bookQuantities[book.id!] =
+                                                      selectedQuantity ?? 1;
+
+                                                  for (Book book in bookList) {
+                                                    int quantity =
+                                                        bookQuantities[
+                                                                book.id!] ??
+                                                            1;
+                                                    totalPrice += (book.price! *
+                                                        quantity);
+                                                  }
+                                                  print("POSLE: ${totalPrice}");
+                                                });
+                                              },
+                                            )),
+                                            const Icon(Icons
+                                                .keyboard_double_arrow_left_rounded),
+                                            const Icon(
                                               Icons.delete_rounded,
                                               color: Colors.red,
-                                            )
+                                            ),
                                           ],
                                         )
                                       ],
@@ -158,7 +202,7 @@ class _CartState extends State<CartScreen> {
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '\$${totalPrice!.toStringAsFixed(2)}',
+                              '\$${totalPrice.toStringAsFixed(2)}',
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -167,7 +211,8 @@ class _CartState extends State<CartScreen> {
                         ElevatedButton(
                             onPressed: () async {
                               for (Book book in bookList) {
-                                bookInfo[book.id!] = 1;
+                                bookInfo[book.id!] =
+                                    bookQuantities[book.id] ?? 1;
                               }
 
                               String message;
@@ -177,7 +222,8 @@ class _CartState extends State<CartScreen> {
                               print('THIS IS BOOK: ${bookID}');
                               print('MESSAGE: ${message}');
 
-                              SnackBarNotification.show(context, '$message', Colors.green);
+                              SnackBarNotification.show(
+                                  context, '$message', Colors.green);
 
                               widget.authorizationProvider.cartSize = 0;
 

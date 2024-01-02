@@ -72,7 +72,12 @@ class _CartState extends State<CartScreen> {
                                 widget.authorizationProvider.token, book.id!);
                             await widget.authorizationProvider.cartSize--;
                             setState(() {
-                              totalPrice = totalPrice - book.price!;
+                              if (bookQuantities[book.id] != null) {
+                                totalPrice = totalPrice -
+                                    (book.price! * bookQuantities[book.id]!);
+                              } else {
+                                totalPrice = totalPrice - book.price!;
+                              }
                             });
                           }
                         },
@@ -135,40 +140,49 @@ class _CartState extends State<CartScreen> {
                                             const Text('Qty:'),
                                             const SizedBox(width: 5),
                                             Container(
-                                                margin: EdgeInsets.only(right: 15),
+                                                margin:
+                                                    EdgeInsets.only(right: 15),
                                                 child: DropdownButton<int>(
-                                              value:
-                                                  bookQuantities[book.id!] ?? 1,
-                                              items: List.generate(
-                                                      9, (index) => index + 1)
-                                                  .map((int value) {
-                                                return DropdownMenuItem<int>(
-                                                  alignment: Alignment.center,
-                                                  value: value,
-                                                  child: Text(value.toString()),
-                                                );
-                                              }).toList(),
-                                              onChanged: (selectedQuantity) {
-                                                print(
-                                                    "quantity book: ${bookQuantities[book.id!]}");
-                                                totalPrice = 0;
+                                                  value: bookQuantities[
+                                                          book.id!] ??
+                                                      1,
+                                                  items: List.generate(9,
+                                                          (index) => index + 1)
+                                                      .map((int value) {
+                                                    return DropdownMenuItem<
+                                                        int>(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      value: value,
+                                                      child: Text(
+                                                          value.toString()),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged:
+                                                      (selectedQuantity) {
+                                                    print(
+                                                        "quantity book: ${bookQuantities[book.id!]}");
+                                                    totalPrice = 0;
 
-                                                setState(() {
-                                                  bookQuantities[book.id!] =
-                                                      selectedQuantity ?? 1;
+                                                    setState(() {
+                                                      bookQuantities[book.id!] =
+                                                          selectedQuantity ?? 1;
 
-                                                  for (Book book in bookList) {
-                                                    int quantity =
-                                                        bookQuantities[
-                                                                book.id!] ??
-                                                            1;
-                                                    totalPrice += (book.price! *
-                                                        quantity);
-                                                  }
-                                                  print("POSLE: ${totalPrice}");
-                                                });
-                                              },
-                                            )),
+                                                      for (Book book
+                                                          in bookList) {
+                                                        int quantity =
+                                                            bookQuantities[
+                                                                    book.id!] ??
+                                                                1;
+                                                        totalPrice +=
+                                                            (book.price! *
+                                                                quantity);
+                                                      }
+                                                      print(
+                                                          "POSLE: ${totalPrice}");
+                                                    });
+                                                  },
+                                                )),
                                             const Icon(Icons
                                                 .keyboard_double_arrow_left_rounded),
                                             const Icon(

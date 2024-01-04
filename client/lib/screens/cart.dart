@@ -8,6 +8,7 @@ import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
 import '../widgets/snackBar.widget.dart';
+import '../utils/screenWidth.dart';
 
 class CartScreen extends StatefulWidget {
   final AuthorizationProvider authorizationProvider;
@@ -31,6 +32,7 @@ class _CartState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     Future<Cart> cart = getCartData(widget.authorizationProvider.token);
+    double maxWidth = calculateMaxWidth(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
@@ -50,210 +52,225 @@ class _CartState extends State<CartScreen> {
               totalPrice = snapshot.data!.totalPrice!;
             }
             print('SNAPSHOT TOTAL PRICE: ${totalPrice}');
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
+            return Center(
+                child: Container(
+              width: maxWidth,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
                     child: ListView.builder(
-                  itemCount: snapshot.data!.books!.length,
-                  itemBuilder: (context, index) {
-                    bookList = snapshot.data!.books!;
-                    Book book = snapshot.data!.books![index];
-                    bookID = book.id!;
-                    return Card(
-                      elevation: 4,
-                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      child: Dismissible(
-                        key: Key(book.id!), //unique key for each item
-                        direction: DismissDirection.endToStart,
-                        onDismissed: (direction) async {
-                          if (direction == DismissDirection.endToStart) {
-                            await cartService.removeBookFromCart(
-                                widget.authorizationProvider.token, book.id!);
-                            await widget.authorizationProvider.cartSize--;
-                            setState(() {
-                              if (bookQuantities[book.id] != null) {
-                                totalPrice = totalPrice -
-                                    (book.price! * bookQuantities[book.id]!);
-                              } else {
-                                totalPrice = totalPrice - book.price!;
+                      itemCount: snapshot.data!.books!.length,
+                      itemBuilder: (context, index) {
+                        bookList = snapshot.data!.books!;
+                        Book book = snapshot.data!.books![index];
+                        bookID = book.id!;
+                        return Card(
+                          elevation: 4,
+                          margin:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          child: Dismissible(
+                            key: Key(book.id!), //unique key for each item
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (direction) async {
+                              if (direction == DismissDirection.endToStart) {
+                                await cartService.removeBookFromCart(
+                                    widget.authorizationProvider.token,
+                                    book.id!);
+                                await widget.authorizationProvider.cartSize--;
+                                setState(() {
+                                  if (bookQuantities[book.id] != null) {
+                                    totalPrice = totalPrice -
+                                        (book.price! *
+                                            bookQuantities[book.id]!);
+                                  } else {
+                                    totalPrice = totalPrice - book.price!;
+                                  }
+                                });
                               }
-                            });
-                          }
-                        },
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          padding: EdgeInsets.only(right: 20.0),
-                          color: Colors.red,
-                          child: Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 90,
-                                height: 130,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(book.cover!),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                            },
+                            background: Container(
+                              alignment: Alignment.centerRight,
+                              padding: EdgeInsets.only(right: 20.0),
+                              color: Colors.red,
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.white,
                               ),
-                              SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      book.title!,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 90,
+                                    height: 130,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(book.cover!),
+                                        fit: BoxFit.cover,
                                       ),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    SizedBox(height: 8),
-                                    Text('by ${book.author}'),
-                                    SizedBox(height: 8),
-                                    Text('Genre: ${book.genre}'),
-                                    SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                  ),
+                                  SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          '\$${book.price!.toStringAsFixed(2)}',
+                                          book.title!,
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.green,
                                           ),
                                         ),
+                                        SizedBox(height: 8),
+                                        Text('by ${book.author}'),
+                                        SizedBox(height: 8),
+                                        Text('Genre: ${book.genre}'),
+                                        SizedBox(height: 8),
                                         Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text('Qty:'),
-                                            const SizedBox(width: 5),
-                                            Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 15),
-                                                child: DropdownButton<int>(
-                                                  value: bookQuantities[
-                                                          book.id!] ??
-                                                      1,
-                                                  items: List.generate(9,
-                                                          (index) => index + 1)
-                                                      .map((int value) {
-                                                    return DropdownMenuItem<
-                                                        int>(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      value: value,
-                                                      child: Text(
-                                                          value.toString()),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged:
-                                                      (selectedQuantity) {
-                                                    print(
-                                                        "quantity book: ${bookQuantities[book.id!]}");
-                                                    totalPrice = 0;
-
-                                                    setState(() {
-                                                      bookQuantities[book.id!] =
-                                                          selectedQuantity ?? 1;
-
-                                                      for (Book book
-                                                          in bookList) {
-                                                        int quantity =
-                                                            bookQuantities[
-                                                                    book.id!] ??
-                                                                1;
-                                                        totalPrice +=
-                                                            (book.price! *
-                                                                quantity);
-                                                      }
-                                                      print(
-                                                          "POSLE: ${totalPrice}");
-                                                    });
-                                                  },
-                                                )),
-                                            const Icon(Icons
-                                                .keyboard_double_arrow_left_rounded),
-                                            const Icon(
-                                              Icons.delete_rounded,
-                                              color: Colors.red,
+                                            Text(
+                                              '\$${book.price!.toStringAsFixed(2)}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.green,
+                                              ),
                                             ),
+                                            Row(
+                                              children: [
+                                                const Text('Qty:'),
+                                                const SizedBox(width: 5),
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: 15),
+                                                    child: DropdownButton<int>(
+                                                      value: bookQuantities[
+                                                              book.id!] ??
+                                                          1,
+                                                      items: List.generate(
+                                                              9,
+                                                              (index) =>
+                                                                  index + 1)
+                                                          .map((int value) {
+                                                        return DropdownMenuItem<
+                                                            int>(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          value: value,
+                                                          child: Text(
+                                                              value.toString()),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged:
+                                                          (selectedQuantity) {
+                                                        print(
+                                                            "quantity book: ${bookQuantities[book.id!]}");
+                                                        totalPrice = 0;
+
+                                                        setState(() {
+                                                          bookQuantities[
+                                                                  book.id!] =
+                                                              selectedQuantity ??
+                                                                  1;
+
+                                                          for (Book book
+                                                              in bookList) {
+                                                            int quantity =
+                                                                bookQuantities[book
+                                                                        .id!] ??
+                                                                    1;
+                                                            totalPrice +=
+                                                                (book.price! *
+                                                                    quantity);
+                                                          }
+                                                          print(
+                                                              "POSLE: ${totalPrice}");
+                                                        });
+                                                      },
+                                                    )),
+                                                const Icon(Icons
+                                                    .keyboard_double_arrow_left_rounded),
+                                                const Icon(
+                                                  Icons.delete_rounded,
+                                                  color: Colors.red,
+                                                ),
+                                              ],
+                                            )
                                           ],
                                         )
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Total Price:',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '\$${totalPrice.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                )),
-                Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Total Price:',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              '\$${totalPrice.toStringAsFixed(2)}',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        ElevatedButton(
-                            onPressed: () async {
-                              for (Book book in bookList) {
-                                bookInfo[book.id!] =
-                                    bookQuantities[book.id] ?? 1;
-                              }
+                          ElevatedButton(
+                              onPressed: () async {
+                                for (Book book in bookList) {
+                                  bookInfo[book.id!] =
+                                      bookQuantities[book.id] ?? 1;
+                                }
 
-                              String message;
-                              message = await cartService.checkout(
-                                  widget.authorizationProvider.token, bookInfo);
+                                String message;
+                                message = await cartService.checkout(
+                                    widget.authorizationProvider.token,
+                                    bookInfo);
 
-                              print('THIS IS BOOK: ${bookID}');
-                              print('MESSAGE: ${message}');
+                                print('THIS IS BOOK: ${bookID}');
+                                print('MESSAGE: ${message}');
 
-                              SnackBarNotification.show(
-                                  context, '$message', Colors.green);
+                                SnackBarNotification.show(
+                                    context, '$message', Colors.green);
 
-                              widget.authorizationProvider.cartSize = 0;
+                                widget.authorizationProvider.cartSize = 0;
 
-                              Navigator.pop(context);
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(Icons.shopping_cart_checkout_rounded),
-                                Text('Checkout')
-                              ],
-                            ))
-                      ],
-                    )),
-              ],
-            );
+                                Navigator.pop(context);
+                              },
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(Icons.shopping_cart_checkout_rounded),
+                                  Text('Checkout')
+                                ],
+                              ))
+                        ],
+                      )),
+                ],
+              ),
+            ));
           } else {
             return Center(
                 child: Column(

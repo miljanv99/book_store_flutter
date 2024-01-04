@@ -6,11 +6,11 @@ import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
 import '../models/book.model.dart';
 import '../models/cart.model.dart';
 import '../models/serverResponse.model.dart';
 import '../widgets/snackBar.widget.dart';
+import '../utils/screenWidth.dart';
 
 class BookDetails extends StatefulWidget {
   final String bookID;
@@ -36,10 +36,7 @@ class _BookDetailsState extends State<BookDetails> {
   UserService userService = UserService();
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double maxPhoneWidth = 600.0;
-
-    double maxWidth = screenWidth < maxPhoneWidth ? screenWidth : maxPhoneWidth;
+    double maxWidth = calculateMaxWidth(context);
 
     print('BEFORE: ${widget.isFavorite}');
 

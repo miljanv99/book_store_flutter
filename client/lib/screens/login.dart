@@ -7,9 +7,9 @@ import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';
 import '../widgets/snackBar.widget.dart';
+import '../utils/screenWidth.dart';
 
 class Login extends StatefulWidget {
-
   final AuthorizationProvider authNotifier;
 
   const Login({Key? key, required this.authNotifier}) : super(key: key);
@@ -33,13 +33,16 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Login'),
-          iconTheme: IconThemeData(color: Colors.black),
-        ),
-        body: Center(
-            child: SingleChildScrollView(
+    double maxWidth = calculateMaxWidth(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Login'),
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      body: Center(
+          child: Container(
+            width: maxWidth,
+        child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: Column(
@@ -93,7 +96,8 @@ class _LoginState extends State<Login> {
                       Color backgroundColor = Colors.red;
                       message = await login(credentials);
                       if (widget.authNotifier.authenticated == true) {
-                        print('AFTER LOGIN: ${widget.authNotifier.authenticated}');
+                        print(
+                            'AFTER LOGIN: ${widget.authNotifier.authenticated}');
                         backgroundColor = Colors.green;
                         //print("LOGIN: ${response.message}");
                         //var token = response.data;
@@ -104,8 +108,8 @@ class _LoginState extends State<Login> {
                         Navigator.pop(context);
                       }
 
-                      SnackBarNotification.show(context, message, backgroundColor);
-
+                      SnackBarNotification.show(
+                          context, message, backgroundColor);
                     }
                   },
                   child: Text('Login'),
@@ -113,24 +117,26 @@ class _LoginState extends State<Login> {
               ],
             ),
           ),
-        )),
-      );
+        ),
+      )),
+    );
   }
-   Future<String> login(Map<String, dynamic> payload) async {
-      print('Credentials: $payload');
-      ServerResponse serverResponse = await userService.userLogin(payload);
-      if (serverResponse.message == "Login successful!") {
-        print('USAO');
-        String loginToken = serverResponse.data;
-        String username = payload['username'];
-        await widget.authNotifier.authenticate(loginToken, username);
-        print("DURING LOGIN: ${widget.authNotifier.authenticated}");
-        //widget.authNotifier.username = username;
-        print("USERNAME: $username");
-        return "Login successfully logged in";
-      } else {
-        print('LOGIN FAILED');
-        return "You've entered wrong username or password, please try again.";
-      }
+
+  Future<String> login(Map<String, dynamic> payload) async {
+    print('Credentials: $payload');
+    ServerResponse serverResponse = await userService.userLogin(payload);
+    if (serverResponse.message == "Login successful!") {
+      print('USAO');
+      String loginToken = serverResponse.data;
+      String username = payload['username'];
+      await widget.authNotifier.authenticate(loginToken, username);
+      print("DURING LOGIN: ${widget.authNotifier.authenticated}");
+      //widget.authNotifier.username = username;
+      print("USERNAME: $username");
+      return "Login successfully logged in";
+    } else {
+      print('LOGIN FAILED');
+      return "You've entered wrong username or password, please try again.";
     }
+  }
 }

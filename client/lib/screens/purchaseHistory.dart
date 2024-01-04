@@ -61,6 +61,7 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
                                 title: Text(
                                   'Receipt ID: ${receipt.id}',
                                   style: TextStyle(fontSize: 15),
+                                  textAlign: TextAlign.center,
                                 ),
                                 subtitle: Center(
                                   child: Text(

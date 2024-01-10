@@ -1,5 +1,6 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/utils/screenWidth.dart';
 import 'package:book_store_flutter/widgets/bookGridList.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +16,31 @@ class Store extends StatefulWidget {
 
 class _StoreState extends State<Store> {
   BookService bookService = BookService();
+  late List<Book> allBooks;
+  late List<Book> displayedBooks;
 
   @override
   void initState() {
     super.initState();
+    fetchBooks();
+  }
+
+  Future<void> fetchBooks() async {
+    final books = await bookService.fetchBooksFromServer();
+    setState(() {
+      allBooks = books;
+      displayedBooks = books;
+    });
+  }
+
+  void searchBooks(String query) {
+    setState(() {
+      displayedBooks = allBooks
+          .where((book) =>
+              book.title!.toLowerCase().contains(query.toLowerCase()) ||
+              book.author!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -32,21 +54,46 @@ class _StoreState extends State<Store> {
               const SizedBox(
                 height: 10,
               ),
+              Container(
+                width: maxPhoneWidth,
+                child: TextField(
+                  onChanged: (query) => searchBooks(query),
+                  decoration: InputDecoration(
+                    labelText: 'Search books by: Title/Author',
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
               FutureBuilder(
-                  future: bookService.fetchBooksFromServer(),
-                  builder: (context, AsyncSnapshot<List<Book>> snap) {
-                    if (snap.connectionState == ConnectionState.done) {
-                      List<Book> books = snap.data ?? [];
-                      print(books.length);
+                future: bookService.fetchBooksFromServer(),
+                builder: (context, AsyncSnapshot<List<Book>> snap) {
+                  if (snap.connectionState == ConnectionState.done) {
+                    List<Book> books = displayedBooks;
+                    print(books.length);
+                    if (books.isNotEmpty) {
                       return Expanded(
-                          child: BookGridWidget(
-                        books: books,
-                        authorizationProvider: authNotifier,
-                      ));
+                        child: BookGridWidget(
+                          books: books,
+                          authorizationProvider: authNotifier,
+                        ),
+                      );
                     } else {
-                      return const LinearProgressIndicator();
+                      return Column(
+                        children: [
+                          Text('There is no book by that title/author'),
+                          Icon(
+                            Icons.dangerous_rounded,
+                            size: 52,
+                          )
+                        ],
+                      );
                     }
-                  }),
+                  } else {
+                    return const LinearProgressIndicator();
+                  }
+                },
+              ),
             ],
           ),
         );

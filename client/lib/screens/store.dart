@@ -16,8 +16,8 @@ class Store extends StatefulWidget {
 
 class _StoreState extends State<Store> {
   BookService bookService = BookService();
-  late List<Book> allBooks;
-  late List<Book> displayedBooks;
+   List<Book> allBooks = [];
+   List<Book> displayedBooks = [];
 
   @override
   void initState() {

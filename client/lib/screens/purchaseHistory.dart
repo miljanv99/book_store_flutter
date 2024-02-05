@@ -1,8 +1,6 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
 import '../models/book.model.dart';
 import '../models/receipt.model.dart';
 
@@ -21,9 +19,9 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
-        title: Text('Your Purchase History'),
+        title: const Text('Your Purchase History'),
         centerTitle: true,
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           fontWeight: FontWeight.bold, 
           color: Colors.black,
           fontSize: 24
@@ -37,7 +35,7 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
               future: receipts,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(
                     child: Text('Error: ${snapshot.error}'),
@@ -53,14 +51,14 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
 
                       return Card(
                         elevation: 5,
-                        margin: EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ListTile(
                                 title: Text(
                                   'Receipt ID: ${receipt.id}',
-                                  style: TextStyle(fontSize: 15),
+                                  style: const TextStyle(fontSize: 15),
                                   textAlign: TextAlign.center,
                                 ),
                                 subtitle: Center(
@@ -70,10 +68,10 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
                                         color: Colors.blueAccent),
                                   ),
                                 )),
-                            Divider(),
+                            const Divider(),
                             ListView.builder(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: books.length,
                               itemBuilder: (context, bookIndex) {
                                 Book book = books[bookIndex];
@@ -85,7 +83,7 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
                                   ),
                                   title: Text(
                                     '${book.title}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16, color: Colors.blueAccent),
                                     textAlign: TextAlign.center,
                                   ),
@@ -99,7 +97,7 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
                                 );
                               },
                             ),
-                            SizedBox(height: 8.0),
+                            const SizedBox(height: 8.0),
                           ],
                         ),
                       );

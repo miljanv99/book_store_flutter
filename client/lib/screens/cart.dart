@@ -2,11 +2,8 @@ import 'package:book_store_flutter/models/cart.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
-import '../models/user.model.dart';
 import '../widgets/snackBar.widget.dart';
 import '../utils/screenWidth.dart';
 
@@ -36,7 +33,7 @@ class _CartState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: Text(
+        title: const Text(
           'Cart Screen',
           style: TextStyle(color: Colors.white),
         ),
@@ -45,7 +42,7 @@ class _CartState extends State<CartScreen> {
         future: cart,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return  const Center(child: CircularProgressIndicator());
           } else if (snapshot.data!.books!.isNotEmpty) {
             print('SNAPSHOT: ${snapshot.data!.user}');
             if (totalPrice == 0) {
@@ -68,7 +65,7 @@ class _CartState extends State<CartScreen> {
                         return Card(
                           elevation: 4,
                           margin:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                              const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                           child: Dismissible(
                             key: Key(book.id!), //unique key for each item
                             direction: DismissDirection.endToStart,
@@ -77,7 +74,7 @@ class _CartState extends State<CartScreen> {
                                 await cartService.removeBookFromCart(
                                     widget.authorizationProvider.token,
                                     book.id!);
-                                await widget.authorizationProvider.cartSize--;
+                                widget.authorizationProvider.cartSize--;
                                 setState(() {
                                   if (bookQuantities[book.id] != null) {
                                     totalPrice = totalPrice -
@@ -91,9 +88,9 @@ class _CartState extends State<CartScreen> {
                             },
                             background: Container(
                               alignment: Alignment.centerRight,
-                              padding: EdgeInsets.only(right: 20.0),
+                              padding: const EdgeInsets.only(right: 20.0),
                               color: Colors.red,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.delete,
                                 color: Colors.white,
                               ),
@@ -114,7 +111,7 @@ class _CartState extends State<CartScreen> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                  SizedBox(width: 16),
+                                  const SizedBox(width: 16),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -122,23 +119,23 @@ class _CartState extends State<CartScreen> {
                                       children: [
                                         Text(
                                           book.title!,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        SizedBox(height: 8),
+                                        const SizedBox(height: 8),
                                         Text('by ${book.author}'),
-                                        SizedBox(height: 8),
+                                        const SizedBox(height: 8),
                                         Text('Genre: ${book.genre}'),
-                                        SizedBox(height: 8),
+                                        const SizedBox(height: 8),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               '\$${book.price!.toStringAsFixed(2)}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.green,
@@ -149,7 +146,7 @@ class _CartState extends State<CartScreen> {
                                                 const Text('Qty:'),
                                                 const SizedBox(width: 5),
                                                 Container(
-                                                    margin: EdgeInsets.only(
+                                                    margin: const EdgeInsets.only(
                                                         right: 15),
                                                     child: DropdownButton<int>(
                                                       value: bookQuantities[
@@ -224,14 +221,14 @@ class _CartState extends State<CartScreen> {
                         children: [
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Total Price:',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 '\$${totalPrice.toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -258,7 +255,7 @@ class _CartState extends State<CartScreen> {
 
                                 Navigator.pop(context);
                               },
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
@@ -272,7 +269,7 @@ class _CartState extends State<CartScreen> {
               ),
             ));
           } else {
-            return Center(
+            return const Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

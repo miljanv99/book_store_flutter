@@ -1,6 +1,3 @@
-
-import 'package:flutter/material.dart';
-
 class Book {
  String? id;
  String? title;

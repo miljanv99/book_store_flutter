@@ -7,7 +7,7 @@ import '../providers/authentication.provider.dart';
 import '../widgets/snackBar.widget.dart';
 
 class GlobalMethods {
-   void checkAndAddBookToCart(AuthorizationProvider authProvider , String bookId, BuildContext context, CartService cartService) async {
+   void checkAndAddBookToCart(AuthorizationProvider authProvider , String bookId, context, CartService cartService) async {
     
     // Get the current cart
     ServerResponse cartResponse = await cartService.getCart(authProvider.token);

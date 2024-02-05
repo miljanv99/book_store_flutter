@@ -41,7 +41,7 @@ class _BookGridItemWidgetState extends State<BookGridItemWidget> {
                 Text(widget.book.genre ?? ''),
               ],
             ),
-            trailing: Container(
+            trailing: SizedBox(
               height: 30,
               width: 30,
               child: ElevatedButton(
@@ -54,7 +54,7 @@ class _BookGridItemWidgetState extends State<BookGridItemWidget> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(0), // Remove padding
+                  padding: const EdgeInsets.all(0), // Remove padding
                 ),
                 child: const Center(
                   child: Icon(

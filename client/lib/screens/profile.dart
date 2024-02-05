@@ -2,7 +2,6 @@ import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/widgets/favoriteBooks.widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../models/user.model.dart';
 
 class Profile extends StatefulWidget {
@@ -29,13 +28,13 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           title: const Text('Profile'),
           backgroundColor: Colors.blueAccent,
-          titleTextStyle: TextStyle(color: Colors.white, fontSize: 26),
+          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 26),
         ),
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(
               child: Padding(
-            padding: EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -55,16 +54,16 @@ class _ProfileState extends State<Profile> {
                         NetworkImage('${widget.userProfileData.avatar}'),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   'Username: ${widget.userProfileData.username}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   'Email: ${widget.userProfileData.email}',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -72,10 +71,10 @@ class _ProfileState extends State<Profile> {
                       isAdmin ? Icons.verified : Icons.person_pin,
                       color: Colors.blueAccent,
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Text(
                       isAdmin ? 'Admin' : 'User',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.blueAccent,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -83,8 +82,8 @@ class _ProfileState extends State<Profile> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-                Row(
+                const SizedBox(height: 10),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
@@ -102,26 +101,26 @@ class _ProfileState extends State<Profile> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.comment_rounded,
                       color: Colors.blueAccent,
                     ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                     Text(
                       'Comments Count: ${widget.userProfileData.commentsCount}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.blueAccent,
                           fontSize: 16,
                           fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   'Favorite Books',
                   style: TextStyle(fontSize: 28),
                 ),

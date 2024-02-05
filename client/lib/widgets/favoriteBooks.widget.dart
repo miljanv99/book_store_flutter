@@ -18,11 +18,11 @@ class FavoriteBooksWidget extends StatefulWidget {
 class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
   @override
   Widget build(BuildContext context) {
-    if (widget.userProfileData.favoriteBooks!.length > 0) {
+    if (widget.userProfileData.favoriteBooks!.isNotEmpty) {
       return Center(
         child: Container(
           height: 350,
-          margin: EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
           child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
@@ -50,7 +50,7 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
                   child: Container(
                     width: 250,
                     height: 350,
-                    margin: EdgeInsets.only(left: 5),
+                    margin: const EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                       color: Colors.blueAccent,
                       borderRadius: BorderRadius.circular(12.0),
@@ -72,51 +72,49 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
                                 image: NetworkImage(book.cover ?? ''),
                                 fit: BoxFit.fill,
                               ),
-                              borderRadius: BorderRadius.vertical(
+                              borderRadius: const BorderRadius.vertical(
                                   top: Radius.circular(12.0)),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    book.title.toString(),
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blueAccent,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    textAlign: TextAlign.center,
+                            child: Column(
+                              children: [
+                                Text(
+                                  book.title.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blueAccent,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  SizedBox(height: 8.0),
-                                  Text(
-                                    'Author: ${book.author.toString()}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.blueAccent,
-                                    ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  'Author: ${book.author.toString()}',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.blueAccent,
                                   ),
-                                  SizedBox(height: 8.0),
-                                  Text(
-                                    'Genre: ${book.genre.toString()}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.blueAccent,
-                                    ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  'Genre: ${book.genre.toString()}',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.blueAccent,
                                   ),
-                                  SizedBox(height: 8.0),
-                                  Text(
-                                    'Year: ${book.year.toString()}',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.blueAccent,
-                                    ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Text(
+                                  'Year: ${book.year.toString()}',
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.blueAccent,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -147,8 +145,8 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
       );
     } else {
       return Container(
-          margin: EdgeInsets.only(top: 10),
-          child: Center(
+          margin: const EdgeInsets.only(top: 10),
+          child: const Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

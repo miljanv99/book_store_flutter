@@ -9,7 +9,7 @@ class SnackBarNotification {
         width: maxWidth,
         content: Text(message),
         showCloseIcon: true,
-        duration: Duration(seconds: 4),
+        duration: const Duration(seconds: 3),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
       ),

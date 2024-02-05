@@ -48,17 +48,17 @@ class _StoreState extends State<Store> {
     return Consumer<AuthorizationProvider>(
       builder: (context, authNotifier, child) {
         return Container(
-          padding: EdgeInsets.all(5),
+          padding: const EdgeInsets.all(5),
           child: Column(
             children: [
               const SizedBox(
                 height: 10,
               ),
-              Container(
+              SizedBox(
                 width: maxPhoneWidth,
                 child: TextField(
                   onChanged: (query) => searchBooks(query),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Search books by: Title/Author',
                     prefixIcon: Icon(Icons.search),
                   ),
@@ -79,7 +79,7 @@ class _StoreState extends State<Store> {
                         ),
                       );
                     } else {
-                      return Column(
+                      return const Column(
                         children: [
                           Text('There is no book by that title/author'),
                           Icon(

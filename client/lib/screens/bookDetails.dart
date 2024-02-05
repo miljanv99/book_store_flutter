@@ -4,7 +4,6 @@ import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/utils/globalMethods.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../models/book.model.dart';
 import '../widgets/snackBar.widget.dart';
 import '../utils/screenWidth.dart';
@@ -13,7 +12,7 @@ class BookDetails extends StatefulWidget {
   final String bookID;
   //final String token;
   final AuthorizationProvider authNotifier;
-  var isFavorite;
+  bool isFavorite;
   BookDetails(
       {Key? key,
       required this.bookID,
@@ -81,7 +80,7 @@ class _BookDetailsState extends State<BookDetails> {
                   String bootTitle = snapshot.data!.title.toString();
                   return Text(bootTitle);
                 } else {
-                  return const Text('No Data');
+                  return const  Text('No Data');
                 }
               },
             ),
@@ -90,7 +89,7 @@ class _BookDetailsState extends State<BookDetails> {
             future: widget.bookService.getSingleBook(widget.bookID),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (snapshot.hasError) {
@@ -103,10 +102,10 @@ class _BookDetailsState extends State<BookDetails> {
                     Stack(
                       alignment: Alignment.bottomCenter,
                       children: <Widget>[
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Container(
                           width: maxWidth,
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
@@ -115,7 +114,7 @@ class _BookDetailsState extends State<BookDetails> {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 5,
                                 blurRadius: 7,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
@@ -132,63 +131,63 @@ class _BookDetailsState extends State<BookDetails> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Text(
                                 book.title ?? 'Title not available',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.bold),
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 'Author: ${book.author ?? 'Author not available'}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18,
                                     fontStyle: FontStyle.italic,
                                     color: Colors.blueAccent),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 'Genre: ${book.genre ?? 'Genre not available'}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.blueAccent),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 'Year: ${book.year ?? 'Year not available'}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18, color: Colors.blueAccent),
                               ),
-                              SizedBox(height: 20),
-                              Text(
+                              const SizedBox(height: 20),
+                              const Text(
                                 'Description:',
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 book.description ?? 'Description not available',
-                                style: TextStyle(fontSize: 16),
+                                style: const TextStyle(fontSize: 16),
                                 textAlign: TextAlign.justify,
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Pages: ${book.pagesCount ?? 'N/A'}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18, color: Colors.blueAccent),
                                   ),
                                   Text(
                                     'Price: \$${book.price ?? 'N/A'}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18, color: Colors.blueAccent),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               ElevatedButton(
                                 onPressed: () {
                                   if (widget.authNotifier.token == '') {
@@ -199,7 +198,7 @@ class _BookDetailsState extends State<BookDetails> {
                                         widget.authNotifier, book.id!, context, widget.cartService);
                                   }
                                 },
-                                child: Text('Add To Cart'),
+                                child: const Text('Add To Cart'),
                               ),
                             ],
                           ),
@@ -209,7 +208,7 @@ class _BookDetailsState extends State<BookDetails> {
                   ]),
                 ));
               } else {
-                return Text('No Data');
+                return const Text('No Data');
               }
             },
           ),

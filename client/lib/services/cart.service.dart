@@ -1,17 +1,15 @@
 import 'dart:convert';
-
 import 'package:book_store_flutter/models/serverResponse.model.dart';
-import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
+
 
 class CartService {
   static const String baseUrl = 'http://192.168.0.10:8000';
-  static const String getCartSizeEndpoint = baseUrl + '/cart/getSize';
-  static const String getCartList = baseUrl + '/user/cart';
-  static const String addToCart = baseUrl + '/user/cart/add/';
-  static const String cartCheckout = baseUrl + '/user/cart/checkout';
-  static const String removeBook = baseUrl + '/user/cart/delete/';
+  static const String getCartSizeEndpoint = '$baseUrl/cart/getSize';
+  static const String getCartList = '$baseUrl/user/cart';
+  static const String addToCart = '$baseUrl/user/cart/add/';
+  static const String cartCheckout = '$baseUrl/user/cart/checkout';
+  static const String removeBook = '$baseUrl/user/cart/delete/';
 
   Future<int> getCartSize(String token) async {
     final response = await http.get(Uri.parse(getCartSizeEndpoint),

@@ -1,7 +1,5 @@
-import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/widgets/bookHorizontalList.widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../services/book.service.dart';
 
@@ -32,7 +30,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //Future<List<Book>> postsFuture = getPosts();
         return Container(
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         child: SingleChildScrollView(
             child: Column(
           children: [

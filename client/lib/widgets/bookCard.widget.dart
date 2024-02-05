@@ -7,8 +7,6 @@ import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/book.model.dart';
-import '../models/serverResponse.model.dart';
-import '../models/user.model.dart';
 import '../utils/globalMethods.dart';
 
 class BookCard extends StatefulWidget {
@@ -32,7 +30,7 @@ class _BookCardState extends State<BookCard> {
     return Consumer<AuthorizationProvider>(
       builder: (context, authNotifier, child) {
         return GestureDetector(
-          child: Container(
+          child: SizedBox(
             width: 250,
             height: 350,
             child: Card(
@@ -54,42 +52,40 @@ class _BookCardState extends State<BookCard> {
                   ),
                   Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Text(
-                              widget.book.title.toString(),
-                              style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.bold,
-                                  overflow: TextOverflow.ellipsis),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 4.0),
-                            Text(
-                              widget.book.author.toString(),
-                              style:
-                                  TextStyle(fontSize: 14.0, color: Colors.grey),
-                            ),
-                            SizedBox(height: 4.0),
-                            ElevatedButton(
-                                style: ButtonStyle(),
-                                onPressed: () => {
-                                      if (authNotifier.token == '')
-                                        {
-                                          SnackBarNotification.show(context,
-                                              'You have to login!', Colors.red)
-                                        }
-                                      else
-                                        {
-                                          globalMethods.checkAndAddBookToCart(
-                                              authNotifier,
-                                              widget.book.id!, context, cartService)
-                                        }
-                                    },
-                                child: Text('Add to cart'))
-                          ],
-                        ),
+                      child: Column(
+                        children: [
+                          Text(
+                            widget.book.title.toString(),
+                            style: const TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 4.0),
+                          Text(
+                            widget.book.author.toString(),
+                            style:
+                                const TextStyle(fontSize: 14.0, color: Colors.grey),
+                          ),
+                          const SizedBox(height: 4.0),
+                          ElevatedButton(
+                              style: const ButtonStyle(),
+                              onPressed: () => {
+                                    if (authNotifier.token == '')
+                                      {
+                                        SnackBarNotification.show(context,
+                                            'You have to login!', Colors.red)
+                                      }
+                                    else
+                                      {
+                                        globalMethods.checkAndAddBookToCart(
+                                            authNotifier,
+                                            widget.book.id!, context, cartService)
+                                      }
+                                  },
+                              child: const Text('Add to cart'))
+                        ],
                       )),
                 ],
               ),

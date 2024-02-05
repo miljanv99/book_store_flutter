@@ -1,9 +1,7 @@
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';
 import '../widgets/snackBar.widget.dart';
@@ -36,15 +34,15 @@ class _LoginState extends State<Login> {
     double maxWidth = calculateMaxWidth(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
-        iconTheme: IconThemeData(color: Colors.black),
+        title: const Text('Login'),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Center(
           child: Container(
             width: maxWidth,
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -55,7 +53,7 @@ class _LoginState extends State<Login> {
                     height: 200,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Form(
                     key: formKey,
                     child: Column(
@@ -68,9 +66,9 @@ class _LoginState extends State<Login> {
                             return null;
                           },
                           controller: usernameCtrl,
-                          decoration: InputDecoration(labelText: 'Username'),
+                          decoration: const InputDecoration(labelText: 'Username'),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -80,11 +78,11 @@ class _LoginState extends State<Login> {
                           },
                           controller: passwordCtrl,
                           obscureText: true,
-                          decoration: InputDecoration(labelText: 'Password'),
+                          decoration: const InputDecoration(labelText: 'Password'),
                         ),
                       ],
                     )),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
@@ -99,11 +97,6 @@ class _LoginState extends State<Login> {
                         print(
                             'AFTER LOGIN: ${widget.authNotifier.authenticated}');
                         backgroundColor = Colors.green;
-                        //print("LOGIN: ${response.message}");
-                        //var token = response.data;
-                        //var username = usernameCtrl.text;
-                        //storeToken(token);
-                        //storeUserName(username);;
                         Navigator.pop(context);
                         Navigator.pop(context);
                       }
@@ -112,7 +105,7 @@ class _LoginState extends State<Login> {
                           context, message, backgroundColor);
                     }
                   },
-                  child: Text('Login'),
+                  child: const Text('Login'),
                 ),
               ],
             ),

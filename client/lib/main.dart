@@ -1,10 +1,8 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/providers/provider.dart';
-import 'package:book_store_flutter/screens/cart.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/purchaseHistory.dart';
 import 'package:book_store_flutter/screens/store.dart';
-import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/widgets/cart.widget.dart';
 import 'package:book_store_flutter/widgets/drawer.widget.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
           ),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
@@ -51,7 +49,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> { 
-  List<Widget> screens = [Home(), Store(), PurchaseHistory()];
+  List<Widget> screens = [const Home(), const Store(), const PurchaseHistory()];
   @override
   Widget build(BuildContext context) {
     return Consumer2<ScreenProvider, AuthorizationProvider>(
@@ -62,22 +60,22 @@ class _MyHomePageState extends State<MyHomePage> {
           appBar: AppBar(
             backgroundColor: Colors.blueAccent,
             title: Text(widget.title,
-                style: TextStyle(color: Colors.white, fontSize: 24)),
+                style: const TextStyle(color: Colors.white, fontSize: 24)),
             centerTitle: true,
             actions: [
               if (authNotifier.authenticated)
-                CartWidget(),
+                const CartWidget(),
             ],
           ),
-          drawer: DrawerWidget(),
+          drawer: const DrawerWidget(),
           body: screens[screenProvider.selectedScreen],
           bottomNavigationBar: BottomNavigationBar(
             onTap: (value) => screenProvider.displayScreen(value),
             items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Store'),
+              const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              const BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Store'),
               if (authNotifier.authenticated)
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                     icon: Icon(Icons.store), label: 'Purchase History')
             ],
             currentIndex: screenProvider.selectedScreen,

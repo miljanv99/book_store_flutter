@@ -4,7 +4,6 @@ import 'package:book_store_flutter/screens/login.dart';
 import 'package:book_store_flutter/screens/profile.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/authentication.provider.dart';
@@ -32,7 +31,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     return Drawer(
         surfaceTintColor: Colors.white,
         child: Container(
-          padding: EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 20),
           child: ListView(children: [
             Consumer<AuthorizationProvider>(
               builder: (context, authNotifier, child) {
@@ -43,7 +42,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     future: userProfile,
                     builder: (context, AsyncSnapshot<User> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return LinearProgressIndicator();
+                        return const LinearProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
@@ -75,7 +74,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     },
                   );
                 } else {
-                  return ListTile(title: Icon(Icons.no_accounts, size: 80));
+                  return const ListTile(title: Icon(Icons.no_accounts, size: 80));
                 }
               },
             ),

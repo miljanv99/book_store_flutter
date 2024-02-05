@@ -12,8 +12,8 @@ import '../models/serverResponse.model.dart';
 
 class AuthorizationProvider extends ChangeNotifier {
   static const String baseUrl = 'http://192.168.0.10:8000/user';
-  static const String loginEndpoint = baseUrl + '/login';
-  static const profileEndpoint = baseUrl + '/profile/';
+  static const String loginEndpoint = '$baseUrl/login';
+  static const profileEndpoint = '$baseUrl/profile/';
 
   UserService userService = UserService();
   ScreenProvider screenProvider = ScreenProvider();

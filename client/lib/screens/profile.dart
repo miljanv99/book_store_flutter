@@ -1,16 +1,9 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
-import 'package:book_store_flutter/widgets/bookCard.widget.dart';
 import 'package:book_store_flutter/widgets/favoriteBooks.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-
-import '../models/book.model.dart';
-import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
-import '../widgets/snackBar.widget.dart';
-import 'bookDetails.dart';
 
 class Profile extends StatefulWidget {
   final User userProfileData;
@@ -137,31 +130,5 @@ class _ProfileState extends State<Profile> {
             ),
           )),
         ));
-  }
-
-  Future<void> checkAndAddBookToCart(
-      AuthorizationProvider authorizationProvider, String bookId) async {
-    // Get the current cart
-    ServerResponse cartResponse =
-        await cartService.getCart(authorizationProvider.token);
-
-    // Check if the book is already in the cart
-    bool isBookInCart = false;
-    if (cartResponse.data != null && cartResponse.data['books'] is List) {
-      List<dynamic> cartItems = cartResponse.data['books'];
-      isBookInCart = cartItems.any((item) => item['_id'] == bookId);
-    }
-
-    // Add the book to the cart if it's not already present
-    if (!isBookInCart) {
-      ServerResponse addToCartResponse =
-          await cartService.addBookToCart(authorizationProvider.token, bookId);
-      print('Add to cart response ${addToCartResponse.message}');
-      SnackBarNotification.show(context, 'You added book to cart', Colors.green);
-      authorizationProvider.cartSize++;
-    } else {
-      print('The book is already in the cart.');
-      SnackBarNotification.show(context, 'The book is already in the cart', Colors.red);
-    }
   }
 }

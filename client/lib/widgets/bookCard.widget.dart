@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
+import '../utils/globalMethods.dart';
 
 class BookCard extends StatefulWidget {
   final Book book;
@@ -24,6 +25,7 @@ class _BookCardState extends State<BookCard> {
   BookService bookService = BookService();
   CartService cartService = CartService();
   UserService userService = UserService();
+  GlobalMethods globalMethods = GlobalMethods();
   bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
@@ -80,9 +82,9 @@ class _BookCardState extends State<BookCard> {
                                         }
                                       else
                                         {
-                                          checkAndAddBookToCart(
-                                              authNotifier.token,
-                                              widget.book.id!)
+                                          globalMethods.checkAndAddBookToCart(
+                                              authNotifier,
+                                              widget.book.id!, context, cartService)
                                         }
                                     },
                                 child: Text('Add to cart'))
@@ -96,7 +98,7 @@ class _BookCardState extends State<BookCard> {
           onTap: () async {
             print(widget.book.id);
             if (authNotifier.authenticated) {
-              await checkIfBookIsFavorite(authNotifier);
+              isFavorite = await globalMethods.checkIfBookIsFavorite(authNotifier, userService, widget.book);
             }
 
             Navigator.push(
@@ -111,55 +113,5 @@ class _BookCardState extends State<BookCard> {
         );
       },
     );
-  }
-
-  void checkAndAddBookToCart(String token, String bookId) async {
-    AuthorizationProvider provider = Provider.of(context, listen: false);
-    // Get the current cart
-    ServerResponse cartResponse = await widget.cartService.getCart(token);
-
-    // Check if the book is already in the cart
-    bool isBookInCart = false;
-    if (cartResponse.data != null && cartResponse.data['books'] is List) {
-      List<dynamic> cartItems = cartResponse.data['books'];
-      isBookInCart = cartItems.any((item) => item['_id'] == bookId);
-    }
-
-    // Add the book to the cart if it's not already present
-    if (!isBookInCart) {
-      ServerResponse addToCartResponse =
-          await widget.cartService.addBookToCart(token, bookId);
-      print('Add to cart response ${addToCartResponse.message}');
-      SnackBarNotification.show(
-          context, 'You added book to cart', Colors.green);
-      provider.cartSize++;
-    } else {
-      print('The book is already in the cart.');
-      SnackBarNotification.show(
-          context, 'The book is already in the cart', Colors.red);
-    }
-  }
-
-  Future<void> checkIfBookIsFavorite(AuthorizationProvider authNotifier) async {
-    ServerResponse responseData;
-    responseData =
-        await userService.getProfile(authNotifier.username, authNotifier.token);
-
-    // Assuming 'favoriteBooks' is a list of dynamic
-    List<dynamic> favoriteBooksData = responseData.data['favoriteBooks'];
-
-    if (favoriteBooksData.isNotEmpty) {
-      for (var i = 0; i < favoriteBooksData.length; i++) {
-        Book book = Book.fromJson(favoriteBooksData[i]);
-        if (book.id == widget.book.id) {
-          isFavorite = true;
-          break; // No need to continue checking if book is already found
-        } else {
-          isFavorite = false;
-        }
-      }
-    } else {
-      isFavorite = false;
-    }
   }
 }

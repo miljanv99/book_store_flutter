@@ -1,14 +1,11 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
-import 'package:book_store_flutter/screens/profile.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
+import 'package:book_store_flutter/utils/globalMethods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import '../models/book.model.dart';
-import '../models/cart.model.dart';
-import '../models/serverResponse.model.dart';
 import '../widgets/snackBar.widget.dart';
 import '../utils/screenWidth.dart';
 
@@ -26,6 +23,7 @@ class BookDetails extends StatefulWidget {
 
   BookService bookService = BookService();
   CartService cartService = CartService();
+  GlobalMethods globalMethods = GlobalMethods();
 
   @override
   _BookDetailsState createState() => _BookDetailsState();
@@ -197,8 +195,8 @@ class _BookDetailsState extends State<BookDetails> {
                                     SnackBarNotification.show(context,
                                         'You have to login!', Colors.red);
                                   } else {
-                                    checkAndAddBookToCart(
-                                        widget.authNotifier.token, book.id!);
+                                    widget.globalMethods.checkAndAddBookToCart(
+                                        widget.authNotifier, book.id!, context, widget.cartService);
                                   }
                                 },
                                 child: Text('Add To Cart'),
@@ -226,29 +224,4 @@ class _BookDetailsState extends State<BookDetails> {
         });
   }
 
-  Future<void> checkAndAddBookToCart(String token, String bookId) async {
-    // Get the current cart
-    ServerResponse cartResponse = await widget.cartService.getCart(token);
-
-    // Check if the book is already in the cart
-    bool isBookInCart = false;
-    if (cartResponse.data != null && cartResponse.data['books'] is List) {
-      List<dynamic> cartItems = cartResponse.data['books'];
-      isBookInCart = cartItems.any((item) => item['_id'] == bookId);
-    }
-
-    // Add the book to the cart if it's not already present
-    if (!isBookInCart) {
-      ServerResponse addToCartResponse =
-          await widget.cartService.addBookToCart(token, bookId);
-      print('Add to cart response ${addToCartResponse.message}');
-      SnackBarNotification.show(
-          context, 'You added book to cart', Colors.green);
-      widget.authNotifier.cartSize++;
-    } else {
-      print('The book is already in the cart.');
-      SnackBarNotification.show(
-          context, 'The book is already in the cart', Colors.red);
-    }
-  }
 }

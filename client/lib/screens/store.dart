@@ -16,8 +16,8 @@ class Store extends StatefulWidget {
 
 class _StoreState extends State<Store> {
   BookService bookService = BookService();
-   List<Book> allBooks = [];
-   List<Book> displayedBooks = [];
+  List<Book> allBooks = [];
+  List<Book> displayedBooks = [];
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _StoreState extends State<Store> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthorizationProvider>(
+    return Center(child: Consumer<AuthorizationProvider>(
       builder: (context, authNotifier, child) {
         return Container(
           padding: const EdgeInsets.all(5),
@@ -98,6 +98,6 @@ class _StoreState extends State<Store> {
           ),
         );
       },
-    );
+    ));
   }
 }

@@ -9,18 +9,16 @@ class UserService {
   static const profileEndpoint = '$baseUrl/profile/';
   static const getPurchaseHistoryEndpoint = '$baseUrl/purchaseHistory';
 
-  Future<ServerResponse> register(Map<String, dynamic> payload) async {
+  Future<ServerResponse> registerUser(Map<String, dynamic> payload) async {
     final response = await http.post(
       Uri.parse('$baseUrl/register'),
       body: jsonEncode(payload),
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (response.statusCode == 200) {
-      return ServerResponse.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to register');
-    }
+    var responseData = ServerResponse.fromJson(json.decode(response.body));
+    print('registerData ${responseData.message}');
+    return responseData;
   }
 
   Future<dynamic> userLogin(Map<String, dynamic> payload) async {

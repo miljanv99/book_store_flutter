@@ -28,6 +28,7 @@ class _LoginState extends State<Login> {
 
   final TextEditingController usernameCtrl = TextEditingController();
   final TextEditingController passwordCtrl = TextEditingController();
+  bool isPasswordHidden = true;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _LoginState extends State<Login> {
       ),
       body: Center(
           child: Container(
-            width: maxWidth,
+        width: maxWidth,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -66,7 +67,8 @@ class _LoginState extends State<Login> {
                             return null;
                           },
                           controller: usernameCtrl,
-                          decoration: const InputDecoration(labelText: 'Username'),
+                          decoration:
+                              const InputDecoration(labelText: 'Username'),
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
@@ -77,8 +79,18 @@ class _LoginState extends State<Login> {
                             return null;
                           },
                           controller: passwordCtrl,
-                          obscureText: true,
-                          decoration: const InputDecoration(labelText: 'Password'),
+                          obscureText: isPasswordHidden,
+                          decoration: InputDecoration(
+                              labelText: 'Password',
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isPasswordHidden = !isPasswordHidden;
+                                    });
+                                  },
+                                  icon: Icon(isPasswordHidden
+                                      ? Icons.visibility
+                                      : Icons.visibility_off_outlined))),
                         ),
                       ],
                     )),

@@ -14,33 +14,6 @@ class BookService {
   static const String addToFavoritesEndpoint = '$domain/book/addToFavorites/';
   static const String searchBookEndpoint = '$domain/book/search';
 
-  Future<dynamic> getSingleBook2(String id) async {
-    final response = await http.get((getSingleBookEndpoint + id) as Uri);
-    return jsonDecode(response.body);
-  }
-
-  Future<dynamic> createBook(Map<String, dynamic> payload) async {
-    final response = await http.post(createBookEndpoint as Uri, body: payload);
-    return jsonDecode(response.body);
-  }
-
-  Future<dynamic> editBook(String id, Map<String, dynamic> payload) async {
-    final response =
-        await http.put((editBookEndpoint + id) as Uri, body: payload);
-    return jsonDecode(response.body);
-  }
-
-  Future<dynamic> deleteBook(String id) async {
-    final response = await http.delete((deleteBookEndpoint + id) as Uri);
-    return jsonDecode(response.body);
-  }
-
-  Future<dynamic> rateBook(String id, Map<String, dynamic> payload) async {
-    final response =
-        await http.post((rateBookEndpoint + id) as Uri, body: payload);
-    return jsonDecode(response.body);
-  }
-
   Future<void> addOrRemoveFavouriteBook(String token, String bookId) async {
     await http.post(
       Uri.parse('$addToFavoritesEndpoint$bookId'),

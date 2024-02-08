@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:book_store_flutter/models/user.model.dart';
 import 'package:book_store_flutter/screens/login.dart';
 import 'package:book_store_flutter/screens/profile.dart';
+import 'package:book_store_flutter/screens/register.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +75,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     },
                   );
                 } else {
-                  return const ListTile(title: Icon(Icons.no_accounts, size: 80));
+                  return const ListTile(
+                      title: Icon(Icons.no_accounts, size: 80));
                 }
               },
             ),
@@ -111,30 +113,38 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               },
             ),
             const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                // Handle navigation to Settings screen
-                Navigator.pop(context);
-              },
-            ),
             Consumer<AuthorizationProvider>(
               builder: (context, authNotifier, child) {
-                print('IN CONSUME: ${authNotifier.authenticated}');
                 if (authNotifier.authenticated == false) {
-                  return ListTile(
-                    leading: const Icon(Icons.login_rounded),
-                    title: const Text('Login'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Login(authNotifier: authNotifier),
-                        ),
-                      );
-                    },
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.app_registration_rounded),
+                        title: const Text('Register'),
+                        onTap: () {
+                          // Handle navigation to Settings screen
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    Register(authNotifier: authNotifier),
+                              ));
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.login_rounded),
+                        title: const Text('Login'),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  Login(authNotifier: authNotifier),
+                            ),
+                          );
+                        },
+                      )
+                    ],
                   );
                 } else {
                   return ListTile(

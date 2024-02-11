@@ -1,4 +1,5 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/widgets/purchaseHistoryItem.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/book.model.dart';
@@ -55,59 +56,8 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
                           Receipt receipt = receiptList[index];
                           List<Book> books = receipt.productsInfo;
 
-                          return Card(
-                            elevation: 5,
-                            margin: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                    title: Text(
-                                      'Receipt ID: ${receipt.id}',
-                                      style: const TextStyle(fontSize: 15),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    subtitle: Center(
-                                      child: Text(
-                                        'Total Price: \$${receipt.totalPrice.toStringAsFixed(2)}',
-                                        style: const TextStyle(
-                                            color: Colors.blueAccent),
-                                      ),
-                                    )),
-                                const Divider(),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: books.length,
-                                  itemBuilder: (context, bookIndex) {
-                                    Book book = books[bookIndex];
-                                    return ListTile(
-                                      leading: Image.network(
-                                        book.cover ?? '',
-                                        width: 60,
-                                        height: 80,
-                                      ),
-                                      title: Text(
-                                        '${book.title}',
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.blueAccent),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      subtitle: Column(
-                                        children: [
-                                          Text(
-                                              'Quantity: ${book.price} x ${book.qty}'),
-                                          Text('Author: ${book.author}')
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(height: 8.0),
-                              ],
-                            ),
-                          );
+                          return PurchaseHistoryItemWidget(
+                              receipt: receipt, books: books);
                         },
                       );
                     }

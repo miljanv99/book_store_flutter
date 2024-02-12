@@ -43,6 +43,23 @@ class _CartState extends State<CartScreen> {
           'Cart Screen',
           style: TextStyle(color: Colors.white),
         ),
+        actions: [
+          if (widget.authorizationProvider.cartSize > 1)
+            Container(
+              margin: EdgeInsets.only(right: 20),
+              child: IconButton(
+                  onPressed: () {
+                    emptyTheCart(context);
+                  },
+                  icon: const Text(
+                    'Remove All',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  )),
+            )
+        ],
       ),
       body: FutureBuilder(
         future: cart,
@@ -122,25 +139,8 @@ class _CartState extends State<CartScreen> {
                             ],
                           ),
                           ElevatedButton(
-                              onPressed: () async {
-                                for (Book book in bookList) {
-                                  bookInfo[book.id!] =
-                                      bookQuantities[book.id] ?? 1;
-                                }
-
-                                String message;
-                                message = await cartService.checkout(
-                                    widget.authorizationProvider.token,
-                                    bookInfo);
-
-                                print('MESSAGE: ${message}');
-
-                                SnackBarNotification.show(
-                                    context, '$message', Colors.green);
-
-                                widget.authorizationProvider.cartSize = 0;
-
-                                Navigator.pop(context);
+                              onPressed: () {
+                                checkout();
                               },
                               child: const Row(
                                 mainAxisAlignment:
@@ -149,7 +149,7 @@ class _CartState extends State<CartScreen> {
                                   Icon(Icons.shopping_cart_checkout_rounded),
                                   Text('Checkout')
                                 ],
-                              ))
+                              )),
                         ],
                       )),
                 ],
@@ -176,5 +176,82 @@ class _CartState extends State<CartScreen> {
     Cart cartData = Cart.fromJson(serverResponse.data);
 
     return cartData;
+  }
+
+  Future<void> checkout() async {
+    for (Book book in bookList) {
+      bookInfo[book.id!] = bookQuantities[book.id] ?? 1;
+    }
+
+    String message;
+    message = await cartService.checkout(
+        widget.authorizationProvider.token, bookInfo);
+
+    print('MESSAGE: ${message}');
+
+    SnackBarNotification.show(context, '$message', Colors.green);
+
+    widget.authorizationProvider.cartSize = 0;
+
+    Navigator.pop(context);
+  }
+
+  Future<void> emptyTheCart(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            title: const Text(
+              "Remove All",
+              textAlign: TextAlign.center,
+            ),
+            content: const Text(
+              'Are you sure that you want to empty your cart?',
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text('No'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    child: const Text('Yes'),
+                    onPressed: () async {
+                      for (Book book in bookList) {
+                        await cartService.removeBookFromCart(
+                            widget.authorizationProvider.token, book.id!);
+                        setState(() {
+                          if (bookQuantities[book.id] != null) {
+                            totalPrice = totalPrice -
+                                (book.price! * bookQuantities[book.id]!);
+                          } else {
+                            totalPrice = totalPrice - book.price!;
+                          }
+                        });
+                      }
+                      Navigator.of(context).pop();
+                      widget.authorizationProvider.cartSize = 0;
+                      SnackBarNotification.show(
+                          context,
+                          'Your successfully removed all books from the cart',
+                          Colors.green);
+                    },
+                  ),
+                ],
+              )
+            ]);
+      },
+    );
   }
 }

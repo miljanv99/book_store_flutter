@@ -10,6 +10,7 @@ class CartService {
   static const String addToCart = '$baseUrl/user/cart/add/';
   static const String cartCheckout = '$baseUrl/user/cart/checkout';
   static const String removeBook = '$baseUrl/user/cart/delete/';
+  static const String removeAll = '$baseUrl/user/cart/deleteAll';
 
   Future<int> getCartSize(String token) async {
     final response = await http.get(Uri.parse(getCartSizeEndpoint),
@@ -75,6 +76,17 @@ class CartService {
   Future<ServerResponse> removeBookFromCart(String token, String bookId) async{
     final response = await http.delete(
       Uri.parse('$removeBook$bookId'),
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    var responseData = ServerResponse.fromJson(json.decode(response.body));
+    //print('BODY ${responseData}');
+    return responseData;
+  }
+
+  Future<ServerResponse> removeAllFromCart(String token) async{
+    final response = await http.delete(
+      Uri.parse(removeAll),
       headers: {'Authorization': 'Bearer $token'},
     );
 

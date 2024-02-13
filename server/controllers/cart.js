@@ -99,6 +99,38 @@ module.exports = {
         });
     },
 
+    removeAllFromCart: (req, res) =>{
+        let userId = req.user.id;
+        
+        CART.findOne({user: userId}).then((cart)=>{
+            if (!cart) {
+                return res.status(200).json({
+                    message: 'Cart not found for the user.'
+                });
+            }
+
+            cart.books = [];
+            cart.totalPrice = 0;
+
+            cart.save().then(()=>{
+                res.status(200).json({
+                    message: 'All items removed from the cart.',
+                    data: cart
+                });
+            }).catch((err)=>{
+                console.log(err);
+                return res.status(500).json({
+                    message: 'Internal server error. Please try again.'
+                });
+            });
+        }).catch((err)=>{
+            console.log(err);
+            return res.status(500).json({
+                message: 'Internal server error. Please try again.'
+            });
+        });
+    },
+
     checkout: (req, res) => {
         let userId = req.user.id;
         let totalPrice = 0;

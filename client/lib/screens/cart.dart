@@ -228,24 +228,21 @@ class _CartState extends State<CartScreen> {
                     ),
                     child: const Text('Yes'),
                     onPressed: () async {
-                      for (Book book in bookList) {
-                        await cartService.removeBookFromCart(
-                            widget.authorizationProvider.token, book.id!);
-                        setState(() {
-                          if (bookQuantities[book.id] != null) {
-                            totalPrice = totalPrice -
-                                (book.price! * bookQuantities[book.id]!);
-                          } else {
-                            totalPrice = totalPrice - book.price!;
-                          }
+                      setState(() {
+                        Future<ServerResponse> serverResponse =
+                            cartService.removeAllFromCart(
+                                widget.authorizationProvider.token);
+                        Navigator.of(context).pop();
+                        widget.authorizationProvider.cartSize = 0;
+
+                        serverResponse.then((response) {
+                          SnackBarNotification.show(
+                              context, response.message, Colors.green);
+                        }).catchError((error) {
+                          SnackBarNotification.show(
+                              context, '$error', Colors.red);
                         });
-                      }
-                      Navigator.of(context).pop();
-                      widget.authorizationProvider.cartSize = 0;
-                      SnackBarNotification.show(
-                          context,
-                          'Your successfully removed all books from the cart',
-                          Colors.green);
+                      });
                     },
                   ),
                 ],

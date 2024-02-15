@@ -6,12 +6,14 @@ import '../models/serverResponse.model.dart';
 class UserService {
   static const String baseUrl = 'http://192.168.0.10:8000/user';
   static const String loginEndpoint = '$baseUrl/login';
-  static const profileEndpoint = '$baseUrl/profile/';
-  static const getPurchaseHistoryEndpoint = '$baseUrl/purchaseHistory';
+  static const String profileEndpoint = '$baseUrl/profile/';
+  static const String getPurchaseHistoryEndpoint = '$baseUrl/purchaseHistory';
+  static const String registerEndpoint = '$baseUrl/register';
+  static const String changeAvatarEndpoint = '$baseUrl/changeAvatar';
 
   Future<ServerResponse> registerUser(Map<String, dynamic> payload) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/register'),
+      Uri.parse(registerEndpoint),
       body: jsonEncode(payload),
       headers: {'Content-Type': 'application/json'},
     );
@@ -62,17 +64,21 @@ class UserService {
     }
   }
 
-  Future<ServerResponse> changeAvatar(Map<String, dynamic> payload) async {
+  Future<ServerResponse> changeAvatar(String token , Map<String, dynamic> payload) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/changeAvatar'),
+      Uri.parse('${changeAvatarEndpoint}'),
       body: jsonEncode(payload),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+        }
     );
 
     if (response.statusCode == 200) {
       return ServerResponse.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to change avatar');
+      print(response.body);
+      return ServerResponse.fromJson(jsonDecode(response.body));
     }
   }
 

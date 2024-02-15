@@ -1,7 +1,7 @@
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
+import 'package:book_store_flutter/utils/globalMethods.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';
 import '../widgets/snackBar.widget.dart';
@@ -17,12 +17,11 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  final Future<SharedPreferences> sharedPreferences =
-      SharedPreferences.getInstance();
   final formKey = GlobalKey<FormState>();
 
   UserService userService = UserService();
   CartService cartService = CartService();
+  GlobalMethods globalMethods = GlobalMethods();
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -54,7 +53,7 @@ class _RegisterState extends State<Register> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    'https://stcanicescu.ie/wp-content/uploads/2018/01/register.png',
+                    'https://content.wepik.com/statics/76970161/preview-page0.jpg',
                     height: 200,
                   ),
                 ),
@@ -125,16 +124,15 @@ class _RegisterState extends State<Register> {
                           decoration: InputDecoration(
                               labelText: 'Confirm Password',
                               suffixIcon: IconButton(
-                                onPressed: (){
-                                  setState(() {
-                                    isPasswordConfirmHidden = !isPasswordConfirmHidden;
-                                  });
-                                }, 
-                                icon: Icon(
-                                  isPasswordConfirmHidden ? Icons.visibility : Icons.visibility_off_outlined
-                                )
-                                )
-                              ),
+                                  onPressed: () {
+                                    setState(() {
+                                      isPasswordConfirmHidden =
+                                          !isPasswordConfirmHidden;
+                                    });
+                                  },
+                                  icon: Icon(isPasswordConfirmHidden
+                                      ? Icons.visibility
+                                      : Icons.visibility_off_outlined))),
                         ),
                         const SizedBox(height: 20),
                         TextFormField(
@@ -201,23 +199,7 @@ class _RegisterState extends State<Register> {
     } else {
       // Registration failed
       Map<String, dynamic>? errors = serverResponse.errors;
-
-      String errorMessage = '';
-
-      if (errors != null && errors.containsKey('taken')) {
-        // Handle the case where the username is already taken
-        errorMessage = errors['taken'];
-        return errorMessage;
-      } else if (errors != null && errors.containsKey('email')) {
-        errorMessage = errors['email'];
-        return errorMessage;
-      } else if (errors != null && errors.containsKey('passwordsDontMatch')) {
-        errorMessage = errors['passwordsDontMatch'];
-        return errorMessage;
-      } else {
-        // Handle other registration errors
-        return "Registration failed, try again later.";
-      }
+      return globalMethods.handleRegistrationErrors(errors);
     }
   }
 }

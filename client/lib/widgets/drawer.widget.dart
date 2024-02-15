@@ -6,7 +6,6 @@ import 'package:book_store_flutter/screens/register.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/authentication.provider.dart';
 import '../providers/provider.dart';
 
@@ -18,9 +17,6 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  final Future<SharedPreferences> sharedPreferences =
-      SharedPreferences.getInstance();
-
   Future<User>? userProfile;
 
   //late Future<String> token;

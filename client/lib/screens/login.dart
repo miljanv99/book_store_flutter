@@ -1,7 +1,6 @@
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';
 import '../widgets/snackBar.widget.dart';
@@ -17,8 +16,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final Future<SharedPreferences> sharedPreferences =
-      SharedPreferences.getInstance();
   final formKey = GlobalKey<FormState>();
 
   UserService userService = UserService();

@@ -227,7 +227,7 @@ class _CartState extends State<CartScreen> {
                       textStyle: Theme.of(context).textTheme.labelLarge,
                     ),
                     child: const Text('Yes'),
-                    onPressed: () async {
+                    onPressed: () {
                       setState(() {
                         Future<ServerResponse> serverResponse =
                             cartService.removeAllFromCart(

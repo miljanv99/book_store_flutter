@@ -7,8 +7,8 @@ import '../providers/authentication.provider.dart';
 import '../widgets/snackBar.widget.dart';
 
 class GlobalMethods {
-   void checkAndAddBookToCart(AuthorizationProvider authProvider , String bookId, context, CartService cartService) async {
-    
+  void checkAndAddBookToCart(AuthorizationProvider authProvider, String bookId,
+      context, CartService cartService) async {
     // Get the current cart
     ServerResponse cartResponse = await cartService.getCart(authProvider.token);
 
@@ -34,7 +34,8 @@ class GlobalMethods {
     }
   }
 
-  Future<bool> checkIfBookIsFavorite(AuthorizationProvider authNotifier, UserService userService, Book book) async {
+  Future<bool> checkIfBookIsFavorite(AuthorizationProvider authNotifier,
+      UserService userService, Book book) async {
     ServerResponse responseData;
     responseData =
         await userService.getProfile(authNotifier.username, authNotifier.token);
@@ -52,5 +53,25 @@ class GlobalMethods {
     }
     return false;
   }
-  
+
+  String handleRegistrationErrors(Map<String, dynamic>? errors) {
+    String errorMessage = '';
+
+    if (errors != null && errors.containsKey('taken')) {
+      // Handle the case where the username is already taken
+      errorMessage = errors['taken'];
+      return errorMessage;
+    } else if (errors != null && errors.containsKey('email')) {
+      errorMessage = errors['email'];
+      return errorMessage;
+    } else if (errors != null && errors.containsKey('passwordsDontMatch')) {
+      errorMessage = errors['passwordsDontMatch'];
+      return errorMessage;
+    } else if (errors != null && errors.containsKey('avatar')) {
+      errorMessage = errors['avatar'];
+      return errorMessage;
+    } else {
+      return "Registration failed, try again later.";
+    }
+  }
 }

@@ -21,12 +21,14 @@ class AuthorizationProvider extends ChangeNotifier {
 
   bool _authenticated = false;
   String _token = '';
+  String _userId = '';
   String _usermane = '';
   int _cartSize = 0;
 
   bool get authenticated => _authenticated;
   String get token => _token;
   String get username => _usermane;
+  String get userId => _userId;
   int get cartSize => _cartSize;
 
    set cartSize(int value) {
@@ -53,6 +55,7 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<User> updateProfile(String username) async {
     ServerResponse response = await userService.getProfile(username, token);
     Map<String, dynamic> userData = response.data;
+    _userId = userData['id'];
     User userProfile = User.fromJson(userData);
     print('UPDATE PROFILE: ${userProfile}');
     return userProfile;

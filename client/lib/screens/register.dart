@@ -1,6 +1,7 @@
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/utils/globalMethods.dart';
+import 'package:book_store_flutter/widgets/avatar.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';
@@ -50,18 +51,12 @@ class _RegisterState extends State<Register> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    'https://content.wepik.com/statics/76970161/preview-page0.jpg',
-                    height: 200,
-                  ),
-                ),
                 const SizedBox(height: 20),
                 Form(
                     key: formKey,
                     child: Column(
                       children: [
+                        AvatarWidget(avatarCtrl: avatarCtrl, authNotifier: widget.authNotifier),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -134,18 +129,7 @@ class _RegisterState extends State<Register> {
                                       ? Icons.visibility
                                       : Icons.visibility_off_outlined))),
                         ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Avatar is required';
-                            }
-                            return null;
-                          },
-                          controller: avatarCtrl,
-                          decoration:
-                              const InputDecoration(labelText: 'Avatar: URL'),
-                        ),
+                        const SizedBox(height: 20)
                       ],
                     )),
                 const SizedBox(height: 20),

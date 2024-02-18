@@ -3,10 +3,10 @@ import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/utils/globalMethods.dart';
+import 'package:book_store_flutter/widgets/bookDetails.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/book.model.dart';
 import '../widgets/snackBar.widget.dart';
-import '../utils/screenWidth.dart';
 
 class BookDetails extends StatefulWidget {
   final String bookID;
@@ -17,7 +17,7 @@ class BookDetails extends StatefulWidget {
       {Key? key,
       required this.bookID,
       required this.authNotifier,
-      required this.isFavorite})
+      required this.isFavorite,})
       : super(key: key);
 
   BookService bookService = BookService();
@@ -33,7 +33,6 @@ class _BookDetailsState extends State<BookDetails> {
   UserService userService = UserService();
   @override
   Widget build(BuildContext context) {
-    double maxWidth = calculateMaxWidth(context);
 
     print('BEFORE: ${widget.isFavorite}');
 
@@ -103,106 +102,7 @@ class _BookDetailsState extends State<BookDetails> {
                       alignment: Alignment.bottomCenter,
                       children: <Widget>[
                         const SizedBox(height: 20),
-                        Container(
-                          width: maxWidth,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 500,
-                                width: 500,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(book.cover ?? ''),
-                                    fit: BoxFit.fill,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                book.title ?? 'Title not available',
-                                style: const TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'Author: ${book.author ?? 'Author not available'}',
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.blueAccent),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'Genre: ${book.genre ?? 'Genre not available'}',
-                                style: const TextStyle(
-                                    fontSize: 18, color: Colors.blueAccent),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                'Year: ${book.year ?? 'Year not available'}',
-                                style: const TextStyle(
-                                    fontSize: 18, color: Colors.blueAccent),
-                              ),
-                              const SizedBox(height: 20),
-                              const Text(
-                                'Description:',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                book.description ?? 'Description not available',
-                                style: const TextStyle(fontSize: 16),
-                                textAlign: TextAlign.justify,
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Pages: ${book.pagesCount ?? 'N/A'}',
-                                    style: const TextStyle(
-                                        fontSize: 18, color: Colors.blueAccent),
-                                  ),
-                                  Text(
-                                    'Price: \$${book.price ?? 'N/A'}',
-                                    style: const TextStyle(
-                                        fontSize: 18, color: Colors.blueAccent),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (widget.authNotifier.token == '') {
-                                    SnackBarNotification.show(context,
-                                        'You have to login!', Colors.red);
-                                  } else {
-                                    widget.globalMethods.checkAndAddBookToCart(
-                                        widget.authNotifier, book.id!, context, widget.cartService);
-                                  }
-                                },
-                                child: const Text('Add To Cart'),
-                              ),
-                            ],
-                          ),
-                        ),
+                        BookDetailsWidget(authNotifier: widget.authNotifier, book: book)
                       ],
                     ),
                   ]),

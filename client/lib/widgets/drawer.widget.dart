@@ -7,7 +7,7 @@ import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/authentication.provider.dart';
-import '../providers/provider.dart';
+import '../providers/screenProvider.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({Key? key}) : super(key: key);

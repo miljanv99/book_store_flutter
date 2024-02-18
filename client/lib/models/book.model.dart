@@ -15,7 +15,7 @@ class Book {
  int? ratingPoints;
  int? ratedCount;
  int? purchaseCount;
- //comments? Comment[];
+ List <dynamic>? ratedBy;
 
  Book({
      this.id,
@@ -34,7 +34,8 @@ class Book {
      this.ratingPoints,
      this.ratedCount,
      this.purchaseCount,
-     //this.comments
+     this.ratedBy,
+
  });
 
  Book.fromJson(Map<String, dynamic> json) {
@@ -58,7 +59,8 @@ class Book {
       ratingPoints = json['ratingPoints'];
       ratedCount = json['ratedCount'];
       purchaseCount = json['purchaseCount'];
-      //comments = json['comments'];
+      ratedBy = json['ratedBy'];
+
  }
 
  Map<String, dynamic> toJson() {

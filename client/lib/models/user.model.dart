@@ -9,8 +9,6 @@ class User {
  int? commentsCount;
  Cart? cart;
  List<dynamic>? favoriteBooks;
- //receipts Receipt[]
-
 
  User({required this.id, required this.username, required this.email ,required this.avatar, required this.isAdmin, required this.commentsCount, required this.cart ,required this.favoriteBooks});
 

@@ -1,5 +1,5 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
-import 'package:book_store_flutter/providers/provider.dart';
+import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/purchaseHistory.dart';
 import 'package:book_store_flutter/screens/store.dart';

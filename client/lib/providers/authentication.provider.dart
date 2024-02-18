@@ -1,5 +1,5 @@
 import 'package:book_store_flutter/models/user.model.dart';
-import 'package:book_store_flutter/providers/provider.dart';
+import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:flutter/material.dart';

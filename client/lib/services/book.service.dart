@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:book_store_flutter/models/book.model.dart';
+import 'package:book_store_flutter/models/serverResponse.model.dart';
 import 'package:http/http.dart' as http;
 
 //for emulator: 10.0.2.2
@@ -7,9 +8,6 @@ import 'package:http/http.dart' as http;
 class BookService {
   static const String domain = 'http://192.168.0.10:8000';
   static const String getSingleBookEndpoint = '$domain/book/details/';
-  static const String createBookEndpoint = '$domain/book/add';
-  static const String editBookEndpoint = '$domain/book/edit/';
-  static const String deleteBookEndpoint = '$domain/book/delete/';
   static const String rateBookEndpoint = '$domain/book/rate/';
   static const String addToFavoritesEndpoint = '$domain/book/addToFavorites/';
   static const String searchBookEndpoint = '$domain/book/search';
@@ -53,5 +51,17 @@ class BookService {
     } else {
       throw Exception('Failed to load data');
     }
+  }
+
+  Future<ServerResponse> rateTheBook(String token, String bookId, payload) async {
+    final response = await http.post(
+      Uri.parse('$rateBookEndpoint$bookId'),
+      headers: {'Content-Type': 'application/json','Authorization': 'Bearer $token'},
+      body: jsonEncode(payload)
+    );
+
+    var responseData = ServerResponse.fromJson(json.decode(response.body));
+    print('Rate Book ${responseData.message}');
+    return responseData;
   }
 }

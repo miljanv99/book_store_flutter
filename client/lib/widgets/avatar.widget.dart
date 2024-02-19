@@ -98,8 +98,10 @@ class _AvatarWidgetState extends State<AvatarWidget> {
 
                             serverResponse.then((response) {
                               if (response.errors == null) {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
+                                setState(() {
+                                  widget.userProfileData!.avatar =
+                                      widget.avatarCtrl.text;
+                                });
                                 Navigator.pop(context);
                                 SnackBarNotification.show(
                                     context, response.message, Colors.green);

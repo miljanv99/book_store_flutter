@@ -19,8 +19,6 @@ class DrawerWidget extends StatefulWidget {
 class _DrawerWidgetState extends State<DrawerWidget> {
   Future<User>? userProfile;
 
-  //late Future<String> token;
-
   @override
   Widget build(BuildContext context) {
     final screenProvider = Provider.of<ScreenProvider>(context, listen: false);
@@ -51,7 +49,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                           currentAccountPicture: CircleAvatar(
                               backgroundImage: NetworkImage('${user.avatar}')),
                           onDetailsPressed: () async {
-                            final bool? isRemoved = await Navigator.push(
+                            await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => Profile(
@@ -60,11 +58,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                   ),
                                 ));
 
-                            if (isRemoved != null && isRemoved) {
-                              setState(() {
-                                authNotifier.updateProfile(username);
-                              });
-                            }
+                            setState(() {
+                              authNotifier.updateProfile(username);
+                            });
                           },
                         );
                       }

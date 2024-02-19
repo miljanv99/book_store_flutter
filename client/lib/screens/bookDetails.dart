@@ -13,12 +13,12 @@ class BookDetails extends StatefulWidget {
   //final String token;
   final AuthorizationProvider authNotifier;
   bool isFavorite;
-  BookDetails(
-      {Key? key,
-      required this.bookID,
-      required this.authNotifier,
-      required this.isFavorite,})
-      : super(key: key);
+  BookDetails({
+    Key? key,
+    required this.bookID,
+    required this.authNotifier,
+    required this.isFavorite,
+  }) : super(key: key);
 
   BookService bookService = BookService();
   CartService cartService = CartService();
@@ -33,7 +33,6 @@ class _BookDetailsState extends State<BookDetails> {
   UserService userService = UserService();
   @override
   Widget build(BuildContext context) {
-
     print('BEFORE: ${widget.isFavorite}');
 
     return WillPopScope(
@@ -79,7 +78,7 @@ class _BookDetailsState extends State<BookDetails> {
                   String bootTitle = snapshot.data!.title.toString();
                   return Text(bootTitle);
                 } else {
-                  return const  Text('No Data');
+                  return const Text('No Data');
                 }
               },
             ),
@@ -102,7 +101,8 @@ class _BookDetailsState extends State<BookDetails> {
                       alignment: Alignment.bottomCenter,
                       children: <Widget>[
                         const SizedBox(height: 20),
-                        BookDetailsWidget(authNotifier: widget.authNotifier, book: book)
+                        BookDetailsWidget(
+                            authNotifier: widget.authNotifier, book: book)
                       ],
                     ),
                   ]),
@@ -113,14 +113,11 @@ class _BookDetailsState extends State<BookDetails> {
             },
           ),
         ),
-        onWillPop: () async{
-          if (widget.isFavorite == false) {
-            Navigator.pop(context, true);
-          } else {
-            Navigator.pop(context, false);
-          }
+        onWillPop: () async {
+          widget.isFavorite == false
+              ? Navigator.pop(context, true)
+              : Navigator.pop(context, false);
           return true;
         });
   }
-
 }

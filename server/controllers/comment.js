@@ -31,7 +31,6 @@ module.exports = {
             .populate({ path: 'user', select: 'username avatar' })
             .sort({ creationDate: -1 })
             .skip(skipCount)
-            .limit(PAGE_LIMIT)
             .then((comments) => {
                 res.status(200).json({
                     message: '',

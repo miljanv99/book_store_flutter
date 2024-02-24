@@ -23,11 +23,13 @@ class AuthorizationProvider extends ChangeNotifier {
   String _token = '';
   String _userId = '';
   String _usermane = '';
+  String _userAvatar = '';
   int _cartSize = 0;
 
   bool get authenticated => _authenticated;
   String get token => _token;
   String get username => _usermane;
+  String get userAvatar => _userAvatar;
   String get userId => _userId;
   int get cartSize => _cartSize;
 
@@ -39,6 +41,7 @@ class AuthorizationProvider extends ChangeNotifier {
   Future<void> authenticate(String token, String username) async {
     _token = token;
     _usermane = username;
+    _userAvatar = userAvatar;
     _authenticated = true;
     _cartSize = await cartService.getCartSize(token);
     notifyListeners();
@@ -56,6 +59,7 @@ class AuthorizationProvider extends ChangeNotifier {
     ServerResponse response = await userService.getProfile(username, token);
     Map<String, dynamic> userData = response.data;
     _userId = userData['id'];
+    _userAvatar = userData['avatar'];
     User userProfile = User.fromJson(userData);
     print('UPDATE PROFILE: ${userProfile}');
     return userProfile;

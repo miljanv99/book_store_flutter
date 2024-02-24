@@ -1,4 +1,5 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/widgets/avatar.widget.dart';
@@ -9,9 +10,9 @@ import '../models/user.model.dart';
 class Profile extends StatefulWidget {
   final User userProfileData;
   final AuthorizationProvider authNotifier;
-
+  final BookDetailsScreensProvider bookDetailsScreensProvider;
   const Profile(
-      {Key? key, required this.userProfileData, required this.authNotifier})
+      {Key? key, required this.userProfileData, required this.authNotifier, required this.bookDetailsScreensProvider})
       : super(key: key);
 
   @override
@@ -122,7 +123,8 @@ class _ProfileState extends State<Profile> {
                 ),
                 FavoriteBooksWidget(
                     userProfileData: widget.userProfileData,
-                    authNotifier: widget.authNotifier)
+                    authNotifier: widget.authNotifier,
+                    bookDetailsScreensProvider: widget.bookDetailsScreensProvider)
               ],
             ),
           )),

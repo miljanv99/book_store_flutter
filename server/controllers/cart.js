@@ -104,14 +104,14 @@ module.exports = {
         
         CART.findOne({user: userId}).then((cart)=>{
             if (!cart) {
-                return res.status(200).json({
+                return res.status(400).json({
                     message: 'Cart not found for the user.'
                 });
             }
 
             cart.books = [];
             cart.totalPrice = 0;
-
+            
             cart.save().then(()=>{
                 res.status(200).json({
                     message: 'All items removed from the cart.',

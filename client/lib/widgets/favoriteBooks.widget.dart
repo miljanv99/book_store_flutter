@@ -1,14 +1,17 @@
+import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:flutter/material.dart';
 import '../models/book.model.dart';
 import '../models/user.model.dart';
 import '../providers/authentication.provider.dart';
-import '../screens/bookDetails.dart';
+import '../screens/bookDetailsAndComments.dart';
+import 'bookDetails.dart';
 
 class FavoriteBooksWidget extends StatefulWidget {
   final User userProfileData;
   final AuthorizationProvider authNotifier;
+  final BookDetailsScreensProvider bookDetailsScreensProvider;
   const FavoriteBooksWidget(
-      {Key? key, required this.userProfileData, required this.authNotifier})
+      {Key? key, required this.userProfileData, required this.authNotifier, required this.bookDetailsScreensProvider})
       : super(key: key);
 
   @override
@@ -126,10 +129,11 @@ class _FavoriteBooksWidgetState extends State<FavoriteBooksWidget> {
                     final bool isRemoved = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BookDetails(
-                          bookID: book.id.toString(),
+                        builder: (context) => BookDetailsAndComments(
+                          book: book,
                           authNotifier: widget.authNotifier,
                           isFavorite: true,
+                          bookDetailsScreensProvider: widget.bookDetailsScreensProvider,
                         ),
                       ),
                     );

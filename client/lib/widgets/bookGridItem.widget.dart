@@ -1,15 +1,18 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/book.model.dart';
-import '../screens/bookDetails.dart';
+import '../screens/bookDetailsAndComments.dart';
+import 'bookDetails.dart';
 import '../utils/globalMethods.dart';
 class BookGridItemWidget extends StatefulWidget {
   final Book book;
   final AuthorizationProvider authNotifier;
-  BookGridItemWidget({Key? key, required this.book, required this.authNotifier}) : super(key: key);
+  final BookDetailsScreensProvider bookDetailsScreensProvider;
+  BookGridItemWidget({Key? key, required this.book, required this.authNotifier, required this.bookDetailsScreensProvider}) : super(key: key);
 
   CartService cartService = CartService();
 
@@ -76,11 +79,12 @@ class _BookGridItemWidgetState extends State<BookGridItemWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => BookDetails(
-                      bookID: widget.book.id.toString(),
-                      authNotifier: widget.authNotifier,
-                      isFavorite: isFavorite,
-                    )));
+                builder: (context) => BookDetailsAndComments(
+                          book: widget.book,
+                          authNotifier: widget.authNotifier,
+                          isFavorite: isFavorite,
+                          bookDetailsScreensProvider: widget.bookDetailsScreensProvider,
+                        )));
       },
     );
   }

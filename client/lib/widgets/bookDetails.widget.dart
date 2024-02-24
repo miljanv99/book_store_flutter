@@ -1,7 +1,6 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/models/serverResponse.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
-import 'package:book_store_flutter/widgets/commetSection.widget.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/utils/globalMethods.dart';
@@ -192,35 +191,18 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
               ],
             ),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    if (widget.authNotifier.token == '') {
-                      SnackBarNotification.show(
-                          context, 'You have to login!', Colors.red);
-                    } else {
-                      globalMethods.checkAndAddBookToCart(widget.authNotifier,
-                          widget.book.id!, context, cartService);
-                    }
-                  },
-                  child: const Text('Add To Cart'),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        showComments = !showComments;
-                      });
-                    },
-                    child: Text(
-                        !showComments ? 'Show comments' : 'Hide comments')),
-              ],
+            ElevatedButton(
+              onPressed: () {
+                if (widget.authNotifier.token == '') {
+                  SnackBarNotification.show(
+                      context, 'You have to login!', Colors.red);
+                } else {
+                  globalMethods.checkAndAddBookToCart(widget.authNotifier,
+                      widget.book.id!, context, cartService);
+                }
+              },
+              child: const Text('Add To Cart'),
             ),
-            if (showComments)
-              CommentSection(
-                  book: widget.book, authorizationProvider: widget.authNotifier)
           ],
         ),
       ),

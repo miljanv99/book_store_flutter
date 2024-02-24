@@ -1,5 +1,6 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/widgets/bookGridItem.widget.dart';
@@ -26,8 +27,8 @@ class _BookGridWidgetState extends State<BookGridWidget> {
   bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthorizationProvider>(
-      builder: (context, authNotifier, child) {
+    return Consumer2<AuthorizationProvider, BookDetailsScreensProvider>(
+      builder: (context, authNotifier, bookDetailsProvider ,child) {
         return Scaffold(
           body: GridView.builder(
               padding: const EdgeInsets.all(10),
@@ -39,7 +40,7 @@ class _BookGridWidgetState extends State<BookGridWidget> {
               itemCount: widget.books.length,
               itemBuilder: (BuildContext context, index) {
                 book = widget.books[index];
-                return BookGridItemWidget(book: book, authNotifier: authNotifier);
+                return BookGridItemWidget(book: book, authNotifier: authNotifier, bookDetailsScreensProvider: bookDetailsProvider);
               }),
         );
       },

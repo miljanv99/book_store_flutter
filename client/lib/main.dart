@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (context) => ScreenProvider()),
             ChangeNotifierProvider(
                 create: ((context) => AuthorizationProvider())),
+             ChangeNotifierProvider(create: ((context) => BookDetailsScreensProvider())),
           ],
           child: const MyHomePage(title: 'Book Store'),
         ));

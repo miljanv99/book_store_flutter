@@ -1,5 +1,7 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
-import 'package:book_store_flutter/screens/bookDetails.dart';
+import 'package:book_store_flutter/providers/screenProvider.dart';
+import 'package:book_store_flutter/widgets/bookDetails.dart';
+import 'package:book_store_flutter/screens/bookDetailsAndComments.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
@@ -27,8 +29,8 @@ class _BookCardState extends State<BookCard> {
   bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthorizationProvider>(
-      builder: (context, authNotifier, child) {
+    return Consumer2<AuthorizationProvider, BookDetailsScreensProvider>(
+      builder: (context, authNotifier, bookDetailsProvider, child) {
         return GestureDetector(
           child: SizedBox(
             width: 250,
@@ -65,8 +67,8 @@ class _BookCardState extends State<BookCard> {
                           const SizedBox(height: 4.0),
                           Text(
                             widget.book.author.toString(),
-                            style:
-                                const TextStyle(fontSize: 14.0, color: Colors.grey),
+                            style: const TextStyle(
+                                fontSize: 14.0, color: Colors.grey),
                           ),
                           const SizedBox(height: 4.0),
                           ElevatedButton(
@@ -81,7 +83,9 @@ class _BookCardState extends State<BookCard> {
                                       {
                                         globalMethods.checkAndAddBookToCart(
                                             authNotifier,
-                                            widget.book.id!, context, cartService)
+                                            widget.book.id!,
+                                            context,
+                                            cartService)
                                       }
                                   },
                               child: const Text('Add to cart'))
@@ -94,17 +98,19 @@ class _BookCardState extends State<BookCard> {
           onTap: () async {
             print(widget.book.id);
             if (authNotifier.authenticated) {
-              isFavorite = await globalMethods.checkIfBookIsFavorite(authNotifier, userService, widget.book);
+              isFavorite = await globalMethods.checkIfBookIsFavorite(
+                  authNotifier, userService, widget.book);
             }
 
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => BookDetails(
-                          bookID: widget.book.id.toString(),
+                    builder: (context) => BookDetailsAndComments(
+                          book: widget.book,
                           authNotifier: authNotifier,
                           isFavorite: isFavorite,
-                        )));
+                          bookDetailsScreensProvider: bookDetailsProvider,
+                        )));        
           },
         );
       },

@@ -28,8 +28,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         child: Container(
           padding: const EdgeInsets.only(top: 20),
           child: ListView(children: [
-            Consumer<AuthorizationProvider>(
-              builder: (context, authNotifier, child) {
+            Consumer2<AuthorizationProvider, BookDetailsScreensProvider>(
+              builder: (context, authNotifier, bookDetailsProvider ,child) {
                 if (authNotifier.authenticated) {
                   String username = authNotifier.username;
                   userProfile = authNotifier.updateProfile(username);
@@ -55,6 +55,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                   builder: (context) => Profile(
                                     userProfileData: user,
                                     authNotifier: authNotifier,
+                                    bookDetailsScreensProvider: bookDetailsProvider,
                                   ),
                                 ));
 

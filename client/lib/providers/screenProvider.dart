@@ -28,3 +28,23 @@ class ScreenProvider extends ChangeNotifier {
  
 }
 
+class BookDetailsScreensProvider extends ChangeNotifier {
+  int selectedBookScreen = 0;
+  String title= '';
+
+  void displayBookScreen(index) {
+    selectedBookScreen = index;
+    notifyListeners(); 
+  }
+
+  void selectBookDetails() {
+    selectedBookScreen = 0;
+    notifyListeners();
+  }
+
+  void selectComments() {
+    selectedBookScreen = 1;
+    notifyListeners();
+  }
+}
+

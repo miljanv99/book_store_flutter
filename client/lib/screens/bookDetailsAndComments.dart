@@ -109,9 +109,9 @@ class _BookDetailsAndCommentsState extends State<BookDetailsAndComments> {
       ),
       onWillPop: () async {
         widget.isFavorite == false
-              ? Navigator.pop(context, true)
-              : Navigator.pop(context, false);
-         widget.bookDetailsScreensProvider.selectedBookScreen = 0;
+            ? Navigator.pop(context, true)
+            : Navigator.pop(context, false);
+        widget.bookDetailsScreensProvider.selectedBookScreen = 0;
         return true;
       },
     );

@@ -3,6 +3,7 @@ import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/comment.service.dart';
+import 'package:book_store_flutter/widgets/commentTextField.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,9 +23,13 @@ class CommentSection extends StatefulWidget {
 }
 
 class _CommentSectionState extends State<CommentSection> {
+  void refreshComments() {
+    setState(() {});
+    FocusScope.of(context).unfocus();
+  }
+
   CartService cartService = CartService();
   BookService bookService = BookService();
-  TextEditingController commentController = TextEditingController();
   CommentService commentService = CommentService();
 
   @override
@@ -110,44 +115,10 @@ class _CommentSectionState extends State<CommentSection> {
             ),
             const SizedBox(height: 10),
             if (widget.authorizationProvider.authenticated)
-              AnimatedPadding(
-                padding: MediaQuery.of(context).viewInsets,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.ease,
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  margin:
-                      const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent, width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage: NetworkImage(
-                            widget.authorizationProvider.userAvatar),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: TextField(
-                          controller: commentController,
-                          decoration: const InputDecoration(
-                            hintText: 'Add a comment...',
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.send_rounded),
-                        color: Colors.blueAccent,
-                        iconSize: 30,
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              CommentTextFieldWidget(
+                  authorizationProvider: widget.authorizationProvider,
+                  book: widget.book,
+                  refreshComments: refreshComments)
           ],
         ),
       ),

@@ -27,7 +27,6 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
   BookService bookService = BookService();
   late TextEditingController commentController;
   late CommentService commentService;
-  bool showComments = false;
 
   @override
   void initState() {

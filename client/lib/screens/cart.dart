@@ -228,20 +228,19 @@ class _CartState extends State<CartScreen> {
                     ),
                     child: const Text('Yes'),
                     onPressed: () {
-                      setState(() {
-                        Future<ServerResponse> serverResponse =
-                            cartService.removeAllFromCart(
-                                widget.authorizationProvider.token);
-                        Navigator.of(context).pop();
-                        widget.authorizationProvider.cartSize = 0;
+                      Future<ServerResponse> serverResponse =
+                          cartService.removeAllFromCart(
+                              widget.authorizationProvider.token);
+                      Navigator.of(context).pop();
+                      widget.authorizationProvider.cartSize = 0;
 
-                        serverResponse.then((response) {
-                          SnackBarNotification.show(
-                              context, response.message, Colors.green);
-                        }).catchError((error) {
-                          SnackBarNotification.show(
-                              context, '$error', Colors.red);
-                        });
+                      serverResponse.then((response) {
+                        SnackBarNotification.show(
+                            context, response.message, Colors.green);
+                        setState(() {});
+                      }).catchError((error) {
+                        SnackBarNotification.show(
+                            context, '$error', Colors.red);
                       });
                     },
                   ),

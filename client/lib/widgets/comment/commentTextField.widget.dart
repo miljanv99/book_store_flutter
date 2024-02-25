@@ -46,6 +46,7 @@ class _CommentTextFieldWidgetState extends State<CommentTextFieldWidget> {
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
+                textCapitalization: TextCapitalization.sentences,
                 onChanged: (value) {
                   print('ON CHANGE: ${commentValueNotifier.value.length}');
                   setState(() {

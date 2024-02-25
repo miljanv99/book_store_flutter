@@ -4,7 +4,6 @@ import '../../models/book.model.dart';
 import '../../models/user.model.dart';
 import '../../providers/authentication.provider.dart';
 import '../../screens/bookDetailsAndComments.dart';
-import 'bookDetails.dart';
 
 class FavoriteBooksWidget extends StatefulWidget {
   final User userProfileData;

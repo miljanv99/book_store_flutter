@@ -1,7 +1,7 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/utils/screenWidth.dart';
-import 'package:book_store_flutter/widgets/bookGridList.widget.dart';
+import 'package:book_store_flutter/widgets/book/bookGridList.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

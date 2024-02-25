@@ -1,8 +1,8 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:flutter/material.dart';
 
-import '../models/book.model.dart';
-import '../services/cart.service.dart';
+import '../../models/book.model.dart';
+import '../../services/cart.service.dart';
 
 class CartItemWidget extends StatefulWidget {
   final Book book;

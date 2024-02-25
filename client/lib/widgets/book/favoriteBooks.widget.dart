@@ -1,9 +1,9 @@
 import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:flutter/material.dart';
-import '../models/book.model.dart';
-import '../models/user.model.dart';
-import '../providers/authentication.provider.dart';
-import '../screens/bookDetailsAndComments.dart';
+import '../../models/book.model.dart';
+import '../../models/user.model.dart';
+import '../../providers/authentication.provider.dart';
+import '../../screens/bookDetailsAndComments.dart';
 import 'bookDetails.dart';
 
 class FavoriteBooksWidget extends StatefulWidget {

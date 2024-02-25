@@ -1,8 +1,8 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/screenProvider.dart';
-import 'package:book_store_flutter/widgets/bookDetails.dart';
+import 'package:book_store_flutter/widgets/book/bookDetails.dart';
 import 'package:book_store_flutter/services/book.service.dart';
-import 'package:book_store_flutter/widgets/commetSection.widget.dart';
+import 'package:book_store_flutter/widgets/comment/commetSection.widget.dart';
 import 'package:flutter/material.dart';
 
 import '../providers/authentication.provider.dart';

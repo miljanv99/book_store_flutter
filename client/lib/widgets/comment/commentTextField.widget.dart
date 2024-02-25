@@ -2,8 +2,8 @@ import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 
 import 'package:flutter/material.dart';
-import '../models/serverResponse.model.dart';
-import '../services/comment.service.dart';
+import '../../models/serverResponse.model.dart';
+import '../../services/comment.service.dart';
 
 class CommentTextFieldWidget extends StatefulWidget {
   final AuthorizationProvider authorizationProvider;

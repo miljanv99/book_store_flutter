@@ -1,6 +1,6 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/providers/screenProvider.dart';
-import 'package:book_store_flutter/widgets/bookDetails.dart';
+import 'package:book_store_flutter/widgets/book/bookDetails.dart';
 import 'package:book_store_flutter/screens/bookDetailsAndComments.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
@@ -8,8 +8,8 @@ import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/book.model.dart';
-import '../utils/globalMethods.dart';
+import '../../models/book.model.dart';
+import '../../utils/globalMethods.dart';
 
 class BookCard extends StatefulWidget {
   final Book book;

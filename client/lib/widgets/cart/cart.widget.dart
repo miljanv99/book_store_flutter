@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/cart.dart';
+import '../../screens/cart.dart';
 
 class CartWidget extends StatefulWidget {
   const CartWidget({Key? key}) : super(key: key);

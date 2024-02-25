@@ -4,10 +4,10 @@ import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
-import '../models/book.model.dart';
-import '../screens/bookDetailsAndComments.dart';
+import '../../models/book.model.dart';
+import '../../screens/bookDetailsAndComments.dart';
 import 'bookDetails.dart';
-import '../utils/globalMethods.dart';
+import '../../utils/globalMethods.dart';
 class BookGridItemWidget extends StatefulWidget {
   final Book book;
   final AuthorizationProvider authNotifier;

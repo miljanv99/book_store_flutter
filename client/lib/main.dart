@@ -3,7 +3,7 @@ import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/purchaseHistory.dart';
 import 'package:book_store_flutter/screens/store.dart';
-import 'package:book_store_flutter/widgets/cart.widget.dart';
+import 'package:book_store_flutter/widgets/cart/cart.widget.dart';
 import 'package:book_store_flutter/widgets/drawer.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

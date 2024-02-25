@@ -3,13 +3,13 @@ import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/comment.service.dart';
-import 'package:book_store_flutter/widgets/commentTextField.widget.dart';
+import 'package:book_store_flutter/widgets/comment/commentTextField.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/comment.model.dart';
-import '../models/serverResponse.model.dart';
-import '../utils/screenWidth.dart';
+import '../../models/comment.model.dart';
+import '../../models/serverResponse.model.dart';
+import '../../utils/screenWidth.dart';
 
 class CommentSection extends StatefulWidget {
   final Book book;

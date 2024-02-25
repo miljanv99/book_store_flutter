@@ -3,9 +3,9 @@ import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/utils/globalMethods.dart';
-import 'package:book_store_flutter/widgets/bookDetails.widget.dart';
+import 'package:book_store_flutter/widgets/book/bookDetails.widget.dart';
 import 'package:flutter/material.dart';
-import '../models/book.model.dart';
+import '../../models/book.model.dart';
 
 class BookDetails extends StatefulWidget {
   final String bookID;

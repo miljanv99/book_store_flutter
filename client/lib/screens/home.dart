@@ -1,4 +1,4 @@
-import 'package:book_store_flutter/widgets/bookHorizontalList.widget.dart';
+import 'package:book_store_flutter/widgets/book/bookHorizontalList.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/book.model.dart';
 import '../services/book.service.dart';

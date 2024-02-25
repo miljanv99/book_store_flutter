@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:book_store_flutter/models/user.model.dart';
+import 'package:book_store_flutter/screens/cart.dart';
 import 'package:book_store_flutter/screens/login.dart';
 import 'package:book_store_flutter/screens/profile.dart';
 import 'package:book_store_flutter/screens/register.dart';
+import 'package:book_store_flutter/widgets/cart/cartBadgeCounter.widget.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +12,9 @@ import '../providers/authentication.provider.dart';
 import '../providers/screenProvider.dart';
 
 class DrawerWidget extends StatefulWidget {
-  const DrawerWidget({Key? key}) : super(key: key);
+  final AuthorizationProvider authorizationProvider;
+  const DrawerWidget({Key? key, required this.authorizationProvider})
+      : super(key: key);
 
   @override
   _DrawerWidgetState createState() => _DrawerWidgetState();
@@ -29,7 +33,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           padding: const EdgeInsets.only(top: 20),
           child: ListView(children: [
             Consumer2<AuthorizationProvider, BookDetailsScreensProvider>(
-              builder: (context, authNotifier, bookDetailsProvider ,child) {
+              builder: (context, authNotifier, bookDetailsProvider, child) {
                 if (authNotifier.authenticated) {
                   String username = authNotifier.username;
                   userProfile = authNotifier.updateProfile(username);
@@ -55,7 +59,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                                   builder: (context) => Profile(
                                     userProfileData: user,
                                     authNotifier: authNotifier,
-                                    bookDetailsScreensProvider: bookDetailsProvider,
+                                    bookDetailsScreensProvider:
+                                        bookDetailsProvider,
                                   ),
                                 ));
 
@@ -73,42 +78,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 }
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                // Handle navigation to Home screen
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.shopping_basket),
-              title: const Text('Cart'),
-              onTap: () {
-                // Handle navigation to Cart screen
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.category),
-              title: const Text('Categories'),
-              onTap: () {
-                // Handle navigation to Categories screen
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.favorite),
-              title: const Text('Favorites'),
-              onTap: () {
-                // Handle navigation to Favorites screen
-                Navigator.pop(context);
-              },
-            ),
-            const Divider(),
             Consumer<AuthorizationProvider>(
               builder: (context, authNotifier, child) {
-                if (authNotifier.authenticated == false) {
+                if (!authNotifier.authenticated) {
                   return Column(
                     children: [
                       ListTile(
@@ -140,16 +112,35 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     ],
                   );
                 } else {
-                  return ListTile(
-                    leading: const Icon(Icons.login_rounded),
-                    title: const Text('Logout'),
-                    onTap: () {
-                      authNotifier.signOut();
-                      screenProvider.selectFirstScreen();
-                      Navigator.pop(context);
-                      SnackBarNotification.show(
-                          context, 'You successfully logged out', Colors.green);
-                    },
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.shopping_basket),
+                        title: const Text('Cart'),
+                        trailing: CartBadgeCounterWidget(authorizationProvider: widget.authorizationProvider),
+                        onTap: () {
+                          // Handle navigation to Cart screen
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CartScreen(
+                                    authorizationProvider:
+                                        widget.authorizationProvider),
+                              ));
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.login_rounded),
+                        title: const Text('Logout'),
+                        onTap: () {
+                          authNotifier.signOut();
+                          screenProvider.selectFirstScreen();
+                          Navigator.pop(context);
+                          SnackBarNotification.show(context,
+                              'You successfully logged out', Colors.green);
+                        },
+                      ),
+                    ],
                   );
                 }
               },

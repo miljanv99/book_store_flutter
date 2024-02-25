@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(create: (context) => ScreenProvider()),
             ChangeNotifierProvider(
                 create: ((context) => AuthorizationProvider())),
-             ChangeNotifierProvider(create: ((context) => BookDetailsScreensProvider())),
+            ChangeNotifierProvider(
+                create: ((context) => BookDetailsScreensProvider())),
           ],
           child: const MyHomePage(title: 'Book Store'),
         ));
@@ -49,7 +50,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> { 
+class _MyHomePageState extends State<MyHomePage> {
   List<Widget> screens = [const Home(), const Store(), const PurchaseHistory()];
   @override
   Widget build(BuildContext context) {
@@ -65,16 +66,18 @@ class _MyHomePageState extends State<MyHomePage> {
             centerTitle: true,
             actions: [
               if (authNotifier.authenticated)
-                const CartWidget(),
+                CartWidget(authorizationProvider: authNotifier),
             ],
           ),
-          drawer: const DrawerWidget(),
+          drawer: DrawerWidget(authorizationProvider: authNotifier),
           body: screens[screenProvider.selectedScreen],
           bottomNavigationBar: BottomNavigationBar(
             onTap: (value) => screenProvider.displayScreen(value),
             items: [
-              const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              const BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Store'),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.home), label: 'Home'),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.store), label: 'Store'),
               if (authNotifier.authenticated)
                 const BottomNavigationBarItem(
                     icon: Icon(Icons.store), label: 'Purchase History')

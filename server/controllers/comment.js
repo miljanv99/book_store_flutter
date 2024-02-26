@@ -12,6 +12,10 @@ function validateCommentForm(payload) {
         isFormValid = false;
         errors.content = 'Comment must be more than 3 symbols long.';
     }
+    if (!payload || typeof payload.content !== 'string' || payload.content.trim().length > 200) {
+        isFormValid = false;
+        errors.content = 'Maximum number of characters are 200.';
+    }
 
     return {
         success: isFormValid,

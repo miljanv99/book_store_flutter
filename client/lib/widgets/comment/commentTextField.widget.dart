@@ -1,6 +1,6 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
-
+import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import '../../models/serverResponse.model.dart';
 import '../../services/comment.service.dart';
@@ -10,7 +10,10 @@ class CommentTextFieldWidget extends StatefulWidget {
   final Book book;
   final Function refreshComments;
   const CommentTextFieldWidget(
-      {Key? key, required this.authorizationProvider, required this.book, required this.refreshComments})
+      {Key? key,
+      required this.authorizationProvider,
+      required this.book,
+      required this.refreshComments})
       : super(key: key);
 
   @override
@@ -21,7 +24,6 @@ class _CommentTextFieldWidgetState extends State<CommentTextFieldWidget> {
   CommentService commentService = CommentService();
   TextEditingController commentController = TextEditingController();
   ValueNotifier<String> commentValueNotifier = ValueNotifier<String>('');
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,11 @@ class _CommentTextFieldWidgetState extends State<CommentTextFieldWidget> {
                                 commentValueNotifier.value = '',
                                 widget.refreshComments(),
                               )
-                            : null;
+                            : (response.errors!['content'] ==
+                                    'Maximum number of characters are 200.'
+                                ? SnackBarNotification.show(
+                                    context, '${response.errors!['content']}', Colors.red)
+                                : null);
                       });
                     }
                   : null,

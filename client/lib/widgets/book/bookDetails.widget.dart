@@ -145,7 +145,7 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
                   },
                 ),
                 const SizedBox(width: 5),
-                if (aleadyRated == true)
+                if (widget.authNotifier.authenticated && aleadyRated == true)
                   const Icon(
                     Icons.check_circle,
                     color: Colors.greenAccent,

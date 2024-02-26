@@ -6,14 +6,14 @@ import '../models/serverResponse.model.dart';
 import '../models/user.model.dart';
 
 class AvatarWidget extends StatefulWidget {
-  final AuthorizationProvider authNotifier;
-  final TextEditingController avatarCtrl;
+  final AuthorizationProvider? authNotifier;
+  final TextEditingController? avatarCtrl;
   final User? userProfileData;
   const AvatarWidget(
       {Key? key,
       this.userProfileData,
-      required this.avatarCtrl,
-      required this.authNotifier})
+      this.avatarCtrl,
+      this.authNotifier})
       : super(key: key);
 
   @override
@@ -88,19 +88,19 @@ class _AvatarWidgetState extends State<AvatarWidget> {
                           if (widget.userProfileData != null &&
                               urlFormKey.currentState!.validate()) {
                             Map<String, dynamic> formInputs = {
-                              'id': widget.authNotifier.userId,
-                              'avatar': widget.avatarCtrl.text
+                              'id': widget.authNotifier!.userId,
+                              'avatar': widget.avatarCtrl!.text
                             };
 
                             Future<ServerResponse> serverResponse =
                                 userService.changeAvatar(
-                                    widget.authNotifier.token, formInputs);
+                                    widget.authNotifier!.token, formInputs);
 
                             serverResponse.then((response) {
                               if (response.errors == null) {
                                 setState(() {
                                   widget.userProfileData!.avatar =
-                                      widget.avatarCtrl.text;
+                                      widget.avatarCtrl!.text;
                                 });
                                 Navigator.pop(context);
                                 SnackBarNotification.show(
@@ -113,7 +113,7 @@ class _AvatarWidgetState extends State<AvatarWidget> {
                             });
                           } else if (urlFormKey.currentState!.validate()) {
                             setState(() {
-                              defaultAvatar = widget.avatarCtrl.text;
+                              defaultAvatar = widget.avatarCtrl!.text;
                             });
                             Navigator.pop(context);
                           }

@@ -2,8 +2,8 @@ import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
-import '../models/serverResponse.model.dart';
-import '../models/user.model.dart';
+import '../../models/serverResponse.model.dart';
+import '../../models/user.model.dart';
 
 class AvatarWidget extends StatefulWidget {
   final AuthorizationProvider? authNotifier;

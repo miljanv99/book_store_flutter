@@ -2,7 +2,7 @@ import 'package:book_store_flutter/models/receipt.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../models/book.model.dart';
+import '../../models/book.model.dart';
 
 class PurchaseHistoryItemWidget extends StatefulWidget {
   final Receipt receipt;

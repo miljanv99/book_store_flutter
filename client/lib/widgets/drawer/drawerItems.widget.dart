@@ -8,7 +8,7 @@ import '../../screens/cart.dart';
 import '../../screens/login.dart';
 import '../../screens/profile.dart';
 import '../../screens/register.dart';
-import '../avatar.widget.dart';
+import '../user/avatar.widget.dart';
 import '../cart/cartBadgeCounter.widget.dart';
 
 class DrawerItemsWidget extends StatefulWidget {

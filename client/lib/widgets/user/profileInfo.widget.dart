@@ -1,10 +1,10 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:flutter/material.dart';
 
-import '../models/user.model.dart';
-import '../providers/screenProvider.dart';
+import '../../models/user.model.dart';
+import '../../providers/screenProvider.dart';
 import 'avatar.widget.dart';
-import 'book/favoriteBooks.widget.dart';
+import '../book/favoriteBooks.widget.dart';
 
 class ProfileInfoWidget extends StatefulWidget {
   final AuthorizationProvider authNotifier;

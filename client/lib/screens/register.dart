@@ -1,7 +1,7 @@
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
 import 'package:book_store_flutter/utils/globalMethods.dart';
-import 'package:book_store_flutter/widgets/avatar.widget.dart';
+import 'package:book_store_flutter/widgets/user/avatar.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/serverResponse.model.dart';
 import '../providers/authentication.provider.dart';

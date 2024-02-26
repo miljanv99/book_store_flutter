@@ -2,7 +2,7 @@ import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
 import 'package:book_store_flutter/services/user.service.dart';
-import 'package:book_store_flutter/widgets/profileInfo.widget.dart';
+import 'package:book_store_flutter/widgets/user/profileInfo.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/user.model.dart';
 

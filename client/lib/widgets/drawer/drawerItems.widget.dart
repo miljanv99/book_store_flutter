@@ -51,7 +51,10 @@ class _DrawerItemsWidgetState extends State<DrawerItemsWidget> {
                           style: const TextStyle(color: Colors.black)),
                       accountEmail: Text('${user.email}',
                           style: const TextStyle(color: Colors.black)),
-                      currentAccountPicture: AvatarWidget(userProfileData: user),
+                      currentAccountPicture: IgnorePointer(
+                        ignoring: true,
+                        child: AvatarWidget(userProfileData: user),
+                      ),
                       decoration: const BoxDecoration(color: null),
                       onDetailsPressed: () async {
                         await Navigator.push(

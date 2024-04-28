@@ -1,4 +1,5 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/providers/booksProvider.provider.dart';
 import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/screens/home.dart';
 import 'package:book_store_flutter/screens/purchaseHistory.dart';
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
                 create: ((context) => AuthorizationProvider())),
             ChangeNotifierProvider(
                 create: ((context) => BookDetailsScreensProvider())),
+                ChangeNotifierProvider(
+                create: ((context) => BooksProvider())),
           ],
           child: const MyHomePage(title: 'Book Store'),
         ));
@@ -51,11 +54,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> screens = [const Home(), const Store(), const PurchaseHistory()];
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ScreenProvider, AuthorizationProvider>(
-        builder: (context, screenProvider, authNotifier, child) {
+    return Consumer3<ScreenProvider, AuthorizationProvider, BooksProvider>(
+        builder: (context, screenProvider, authNotifier, booksProvider ,child) {
+        List<Widget> screens = [Home(booksProvider: booksProvider), Store(booksProvider: booksProvider), const PurchaseHistory()];
       print('IN MAIN: ${authNotifier.authenticated}');
       print('IN TOKEN: ${authNotifier.token}');
       return Scaffold(

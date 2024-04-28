@@ -1,5 +1,6 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:book_store_flutter/providers/authentication.provider.dart';
+import 'package:book_store_flutter/providers/booksProvider.provider.dart';
 import 'package:book_store_flutter/utils/screenWidth.dart';
 import 'package:book_store_flutter/widgets/book/bookGridList.widget.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:provider/provider.dart';
 import '../services/book.service.dart';
 
 class Store extends StatefulWidget {
-  const Store({Key? key}) : super(key: key);
+  final BooksProvider booksProvider;
+  const Store({Key? key, required this.booksProvider}) : super(key: key);
 
   @override
   _StoreState createState() => _StoreState();
@@ -26,7 +28,7 @@ class _StoreState extends State<Store> {
   }
 
   Future<void> fetchBooks() async {
-    final books = await bookService.fetchBooksFromServer();
+    List<Book> books = await widget.booksProvider.allBooks;
     setState(() {
       allBooks = books;
       displayedBooks = books;
@@ -66,7 +68,7 @@ class _StoreState extends State<Store> {
               ),
               const SizedBox(height: 10),
               FutureBuilder(
-                future: bookService.fetchBooksFromServer(),
+                future: widget.booksProvider.allBooks ,
                 builder: (context, AsyncSnapshot<List<Book>> snap) {
                   if (snap.connectionState == ConnectionState.done) {
                     List<Book> books = displayedBooks;

@@ -1,10 +1,12 @@
+import 'package:book_store_flutter/providers/booksProvider.provider.dart';
 import 'package:book_store_flutter/widgets/book/bookHorizontalList.widget.dart';
 import 'package:flutter/material.dart';
 import '../models/book.model.dart';
 import '../services/book.service.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final BooksProvider booksProvider;
+  const Home({Key? key, required this.booksProvider, }) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -17,10 +19,6 @@ class _HomeState extends State<Home> {
 
   BookService bookService = BookService();
 
-  String newestBooksQuery = '?sort={"creationDate":-1}&limit=10';
-  String bestRatedBooksQuery = '?sort={"currentRating":-1}&limit=10';
-  String mostPurchasedBooksQuery = '?sort={"purchasesCount":-1}&limit=10';
-
   @override
   void initState() {
     super.initState();
@@ -28,7 +26,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //Future<List<Book>> postsFuture = getPosts();
         return Container(
         padding: const EdgeInsets.all(5),
         child: SingleChildScrollView(
@@ -36,16 +33,15 @@ class _HomeState extends State<Home> {
           children: [
             BookList(
                 books:
-                    bookService.fetchBooksFromServer(query: newestBooksQuery),
+                    widget.booksProvider.newestBooks,
                 header: 'Newest Books'),
             BookList(
               books:
-                  bookService.fetchBooksFromServer(query: bestRatedBooksQuery),
+                    widget.booksProvider.bestRatedBooks,
               header: 'Best Rated Books',
             ),
             BookList(
-                books: bookService.fetchBooksFromServer(
-                    query: mostPurchasedBooksQuery),
+                books: widget.booksProvider.mostPurchasedBooks,
                 header: 'Most Purchased Books')
           ],
         ))

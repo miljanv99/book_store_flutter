@@ -7,8 +7,9 @@ class SnackBarNotification {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         width: maxWidth,
-        content: Text(message),
+        content: Text(message, style: TextStyle(color: Colors.white),),
         showCloseIcon: true,
+        closeIconColor: Colors.white,
         duration: const Duration(seconds: 3),
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,

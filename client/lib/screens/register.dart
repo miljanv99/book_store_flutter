@@ -39,8 +39,8 @@ class _RegisterState extends State<Register> {
     double maxWidth = calculateMaxWidth(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         title: const Text('Register'),
-        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Center(
           child: Container(

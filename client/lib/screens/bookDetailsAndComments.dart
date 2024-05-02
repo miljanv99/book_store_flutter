@@ -50,6 +50,7 @@ class _BookDetailsAndCommentsState extends State<BookDetailsAndComments> {
           actions: [
             if (widget.authNotifier.authenticated)
               IconButton(
+                padding: const EdgeInsets.only(right: 5),
                 onPressed: () {
                   bookService.addOrRemoveFavouriteBook(
                       widget.authNotifier.token, widget.book.id!);
@@ -91,6 +92,7 @@ class _BookDetailsAndCommentsState extends State<BookDetailsAndComments> {
         ),
         body: bookScreens[widget.bookDetailsScreensProvider.selectedBookScreen],
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.blue,
           onTap: (value) => setState(() {
             widget.bookDetailsScreensProvider.displayBookScreen(value);
           }),

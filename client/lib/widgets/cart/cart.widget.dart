@@ -19,7 +19,7 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.all(5),
         child: Consumer<AuthorizationProvider>(
           builder: (context, authProvider, child) {
             print('TOKEN ON CART ICON; ${authProvider.token}');

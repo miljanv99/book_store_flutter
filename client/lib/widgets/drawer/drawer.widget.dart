@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:book_store_flutter/models/user.model.dart';
+import 'package:book_store_flutter/providers/screenProvider.dart';
 import 'package:book_store_flutter/widgets/drawer/drawerItems.widget.dart';
 import 'package:flutter/material.dart';
 import '../../providers/authentication.provider.dart';
 
 class DrawerWidget extends StatefulWidget {
   final AuthorizationProvider authorizationProvider;
-  const DrawerWidget({Key? key, required this.authorizationProvider})
+  final ThemeSettings themeSettings;
+  const DrawerWidget({Key? key, required this.authorizationProvider, required this.themeSettings})
       : super(key: key);
 
   @override
@@ -47,7 +49,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         DrawerItemsWidget(
             authorizationProvider: widget.authorizationProvider,
-            userProfile: userProfile)
+            themeSettings: widget.themeSettings,
+            userProfile: userProfile),
       ]),
     );
   }

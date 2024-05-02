@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/book.model.dart';
 import '../models/receipt.model.dart';
+import '../providers/screenProvider.dart';
 import '../utils/screenWidth.dart';
 
 class PurchaseHistory extends StatefulWidget {
@@ -18,10 +19,14 @@ class _PurchaseHistoryState extends State<PurchaseHistory> {
   @override
   Widget build(BuildContext context) {
     double maxWidth = calculateMaxWidth(context);
+    final settings = Provider.of<ThemeSettings>(context);
+    final textColor = settings.currentTheme == ThemeData.light()
+        ? Colors.black
+        : Colors.white;
     return Scaffold(
         appBar: AppBar(
           forceMaterialTransparency: true,
-          title: const Text('Your Purchase History'),
+          title: Text('Your Purchase History', style: TextStyle(color:  textColor),),
           centerTitle: true,
           titleTextStyle: const TextStyle(
               fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24),

@@ -1,7 +1,9 @@
 import 'package:book_store_flutter/models/book.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:provider/provider.dart';
 import 'dart:io' show Platform;
+import '../../providers/screenProvider.dart';
 import 'bookCard.widget.dart';
 
 class BookList extends StatelessWidget {
@@ -13,13 +15,17 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<ThemeSettings>(context);
+    final textColor = settings.currentTheme == ThemeData.light()
+        ? Colors.black
+        : Colors.white;
     return Column(
       children: [
         const Padding(padding: EdgeInsets.all(5)),
         Text(
           header,
-          style: const TextStyle(
-              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: textColor),
         ),
         !kIsWeb && Platform.isAndroid 
             ? SingleChildScrollView(

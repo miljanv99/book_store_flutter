@@ -32,8 +32,8 @@ class _LoginState extends State<Login> {
     double maxWidth = calculateMaxWidth(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         title: const Text('Login'),
-        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Center(
           child: Container(

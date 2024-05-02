@@ -13,9 +13,13 @@ import '../cart/cartBadgeCounter.widget.dart';
 
 class DrawerItemsWidget extends StatefulWidget {
   final AuthorizationProvider authorizationProvider;
+  final ThemeSettings themeSettings;
   Future<User>? userProfile;
   DrawerItemsWidget(
-      {Key? key, required this.authorizationProvider, this.userProfile})
+      {Key? key,
+      required this.authorizationProvider,
+      this.userProfile,
+      required this.themeSettings})
       : super(key: key);
 
   @override
@@ -26,120 +30,145 @@ class _DrawerItemsWidgetState extends State<DrawerItemsWidget> {
   @override
   Widget build(BuildContext context) {
     final screenProvider = Provider.of<ScreenProvider>(context, listen: false);
-    return Consumer2<AuthorizationProvider, BookDetailsScreensProvider>(
-      builder: (context, authNotifier, bookDetailsProvider, child) {
-        if (authNotifier.authenticated) {
-          String username = authNotifier.username;
-          widget.userProfile =
-              widget.authorizationProvider.updateProfile(username);
-          return Column(
-            children: [
-              FutureBuilder<User>(
-                future: widget.userProfile,
-                builder: (context, AsyncSnapshot<User> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const LinearProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    User user = snapshot.data!;
-                    print('FAVORITE BOOKS: ${user.favoriteBooks}');
-                    return UserAccountsDrawerHeader(
-                      margin: null,
-                      arrowColor: Colors.black,
-                      accountName: Text('${user.username}',
-                          style: const TextStyle(color: Colors.black)),
-                      accountEmail: Text('${user.email}',
-                          style: const TextStyle(color: Colors.black)),
-                      currentAccountPicture: IgnorePointer(
-                        ignoring: true,
-                        child: AvatarWidget(userProfileData: user),
-                      ),
-                      decoration: const BoxDecoration(color: null),
-                      onDetailsPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Profile(
-                              userProfileData: user,
-                              authNotifier: authNotifier,
-                              bookDetailsScreensProvider: bookDetailsProvider,
-                            ),
-                          ),
-                        );
+    final textColor = widget.themeSettings.currentTheme == ThemeData.light()
+        ? Colors.black
+        : Colors.white;
 
-                        setState(() {
-                          authNotifier.updateProfile(username);
-                        });
-                      },
-                    );
-                  }
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.shopping_basket),
-                title: const Text('Cart'),
-                trailing: CartBadgeCounterWidget(
-                    authorizationProvider: widget.authorizationProvider),
-                onTap: () {
-                  // Handle navigation to Cart screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CartScreen(
-                        authorizationProvider: widget.authorizationProvider,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
-                onTap: () {
-                  authNotifier.signOut();
-                  screenProvider.selectFirstScreen();
-                  Navigator.pop(context);
-                  SnackBarNotification.show(
-                      context, 'You successfully logged out', Colors.green);
-                },
-              ),
-            ],
-          );
-        } else {
-          return Column(
-            children: [
-              const ListTile(title: Icon(Icons.no_accounts, size: 80)),
-              ListTile(
-                leading: const Icon(Icons.app_registration_rounded),
-                title: const Text('Register'),
-                onTap: () {
-                  // Handle navigation to Settings screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          Register(authNotifier: authNotifier),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.login_rounded),
-                title: const Text('Login'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Login(authNotifier: authNotifier),
-                    ),
-                  );
-                },
-              ),
-            ],
-          );
-        }
-      },
+    void toggleSettings() {
+      widget.themeSettings.toggleTheme();
+    }
+
+    return Column(
+      children: [
+        Consumer2<AuthorizationProvider, BookDetailsScreensProvider>(
+          builder: (context, authNotifier, bookDetailsProvider, child) {
+            if (authNotifier.authenticated) {
+              String username = authNotifier.username;
+              widget.userProfile =
+                  widget.authorizationProvider.updateProfile(username);
+              return Column(
+                children: [
+                  FutureBuilder<User>(
+                    future: widget.userProfile,
+                    builder: (context, AsyncSnapshot<User> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const LinearProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        User user = snapshot.data!;
+                        print('FAVORITE BOOKS: ${user.favoriteBooks}');
+                        return UserAccountsDrawerHeader(
+                          margin: null,
+                          arrowColor: textColor,
+                          accountName: Text('${user.username}',
+                              style: TextStyle(color: textColor)),
+                          accountEmail: Text('${user.email}',
+                              style: TextStyle(color: textColor)),
+                          currentAccountPicture: IgnorePointer(
+                            ignoring: true,
+                            child: AvatarWidget(userProfileData: user),
+                          ),
+                          decoration: const BoxDecoration(color: null),
+                          onDetailsPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Profile(
+                                  userProfileData: user,
+                                  authNotifier: authNotifier,
+                                  bookDetailsScreensProvider:
+                                      bookDetailsProvider,
+                                ),
+                              ),
+                            );
+
+                            setState(() {
+                              authNotifier.updateProfile(username);
+                            });
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.shopping_basket),
+                    title: const Text('Cart'),
+                    trailing: CartBadgeCounterWidget(
+                        authorizationProvider: widget.authorizationProvider),
+                    onTap: () {
+                      // Handle navigation to Cart screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CartScreen(
+                            authorizationProvider: widget.authorizationProvider,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Logout'),
+                    onTap: () {
+                      authNotifier.signOut();
+                      screenProvider.selectFirstScreen();
+                      Navigator.pop(context);
+                      SnackBarNotification.show(
+                          context, 'You successfully logged out', Colors.green);
+                    },
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                children: [
+                  const ListTile(title: Icon(Icons.no_accounts, size: 80)),
+                  ListTile(
+                    leading: const Icon(Icons.app_registration_rounded),
+                    title: const Text('Register'),
+                    onTap: () {
+                      // Handle navigation to Settings screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Register(authNotifier: authNotifier),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.login_rounded),
+                    title: const Text('Login'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Login(authNotifier: authNotifier),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              );
+            }
+          },
+        ),
+        ListTile(
+          leading: widget.themeSettings.currentTheme == ThemeData.light()
+              ? const Icon(Icons.dark_mode)
+              : const Icon(Icons.light_mode),
+          title: widget.themeSettings.currentTheme == ThemeData.light()
+              ? const Text('Dark Theme')
+              : const Text('Light Theme'),
+          onTap: () {
+            toggleSettings();
+          },
+        ),
+      ],
     );
   }
 }

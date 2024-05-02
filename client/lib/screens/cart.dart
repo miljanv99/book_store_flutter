@@ -46,6 +46,7 @@ class _CartState extends State<CartScreen> {
         actions: [
           if (widget.authorizationProvider.cartSize > 1)
             Container(
+              width: 100,
               margin: EdgeInsets.only(right: 20),
               child: IconButton(
                   onPressed: () {
@@ -55,7 +56,6 @@ class _CartState extends State<CartScreen> {
                     'Remove All',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
                     ),
                   )),
             )

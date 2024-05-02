@@ -40,6 +40,7 @@ class _AvatarWidgetState extends State<AvatarWidget> {
           ),
         ),
         child: CircleAvatar(
+          backgroundColor: Colors.white,
           radius: 50,
           backgroundImage: NetworkImage(widget.userProfileData != null
               ? '${widget.userProfileData!.avatar}'

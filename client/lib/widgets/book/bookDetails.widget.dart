@@ -8,7 +8,9 @@ import 'package:book_store_flutter/utils/screenWidth.dart';
 import 'package:book_store_flutter/widgets/snackBar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../providers/screenProvider.dart';
 import '../../services/comment.service.dart';
+import 'package:provider/provider.dart';
 
 class BookDetailsWidget extends StatefulWidget {
   final AuthorizationProvider authNotifier;
@@ -41,14 +43,19 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
         widget.book.ratedBy!.contains(widget.authNotifier.userId);
     double maxWidth = calculateMaxWidth(context);
     double? currentRating = widget.book.currentRating;
-
+    final settings = Provider.of<ThemeSettings>(context);
+    final textColor = settings.currentTheme == ThemeData.light()
+        ? Colors.black
+        : Colors.white;
     print("first already rated: ${aleadyRated}");
     return SingleChildScrollView(
       child: Container(
         width: maxWidth,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: settings.currentTheme == ThemeData.light()
+              ? Colors.white
+              : Colors.black38,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -75,7 +82,10 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
             const SizedBox(height: 20),
             Text(
               widget.book.title ?? 'Title not available',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: textColor),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
@@ -105,6 +115,7 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
                   updateOnDrag: false,
                   minRating: 1,
                   direction: Axis.horizontal,
+                  unratedColor: Colors.grey,
                   itemCount: 5,
                   itemSize: 40.0,
                   itemBuilder: (context, _) => const Icon(
@@ -152,25 +163,29 @@ class _BookDetailsWidgetState extends State<BookDetailsWidget> {
                     size: 35,
                   ),
                 const SizedBox(width: 5),
-                const Icon(
+                Icon(
                   Icons.supervised_user_circle_rounded,
                   size: 35,
+                  color: textColor,
                 ),
                 const SizedBox(width: 5),
                 Text(
                   '${widget.book.ratedCount}',
-                  style: TextStyle(fontSize: 25),
+                  style: TextStyle(fontSize: 25, color: textColor),
                 ),
               ],
             ),
-            const Text(
+            Text(
               'Description:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: textColor),
             ),
             const SizedBox(height: 10),
             Text(
               widget.book.description ?? 'Description not available',
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16, color: textColor),
               textAlign: TextAlign.justify,
             ),
             const SizedBox(height: 20),

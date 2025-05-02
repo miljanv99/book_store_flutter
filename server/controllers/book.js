@@ -305,7 +305,7 @@ module.exports = {
 
         BOOK
             .find(searchParams.query)
-            .count()
+            .countDocuments()
             .then((count) => {
                 BOOK
                     .find(searchParams.query)

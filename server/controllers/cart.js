@@ -157,7 +157,7 @@ module.exports = {
                     productsInfo: products,
                     totalPrice: totalPrice
                 }).then((receipt) => {
-                    USER.update({ _id: userId }, { $push: { receipts: receipt._id } }).then(() => {
+                    USER.updateOne({ _id: userId }, { $push: { receipts: receipt._id } }).then(() => {
                         cart.books = [];
                         cart.totalPrice = 0;
                         cart.save();

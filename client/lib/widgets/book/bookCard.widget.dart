@@ -1,6 +1,5 @@
 import 'package:book_store_flutter/providers/authentication.provider.dart';
 import 'package:book_store_flutter/providers/screenProvider.dart';
-import 'package:book_store_flutter/widgets/book/bookDetails.dart';
 import 'package:book_store_flutter/screens/bookDetailsAndComments.dart';
 import 'package:book_store_flutter/services/book.service.dart';
 import 'package:book_store_flutter/services/cart.service.dart';
@@ -34,7 +33,7 @@ class _BookCardState extends State<BookCard> {
         return GestureDetector(
           child: SizedBox(
             width: 250,
-            height: 350,
+            height: 450,
             child: Card(
               elevation: 4, // Adjust the shadow of the card
               shape: RoundedRectangleBorder(
@@ -45,7 +44,7 @@ class _BookCardState extends State<BookCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 200,
+                    height: 300,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         image: DecorationImage(
@@ -102,6 +101,7 @@ class _BookCardState extends State<BookCard> {
                   authNotifier, userService, widget.book);
             }
 
+            // ignore: use_build_context_synchronously
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -110,7 +110,12 @@ class _BookCardState extends State<BookCard> {
                           authNotifier: authNotifier,
                           isFavorite: isFavorite,
                           bookDetailsScreensProvider: bookDetailsProvider,
-                        )));        
+                        )));
+            //debugDumpApp();
+            //debugDumpRenderTree();
+            //debugDumpLayerTree();
+            //debugDumpFocusTree();
+            //debugDumpSemanticsTree();
           },
         );
       },
